@@ -182,8 +182,8 @@ uploadArchives {
     repositories {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-            //repository(url: "${sonatype_stageingURL}") {
-            repository(url: "${sonatype_snapshotURL}") {
+            repository(url: "${sonatype_stageingURL}") {
+            //repository(url: "${sonatype_snapshotURL}") {
                 authentication(userName: "${sonatype_user_tmw}", password: "${sonatype_password_tmw}")
             }
             pom.project {
