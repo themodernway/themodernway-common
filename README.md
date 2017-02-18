@@ -1,9 +1,9 @@
-Ahome Tooling Common
+The Modern Way Common
 ======
 
-Ahome Tooling Common is a package containing often used interfaces and utility classes that can work both on the server side and with GWT. All classes in the com.themodernway.common.api.* must be GWT compatible, although this project does NOT depend on GWT in any way.
+The Modern Way Common is a package containing often used interfaces and utility classes that can work both on the server side and with GWT. All classes in the com.themodernway.common.api.* must be GWT compatible, although this project does NOT depend on GWT in any way.
 
-https://github.com/ahome-it/ahome-tooling-common
+https://github.com/themodernway/themodernway-common
 
 Downloading artifacts
 
@@ -12,26 +12,26 @@ RELEASE:
 Maven:
 ```xml
 <dependency>
-  <groupId>com.ahome-it</groupId>
-  <artifactId>ahome-tooling-common</artifactId>
-  <version>2.0.8-RELEASE</version>
+  <groupId>com.themodernway/groupId>
+  <artifactId>themodernway-common</artifactId>
+  <version>1.0.0-RC1</version>
 </dependency>
 ```
 Gradle:
 ```
 dependencies {
-    compile(group:'com.ahome-it',name:'ahome-tooling-common',version:'2.0.8-RELEASE')
+    compile(group:'com.themodernway',name:'themodernway-common',version:'1.0.0-RC1')
 }
 ```
 Javadoc URL:
 
-https://lienzo-core.com/documents/javadoc/ahome-tooling-common
+https://lienzo-core.com/documents/javadoc/themodernway-common
 
 License:
 
-Copyright (c) 2017 Ahome Innovation Technologies. All rights reserved.
+Copyright (c) 2017, The Modern Way. All rights reserved.
 
-Ahome Tooling Common is released under version 2.0 of the Apache License.
+The Modern Way Common is released under version 2.0 of the Apache License.
 
 http://www.apache.org/licenses/LICENSE-2.0.html
 

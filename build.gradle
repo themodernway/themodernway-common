@@ -68,7 +68,7 @@ task doJavaDocs(type: Groovydoc) {
     classpath = sourceSets.main.runtimeClasspath + buildscript.configurations.classpath
     destinationDir = file("${buildDir}/docs/javadoc")
     includes = ['com/themodernway/common/**']
-    docTitle = "Ahome Tooling Common"
+    docTitle = "TheModernWay Common"
     footer = "<small><a href=\"${getBuildGITHomeURL()}\" target=\"_blank\">${getProjectCommonName()} - &copy; 2017, - ${getBuildModuleVersion()} - Author: Dean S. Jones</a></small>"
     getGroovydocLinks().each { name, list ->
         link(name, *list)
@@ -145,15 +145,15 @@ def getBuildGITHomeURL() {
 }
 
 def getBuildGITCommitHash() {
-    ''//getBuildGITHomeURL() + '/commit/' + Grgit.open(project.file('.')).head().id
+    getBuildGITHomeURL() + '/commit/' + Grgit.open(project.file('.')).head().id
 }
 
 def getBuildGITCommitUser() {
-    ''//Grgit.open(project.file('.')).head().committer.email
+    Grgit.open(project.file('.')).head().committer.email
 }
 
 def getBuildGITCommitMessage() {
-    ''//Grgit.open(project.file('.')).head().shortMessage
+    Grgit.open(project.file('.')).head().shortMessage
 }
 
 repositories {
@@ -187,14 +187,14 @@ uploadArchives {
                 authentication(userName: "${sonatype_user_tmw}", password: "${sonatype_password_tmw}")
             }
             pom.project {
-                name 'Ahome-Tooling-Common'
+                name 'TheModernWay-Common'
                 packaging 'jar'
-                description 'Ahome-Tooling-Common is common integfaces and utility classes for Ahome Tooling Projects.'
-                url 'https://github.com/ahome-it/ahome-tooling-common'
+                description 'TheModernWay-Common is common integfaces and utility classes for TheModernWay Projects.'
+                url 'https://github.com/themodernway/themodernway-common'
                 scm {
-                    url 'scm:git@github.com:ahome-it/ahome-tooling-common.git'
-                    connection 'scm:git@github.com:ahome-it/ahome-tooling-common.git'
-                    developerConnection 'scm:git@github.com:ahome-it/ahome-tooling-common.git'
+                    url 'scm:git@github.com:themodernway/themodernway-common.git'
+                    connection 'scm:git@github.com:themodernway/themodernway-common.git'
+                    developerConnection 'scm:git@github.com:themodernway/themodernway-common.git'
                 }
                 licenses {
                     license {
