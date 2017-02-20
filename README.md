@@ -25,7 +25,7 @@ dependencies {
 ```
 Javadoc URL:
 
-https://lienzo-core.com/documents/javadoc/themodernway-common
+https://www.themodernway.com/documents/javadoc/themodernway-common
 
 License:
 
