@@ -16,6 +16,7 @@
 
 package com.themodernway.common.api.types;
 
+@FunctionalInterface
 public interface IIdentified
 {
     public String getId();

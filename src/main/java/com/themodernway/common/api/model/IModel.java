@@ -16,6 +16,7 @@
 
 package com.themodernway.common.api.model;
 
+@FunctionalInterface
 public interface IModel<T>
 {
     public T getModel();

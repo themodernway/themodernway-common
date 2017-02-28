@@ -45,7 +45,7 @@ sourceCompatibility = 1.8
 
 targetCompatibility = 1.8
 
-version = '1.0.0-RELEASE'
+version = '1.0.1-RELEASE'
 
 group = 'com.themodernway'
 
