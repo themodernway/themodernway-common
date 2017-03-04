@@ -12,7 +12,7 @@ RELEASE:
 Maven:
 ```xml
 <dependency>
-  <groupId>com.themodernway/groupId>
+  <groupId>com.themodernway</groupId>
   <artifactId>themodernway-common</artifactId>
   <version>1.0.1-RELEASE</version>
 </dependency>
