@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.StringTokenizer;
+import java.util.function.Supplier;
 
 public final class StringOps
 {
@@ -247,6 +248,17 @@ public final class StringOps
         return string;
     }
 
+    public static final String toTrimOrElse(String string, final Supplier<String> otherwise)
+    {
+        string = toTrimOrNull(string);
+
+        if (null == string)
+        {
+            return otherwise.get();
+        }
+        return string;
+    }
+
     public static final String requireTrimOrNull(final String string)
     {
         return Objects.requireNonNull(toTrimOrNull(string));
@@ -255,6 +267,17 @@ public final class StringOps
     public static final String requireTrimOrNull(final String string, final String reason)
     {
         return Objects.requireNonNull(toTrimOrNull(string), Objects.requireNonNull(reason));
+    }
+
+    public static final String requireTrimOrNull(String string, final Supplier<String> reason)
+    {
+        string = toTrimOrNull(string);
+
+        if (null == string)
+        {
+            throw new NullPointerException(Objects.requireNonNull(reason).get());
+        }
+        return string;
     }
 
     public static final boolean isDigits(final String string)
