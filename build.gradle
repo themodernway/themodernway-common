@@ -43,7 +43,7 @@ sourceCompatibility = 1.8
 
 targetCompatibility = 1.8
 
-version = '1.0.8-RELEASE'
+version = '1.0.9-RELEASE'
 
 group = 'com.themodernway'
 
@@ -67,7 +67,7 @@ task doJavaDocs(type: Groovydoc) {
     destinationDir = file("${buildDir}/docs/javadoc")
     includes = ['com/themodernway/common/**']
     docTitle = "TheModernWay Common"
-    footer = "<small><a href=\"${getBuildGITHomeURL()}\" target=\"_blank\">${getProjectCommonName()} - &copy; 2017, - ${getBuildModuleVersion()} - Author: Dean S. Jones</a></small>"
+    footer = "<small><a href=\"${getBuildGITHomeURL()}\" target=\"_blank\">${getProjectCommonName()} - &copy; 2017</a> - <a href=\"${getBuildGITCommitHash()}\" target=\"_blank\">${getBuildModuleVersion()}</a> - <a href=\"mailto:deansjones@gmail.com\">Author: Dean S. Jones</a></small>"
     getGroovydocLinks().each { name, list ->
         link(name, *list)
     }
