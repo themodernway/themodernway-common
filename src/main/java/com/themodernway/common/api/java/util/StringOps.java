@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017, The Modern Way. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2017, The Modern Way. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.themodernway.common.api.java.util;
@@ -21,19 +21,26 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.function.Supplier;
 
 public final class StringOps
 {
-    private static final String  SEPR               = ", ";
+    public static final String   COMMA_LIST_TOKENIZER = ",";
 
-    public static final String   NULL_STRING        = null;
+    public static final String   COMMA_LIST_SEPARATOR = ", ";
 
-    public static final String   EMPTY_STRING       = "";
+    public static final String   NULL_STRING          = null;
 
-    public static final String[] EMPTY_STRING_ARRAY = new String[0];
+    public static final String   EMPTY_STRING         = "";
+
+    public static final String   NULL_AS_STRING       = "null";
+
+    public static final String   EMPTY_ARRAY_STRING   = "[]";
+
+    public static final String[] EMPTY_STRING_ARRAY   = new String[0];
 
     protected StringOps()
     {
@@ -119,15 +126,39 @@ public final class StringOps
         return uniq;
     }
 
+    public static final List<String> toUniqueStringList(String strings)
+    {
+        strings = requireTrimOrNull(strings);
+
+        if (strings.contains(COMMA_LIST_TOKENIZER))
+        {
+            return Arrays.asList(toUniqueArray(tokenizeToStringCollection(strings, COMMA_LIST_TOKENIZER)));
+        }
+        else
+        {
+            return Arrays.asList(toUniqueArray(strings));
+        }
+    }
+
+    public static final List<String> toUniqueStringList(final String[] strings)
+    {
+        return Arrays.asList(toUniqueArray(Objects.requireNonNull(strings)));
+    }
+
+    public static final List<String> toUniqueStringList(final Collection<String> strings)
+    {
+        return Arrays.asList(toUniqueArray(Objects.requireNonNull(strings)));
+    }
+
     public static final String toPrintableString(final Collection<String> collection)
     {
         if (null == collection)
         {
-            return "null";
+            return NULL_AS_STRING;
         }
         if (collection.isEmpty())
         {
-            return "[]";
+            return EMPTY_ARRAY_STRING;
         }
         return toPrintableString(toArray(collection));
     }
@@ -148,7 +179,7 @@ public final class StringOps
 
             if (i.hasNext())
             {
-                b.append(SEPR);
+                b.append(COMMA_LIST_SEPARATOR);
             }
         }
         return b.toString();
@@ -159,7 +190,22 @@ public final class StringOps
         return toCommaSeparated(Arrays.asList(collection));
     }
 
-    public static Collection<String> tokenizeToStringCollection(final String string, final String delimiters, final boolean trim, final boolean ignore)
+    public static final Collection<String> tokenizeToStringCollection(final String string)
+    {
+        return tokenizeToStringCollection(string, true, true);
+    }
+
+    public static final Collection<String> tokenizeToStringCollection(final String string, final String delimiters)
+    {
+        return tokenizeToStringCollection(string, delimiters, true, true);
+    }
+
+    public static final Collection<String> tokenizeToStringCollection(final String string, final boolean trim, final boolean ignore)
+    {
+        return tokenizeToStringCollection(string, COMMA_LIST_TOKENIZER, trim, ignore);
+    }
+
+    public static final Collection<String> tokenizeToStringCollection(final String string, final String delimiters, final boolean trim, final boolean ignore)
     {
         if (null == string)
         {
@@ -189,11 +235,11 @@ public final class StringOps
     {
         if (null == list)
         {
-            return "null";
+            return NULL_AS_STRING;
         }
         if (list.length == 0)
         {
-            return "[]";
+            return EMPTY_ARRAY_STRING;
         }
         final StringBuilder builder = new StringBuilder();
 
@@ -207,15 +253,15 @@ public final class StringOps
             }
             else
             {
-                builder.append("null");
+                builder.append(NULL_AS_STRING);
             }
-            builder.append(SEPR);
+            builder.append(COMMA_LIST_SEPARATOR);
         }
-        final int sepr = SEPR.length();
+        final int sepr = COMMA_LIST_SEPARATOR.length();
 
         final int leng = builder.length();
 
-        final int tail = builder.lastIndexOf(SEPR);
+        final int tail = builder.lastIndexOf(COMMA_LIST_SEPARATOR);
 
         if ((tail >= 0) && (tail == (leng - sepr)))
         {
@@ -434,7 +480,7 @@ public final class StringOps
     {
         if (null == string)
         {
-            return "null";
+            return NULL_AS_STRING;
         }
         if (string.isEmpty())
         {
@@ -447,7 +493,7 @@ public final class StringOps
     {
         if (null == string)
         {
-            return builder.append("null");
+            return builder.append(NULL_AS_STRING);
         }
         final int leng = string.length();
 
@@ -457,7 +503,7 @@ public final class StringOps
 
             if (((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')) || (c == ' ') || ((c >= '0') && (c <= '9')))
             {
-                builder.append(c);// ASCII will be most common, this improves write speed about 5%, FWIW.
+                builder.append(c); // ASCII will be most common, this improves write speed about 5%, FWIW.
             }
             else
             {

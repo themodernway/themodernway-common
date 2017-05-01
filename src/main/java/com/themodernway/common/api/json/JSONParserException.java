@@ -18,7 +18,7 @@ package com.themodernway.common.api.json;
 
 public class JSONParserException extends Exception
 {
-    private static final long serialVersionUID           = -1386449426626594502L;
+    private static final long serialVersionUID           = 2577571614214539296L;
 
     public static final int   ERROR_UNEXPECTED_CHAR      = 0;
 
