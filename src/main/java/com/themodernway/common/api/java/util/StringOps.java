@@ -28,6 +28,8 @@ import java.util.function.Supplier;
 
 public final class StringOps
 {
+    public static final String   CHARSET_UTF_8        = "UTF-8";
+
     public static final String   COMMA_LIST_TOKENIZER = ",";
 
     public static final String   COMMA_LIST_SEPARATOR = ", ";
@@ -42,8 +44,15 @@ public final class StringOps
 
     public static final String[] EMPTY_STRING_ARRAY   = new String[0];
 
+    public static final String   HEXIDECIMAL_STRING   = "0123456789ABCDEF";
+
     protected StringOps()
     {
+    }
+
+    public static final Supplier<String> toSupplier(final String value)
+    {
+        return () -> value;
     }
 
     public static final String[] toArray(final Collection<String> collection)

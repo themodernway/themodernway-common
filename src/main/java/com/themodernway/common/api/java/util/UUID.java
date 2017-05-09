@@ -18,7 +18,15 @@ package com.themodernway.common.api.java.util;
 
 public final class UUID
 {
-    private static final char[] CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
+    private static final int  UUID_LENGTH = 36;
+
+    private static final char UUID_DASHCH = '-';
+
+    private static char       UUID_FOURCH = '4';
+
+    private static char[]     UUID_ACRRAY = StringOps.HEXIDECIMAL_STRING.toCharArray();
+
+    private static String     UUID_LOOKUP = StringOps.HEXIDECIMAL_STRING + UUID_DASHCH;
 
     protected UUID()
     {
@@ -26,26 +34,54 @@ public final class UUID
 
     public static final String uuid()
     {
-        final char[] uuid = new char[36];
+        final char[] uuid = new char[UUID_LENGTH];
 
         // rfc4122 requires these characters
 
-        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = UUID_DASHCH;
 
-        uuid[14] = '4';
+        uuid[14] = UUID_FOURCH;
 
         // Fill in random data. At i==19 set the high bits of clock sequence as
         // per rfc4122, sec. 4.1.5
 
-        for (int i = 0; i < 36; i++)
+        for (int i = 0; i < UUID_LENGTH; i++)
         {
             if (uuid[i] == 0)
             {
                 final int r = (int) (Math.random() * 16);
 
-                uuid[i] = CHARS[(i == 19) ? (r & 0x3) | 0x8 : r & 0xf];
+                uuid[i] = UUID_ACRRAY[(i == 19) ? (r & 0x3) | 0x8 : r & 0xf];
             }
         }
         return new String(uuid);
+    }
+
+    public static final boolean good(String uuid)
+    {
+        if (null == uuid)
+        {
+            return false;
+        }
+        uuid = uuid.trim();
+
+        if (uuid.length() != UUID_LENGTH)
+        {
+            return false;
+        }
+        final char[] buff = uuid.toCharArray();
+
+        if ((buff[8] != UUID_DASHCH) || (buff[13] != UUID_DASHCH) || (buff[18] != UUID_DASHCH) || (buff[23] != UUID_DASHCH) || (buff[14] != UUID_FOURCH))
+        {
+            return false;
+        }
+        for (int i = 0; i < UUID_LENGTH; i++)
+        {
+            if (UUID_LOOKUP.indexOf(buff[i]) < 0)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

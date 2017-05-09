@@ -43,7 +43,7 @@ sourceCompatibility = 1.8
 
 targetCompatibility = 1.8
 
-version = '1.0.11-RELEASE'
+version = '1.0.12-RELEASE'
 
 group = 'com.themodernway'
 
@@ -160,6 +160,19 @@ sourceSets {
     main {
         resources { source java }
     }
+}
+
+dependencies {
+    testCompile(group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.11', classifier: 'indy')
+    testCompile(group: 'org.spockframework', name: 'spock-core', version: '1.0-groovy-2.4') {
+        exclude(group: 'org.codehaus.groovy', module: 'groovy-all')
+    }
+    testCompile(group: 'log4j', name: 'log4j', version: '1.2.17')
+    testCompile(group: 'log4j', name: 'apache-log4j-extras', version:'1.2.17')
+    testCompile(group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25')
+    testCompile(group: 'org.slf4j', name: 'jul-to-slf4j', version: '1.7.25')
+    testCompile(group: 'org.slf4j', name: 'log4j-over-slf4j', version: '1.7.25')
+    testCompile(group: 'commons-logging', name: 'commons-logging', version: '1.2')
 }
 
 artifacts {

@@ -18,7 +18,7 @@ package com.themodernway.common.api.java.util;
 
 public interface IHTTPConstants
 {
-    public static final String CHARSET_UTF_8                          = "UTF-8";
+    public static final String CHARSET_UTF_8                          = StringOps.CHARSET_UTF_8;
 
     public static final String CONTENT_TYPE_TEXT_PLAIN                = "text/plain";
 
@@ -255,6 +255,10 @@ public interface IHTTPConstants
     public static final String ATTACHMENT_INLINE_FILENAME_PREFIX      = "inline; filename=";
 
     public static final String NO_CACHE_PRAGMA_HEADER_VALUE           = "no-cache";
+
+    public static final String NO_STORE_PRAGMA_HEADER_VALUE           = "no-store";
+
+    public static final String MUST_REVALIDATE_PRAGMA_HEADER_VALUE    = "must-revalidate";
 
     public static final String NO_CACHE_CONTROL_HEADER_VALUE          = "no-cache, no-store, must-revalidate";
 
