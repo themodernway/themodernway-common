@@ -27,6 +27,26 @@ Javadoc URL:
 
 http://docs.themodernway.com/documents/javadoc/themodernway-common/
 
+Tests URL:
+
+http://docs.themodernway.com/documents/reports/themodernway-common/tests/test/
+
+Code Coverage URL:
+
+http://docs.themodernway.com/documents/reports/themodernway-common/coverage/
+
+Check Style URL:
+
+http://docs.themodernway.com/documents/reports/themodernway-common/checkstyle/main.html
+
+PMD URL:
+
+http://docs.themodernway.com/documents/reports/themodernway-common/pmd/main.html
+
+FindBugs URL:
+
+http://docs.themodernway.com/documents/reports/themodernway-common/findbugs/main.html
+
 License:
 
 Copyright (c) 2017, The Modern Way. All rights reserved.

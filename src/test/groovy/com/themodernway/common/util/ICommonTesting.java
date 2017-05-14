@@ -28,20 +28,27 @@ public interface ICommonTesting
     {
         public static final void setupCommonLogging() throws Exception
         {
-            setupCommonLogging("testing-log4j.xml");
+            setupCommonLogging("/testing-log4j.xml");
         }
 
         public static final void setupCommonLogging(final String location) throws Exception
         {
             final URL url = TestingOps.class.getResource(location);
 
-            if (location.toLowerCase().endsWith(".xml"))
+            if (null == url)
             {
-                DOMConfigurator.configure(url);
+                System.err.println("can't find " + location);
             }
             else
             {
-                PropertyConfigurator.configure(url);
+                if (location.toLowerCase().endsWith(".xml"))
+                {
+                    DOMConfigurator.configure(url);
+                }
+                else
+                {
+                    PropertyConfigurator.configure(url);
+                }
             }
         }
 

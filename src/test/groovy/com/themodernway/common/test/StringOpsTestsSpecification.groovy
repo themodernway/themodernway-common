@@ -23,12 +23,12 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
 {
     def setupSpec()
     {
-        TestingOps.setupCommonDefault()
+        setupCommonDefault()
     }
 
     def cleanupSpec()
     {
-        TestingOps.closeCommonDefault()
+        closeCommonDefault()
     }
     
     def "Test StringOps.toTrimOrNull('text')"()

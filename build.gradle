@@ -31,11 +31,14 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import java.net.InetAddress
 import org.ajoberstar.grgit.Grgit
 
+apply plugin: 'pmd'
 apply plugin: 'maven'
 apply plugin: 'groovy'
 apply plugin: 'jacoco'
 apply plugin: 'signing'
 apply plugin: 'eclipse'
+apply plugin: 'findbugs'
+apply plugin: 'checkstyle'
 
 compileJava.options.encoding = 'UTF-8'
 
@@ -83,9 +86,63 @@ task javadocJar(type: Jar, dependsOn: doJavaDocs) {
     from "${buildDir}/docs/javadoc"
 }
 
+checkstyle {
+    toolVersion = "7.7"
+    ignoreFailures = true
+}
+
+tasks.withType(Checkstyle) { source 'src/main' }
+
 compileJava.dependsOn(clean)
 
 jar.dependsOn(filterConfigs)
+
+task codeCoverage << { println ":codeCoverage-done" }
+
+codeCoverage.dependsOn jacocoTestReport
+
+jacocoTestReport {
+    reports {
+        csv {
+            enabled true
+            destination "${buildDir}/reports/jacoco/coverage-${version}.csv"
+        }
+        xml.enabled false
+        html.destination "${buildDir}/reports/coverage"
+    }
+}
+
+jacocoTestReport.dependsOn test
+
+test {
+    jacoco {
+        append = false
+        destinationFile = file("${buildDir}/jacoco/testing.exec")
+        classDumpFile = file("${buildDir}/jacoco/classpathdumps")
+    }
+}
+
+pmd {
+    ignoreFailures = true
+}
+    
+findbugs {
+    ignoreFailures = true
+    toolVersion = "3.0.1"
+    effort = "max"
+    excludeFilter = file("$rootProject.projectDir/config/findbugs/filter.xml")
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled false
+        html.enabled true
+    }
+}
+
+task checkCodeQuality << { println ":checkCodeQuality-done" }
+
+checkCodeQuality.dependsOn codeCoverage,checkstyleMain,pmdMain,findbugsMain
 
 jar {
     manifest {

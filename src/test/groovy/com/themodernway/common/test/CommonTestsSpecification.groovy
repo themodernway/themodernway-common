@@ -23,12 +23,12 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 {
     def setupSpec()
     {
-        TestingOps.setupCommonDefault()
+        setupCommonDefault()
     }
 
     def cleanupSpec()
     {
-        TestingOps.closeCommonDefault()
+        closeCommonDefault()
     }
     
     def "Test UUID"()

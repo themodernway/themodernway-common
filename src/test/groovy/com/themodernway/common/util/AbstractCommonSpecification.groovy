@@ -16,6 +16,8 @@
 
 package com.themodernway.common.util
 
+import static java.lang.System.err
+
 import org.apache.log4j.Logger
 
 import com.themodernway.common.api.json.JSONStringify
@@ -28,6 +30,16 @@ public abstract class AbstractCommonSpecification extends Specification implemen
 
     private boolean     m_logging = true
 
+    public static final setupCommonDefault()
+    {
+        ICommonTesting.TestingOps.setupCommonDefault()
+    }
+    
+    public static final closeCommonDefault()
+    {
+        ICommonTesting.TestingOps.closeCommonDefault()
+    }
+    
     def setup()
     {
         m_logging = true
@@ -68,6 +80,30 @@ public abstract class AbstractCommonSpecification extends Specification implemen
         else
         {
             println "" + o?.toString()
+        }
+    }
+    
+    public void oops(JSONStringify o)
+    {
+        if (m_logging)
+        {
+            logger().error("" + o?.toJSONString())
+        }
+        else
+        {
+            err.println "" + o?.toJSONString()
+        }
+    }
+
+    public void oops(def o)
+    {
+        if (m_logging)
+        {
+            logger().error("" + o?.toString())
+        }
+        else
+        {
+            err.println "" + o?.toString()
         }
     }
 }
