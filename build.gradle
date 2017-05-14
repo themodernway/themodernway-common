@@ -46,7 +46,7 @@ sourceCompatibility = 1.8
 
 targetCompatibility = 1.8
 
-version = '1.0.12-RELEASE'
+version = '1.0.14-RELEASE'
 
 group = 'com.themodernway'
 
@@ -221,7 +221,7 @@ sourceSets {
 
 dependencies {
     testCompile(group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.11', classifier: 'indy')
-    testCompile(group: 'org.spockframework', name: 'spock-core', version: '1.0-groovy-2.4') {
+    testCompile(group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4') {
         exclude(group: 'org.codehaus.groovy', module: 'groovy-all')
     }
     testCompile(group: 'log4j', name: 'log4j', version: '1.2.17')
@@ -270,7 +270,7 @@ uploadArchives {
                         id 'sprocketnyc'
                         name 'Dean S. Jones'
                         email 'deansjones@gmail.com'
-                        url 'https://www.lienzo-core.com'
+                        url 'https://www.themodernway.com'
                     }
                 }
             }
