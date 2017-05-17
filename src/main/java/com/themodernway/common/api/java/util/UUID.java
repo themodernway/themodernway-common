@@ -28,7 +28,7 @@ public final class UUID
     
     private static final Random UUID_RANDOM = new Random();
 
-    private static char[]       UUID_ACRRAY = StringOps.HEXIDECIMAL_STRING.toCharArray();
+    private static char[]       UUID_CARRAY = StringOps.HEXIDECIMAL_STRING.toCharArray();
 
     private static String       UUID_LOOKUP = StringOps.HEXIDECIMAL_STRING + UUID_DASHCH;
 
@@ -55,7 +55,7 @@ public final class UUID
             {
                 final int r = UUID_RANDOM.nextInt(16);
 
-                uuid[i] = UUID_ACRRAY[(i == 19) ? (r & 0x3) | 0x8 : r & 0xf];
+                uuid[i] = UUID_CARRAY[(i == 19) ? (r & 0x3) | 0x8 : r & 0xf];
             }
         }
         return new String(uuid);
