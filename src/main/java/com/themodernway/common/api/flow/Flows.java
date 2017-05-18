@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 
 public final class Flows
 {
-    protected Flows()
+    private Flows()
     {
     }
 
@@ -76,11 +76,11 @@ public final class Flows
         };
     }
 
-    public static abstract class PredicateBooleanOp<T> implements BooleanOp, Predicate<T>
+    public static abstract class AbstractPredicateBooleanOp<T> implements BooleanOp, Predicate<T>
     {
         private final T m_value;
 
-        public PredicateBooleanOp(final T value)
+        public AbstractPredicateBooleanOp(final T value)
         {
             m_value = value;
         }
@@ -94,7 +94,7 @@ public final class Flows
 
     private static final class OrBooleanOp implements BooleanOp
     {
-        final List<BooleanOp> m_list;
+        private final List<BooleanOp> m_list;
 
         public OrBooleanOp(final List<BooleanOp> list)
         {
@@ -119,7 +119,7 @@ public final class Flows
 
     private static final class AndBooleanOp implements BooleanOp
     {
-        final List<BooleanOp> m_list;
+        private final List<BooleanOp> m_list;
 
         public AndBooleanOp(final List<BooleanOp> list)
         {

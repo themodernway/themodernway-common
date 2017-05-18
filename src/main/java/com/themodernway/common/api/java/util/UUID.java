@@ -32,7 +32,7 @@ public final class UUID
 
     private static String       UUID_LOOKUP = StringOps.HEXIDECIMAL_STRING + UUID_DASHCH;
 
-    protected UUID()
+    private UUID()
     {
     }
 

@@ -26,12 +26,12 @@ import java.lang.annotation.Target;
 * A class annotated &#64;Versioned is defined to have a version number.
 *
 * @author   Dean S Jones
-* @since    1.0.16
+* @since    1.0.17-RELEASE
 */
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Versioned
 {
-    String value() default "1.0";
+    String value() default "v1.0";
 }

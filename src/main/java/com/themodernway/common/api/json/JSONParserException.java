@@ -16,6 +16,8 @@
 
 package com.themodernway.common.api.json;
 
+import com.themodernway.common.api.CommonOps;
+
 public class JSONParserException extends Exception
 {
     private static final long serialVersionUID           = 2577571614214539296L;
@@ -26,27 +28,25 @@ public class JSONParserException extends Exception
 
     public static final int   ERROR_UNEXPECTED_EXCEPTION = 2;
 
-    private int               m_errorType;
+    private int               m_errorType                = ERROR_UNEXPECTED_EXCEPTION;
 
-    private Object            m_unexpectedObject         = null;
+    private Object            m_unexpectedObject         = CommonOps.toNULL();
 
-    private int               m_position                 = -1;
+    private int               m_position                 = CommonOps.IS_NOT_FOUND;
 
-    public JSONParserException(final Exception e)
+    public JSONParserException(final Throwable e)
     {
         super(e);
-
-        m_errorType = ERROR_UNEXPECTED_EXCEPTION;
     }
 
     public JSONParserException(final int errorType)
     {
-        this(-1, errorType, null);
+        this(CommonOps.IS_NOT_FOUND, errorType, null);
     }
 
     public JSONParserException(final int errorType, final Object unexpectedObject)
     {
-        this(-1, errorType, unexpectedObject);
+        this(CommonOps.IS_NOT_FOUND, errorType, unexpectedObject);
     }
 
     public JSONParserException(final int position, final int errorType, final Object unexpectedObject)
@@ -93,19 +93,19 @@ public class JSONParserException extends Exception
     {
         final StringBuilder sb = new StringBuilder();
 
-        switch (m_errorType)
+        switch (getErrorType())
         {
             case ERROR_UNEXPECTED_CHAR:
-                sb.append("Unexpected character (").append(m_unexpectedObject).append(") at position ").append(m_position).append(".");
+                sb.append("Unexpected character (").append(getUnexpectedObject()).append(") at position ").append(getPosition()).append('.');
                 break;
             case ERROR_UNEXPECTED_TOKEN:
-                sb.append("Unexpected token ").append(m_unexpectedObject).append(" at position ").append(m_position).append(".");
+                sb.append("Unexpected token ").append(getUnexpectedObject()).append(" at position ").append(getPosition()).append('.');
                 break;
             case ERROR_UNEXPECTED_EXCEPTION:
-                sb.append("Unexpected exception at position ").append(m_position).append(": ").append(m_unexpectedObject);
+                sb.append("Unexpected exception at position ").append(getPosition()).append(": ").append(getUnexpectedObject());
                 break;
             default:
-                sb.append("Unkown error at position ").append(m_position).append(".");
+                sb.append("Unkown error at position ").append(getPosition()).append('.');
                 break;
         }
         return sb.toString();

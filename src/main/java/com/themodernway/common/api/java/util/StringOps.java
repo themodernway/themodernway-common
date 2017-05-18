@@ -26,9 +26,11 @@ import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.function.Supplier;
 
+import com.themodernway.common.api.CommonOps;
+
 public final class StringOps
 {
-    public static final String   CHARSET_UTF_8        = "UTF-8";
+    public static final String   CHARSET_UTF_8        = CommonOps.CHARSET_UTF_8;
 
     public static final String   COMMA_LIST_TOKENIZER = ",";
 
@@ -46,7 +48,7 @@ public final class StringOps
 
     public static final String   HEXIDECIMAL_STRING   = "0123456789ABCDEF";
 
-    protected StringOps()
+    private StringOps()
     {
     }
 
@@ -85,7 +87,7 @@ public final class StringOps
         }
         final LinkedHashSet<String> uniq = new LinkedHashSet<String>();
 
-        for (String s : collection)
+        for (final String s : collection)
         {
             if (null != s)
             {
@@ -125,7 +127,7 @@ public final class StringOps
         }
         final LinkedHashSet<String> uniq = new LinkedHashSet<String>();
 
-        for (String s : collection)
+        for (final String s : collection)
         {
             if (null != s)
             {
@@ -254,7 +256,7 @@ public final class StringOps
 
         builder.append('[');
 
-        for (String item : list)
+        for (final String item : list)
         {
             if (null != item)
             {
@@ -330,7 +332,7 @@ public final class StringOps
 
         if (null == string)
         {
-            throw new NullPointerException(Objects.requireNonNull(reason).get());
+            Objects.requireNonNull(string, reason.get());
         }
         return string;
     }
@@ -427,13 +429,13 @@ public final class StringOps
         return true;
     }
 
-    public static final boolean isVersionID(final String string)
+    public static final boolean isVersionID(String string)
     {
-        if (null == string)
+        if (null == (string = toTrimOrNull(string)))
         {
             return false;
         }
-        final int leng = string.length();
+        int leng = string.length();
 
         if (leng < 1)
         {
@@ -443,9 +445,18 @@ public final class StringOps
 
         boolean digi = false;
 
+        if (string.charAt(0) == 'v')
+        {
+            leng = (string = string.substring(1).trim()).length();
+
+            if (leng < 1)
+            {
+                return false;
+            }
+        }
         for (int i = 0; i < leng; i++)
         {
-            char c = string.charAt(i);
+            final char c = string.charAt(i);
 
             if (false == Character.isDigit(c))
             {

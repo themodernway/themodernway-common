@@ -42,7 +42,7 @@ public final class Hasher implements IHasher
     }
 
     @Override
-    public String sha512(String text, String salt, int iter)
+    public String sha512(String text, final String salt, int iter)
     {
         Objects.requireNonNull(text);
 

@@ -16,6 +16,17 @@
 
 package com.themodernway.common.api.types;
 
+/**
+ * Represents a class that has a value.
+ *
+ * <p>There is no requirement that a new or distinct result be returned each
+ * time the method {@link #getValue()} is invoked.
+ *
+ * @param <T> the type of value that is returned.
+ *
+ * @author   Dean S. Jones
+ * @since    1.0
+ */
 @FunctionalInterface
 public interface IValued<T>
 {
