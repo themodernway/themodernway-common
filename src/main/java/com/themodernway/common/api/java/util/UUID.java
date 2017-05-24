@@ -24,13 +24,13 @@ public final class UUID
 
     private static final char   UUID_DASHCH = '-';
 
-    private static char         UUID_FOURCH = '4';
-    
+    private static final char   UUID_FOURCH = '4';
+
     private static final Random UUID_RANDOM = new Random();
 
-    private static char[]       UUID_CARRAY = StringOps.HEXIDECIMAL_STRING.toCharArray();
+    private static final char[] UUID_CARRAY = StringOps.HEXIDECIMAL_STRING.toCharArray();
 
-    private static String       UUID_LOOKUP = StringOps.HEXIDECIMAL_STRING + UUID_DASHCH;
+    private static final String UUID_LOOKUP = StringOps.HEXIDECIMAL_STRING + UUID_DASHCH;
 
     private UUID()
     {
@@ -61,7 +61,7 @@ public final class UUID
         return new String(uuid);
     }
 
-    public static final boolean good(String uuid)
+    public static final boolean isValid(String uuid)
     {
         if (null == uuid)
         {

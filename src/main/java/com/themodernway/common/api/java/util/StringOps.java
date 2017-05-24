@@ -330,7 +330,7 @@ public final class StringOps
     {
         string = toTrimOrNull(string);
 
-        if (null == string)
+        if (Objects.isNull(string)) // This seems baroque. I'm avoiding code quality triggers, but conforming to GWT 2.8 emulation. DSJ - 05/23/17
         {
             Objects.requireNonNull(string, reason.get());
         }
@@ -441,10 +441,6 @@ public final class StringOps
         {
             return false;
         }
-        int dots = 0;
-
-        boolean digi = false;
-
         if (string.charAt(0) == 'v')
         {
             leng = (string = string.substring(1).trim()).length();
@@ -454,6 +450,10 @@ public final class StringOps
                 return false;
             }
         }
+        int dots = 0;
+
+        boolean digi = false;
+
         for (int i = 0; i < leng; i++)
         {
             final char c = string.charAt(i);
