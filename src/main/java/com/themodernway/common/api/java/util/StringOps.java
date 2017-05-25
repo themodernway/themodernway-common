@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
@@ -59,13 +58,13 @@ public final class StringOps
 
     public static final String[] toArray(final Collection<String> collection)
     {
-        Objects.requireNonNull(collection);
+        final int size = collection.size();
 
-        if (collection.isEmpty())
+        if (size < 1)
         {
             return EMPTY_STRING_ARRAY;
         }
-        return collection.toArray(EMPTY_STRING_ARRAY);
+        return collection.toArray(new String[size]);
     }
 
     public static final String[] toArray(final String... collection)
@@ -85,11 +84,11 @@ public final class StringOps
         {
             return EMPTY_STRING_ARRAY;
         }
-        final LinkedHashSet<String> uniq = new LinkedHashSet<String>();
+        final ArrayList<String> uniq = new ArrayList<String>(collection.size());
 
         for (final String s : collection)
         {
-            if (null != s)
+            if ((null != s) && (false == uniq.contains(s)))
             {
                 uniq.add(s);
             }
@@ -103,13 +102,13 @@ public final class StringOps
         {
             return EMPTY_STRING_ARRAY;
         }
-        final LinkedHashSet<String> uniq = new LinkedHashSet<String>();
+        final ArrayList<String> uniq = new ArrayList<String>(collection.length);
 
         for (int i = 0; i < collection.length; i++)
         {
             final String s = collection[i];
 
-            if (null != s)
+            if ((null != s) && (false == uniq.contains(s)))
             {
                 uniq.add(s);
             }
@@ -125,11 +124,11 @@ public final class StringOps
         {
             return collection;
         }
-        final LinkedHashSet<String> uniq = new LinkedHashSet<String>();
+        final ArrayList<String> uniq = new ArrayList<String>(collection.size());
 
         for (final String s : collection)
         {
-            if (null != s)
+            if ((null != s) && (false == uniq.contains(s)))
             {
                 uniq.add(s);
             }
@@ -437,7 +436,7 @@ public final class StringOps
         }
         int leng = string.length();
 
-        if (leng < 1)
+        if (leng < 3)
         {
             return false;
         }
@@ -445,7 +444,7 @@ public final class StringOps
         {
             leng = (string = string.substring(1).trim()).length();
 
-            if (leng < 1)
+            if (leng < 3)
             {
                 return false;
             }

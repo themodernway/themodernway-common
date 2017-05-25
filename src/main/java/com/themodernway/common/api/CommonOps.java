@@ -19,6 +19,7 @@ package com.themodernway.common.api;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
@@ -66,6 +67,11 @@ public final class CommonOps
     public static final BooleanSupplier toSupplier(final boolean valu)
     {
         return () -> valu;
+    }
+
+    public static final <T> Optional<T> toOptionl(final T valu)
+    {
+        return Optional.ofNullable(valu);
     }
 
     public static final <T> List<T> toList(final Stream<T> stream)
