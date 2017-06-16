@@ -250,9 +250,9 @@ artifacts {
     archives jar
 }
 
+/*
 signing { sign configurations.archives }
 
-/*
 uploadArchives {
     repositories {
         mavenDeployer {
