@@ -16,7 +16,7 @@
 
 package com.themodernway.common.api.json;
 
-import com.themodernway.common.api.CommonOps;
+import com.themodernway.common.api.java.util.CommonOps;
 
 public class JSONParserException extends Exception
 {

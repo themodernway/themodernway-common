@@ -1,9 +1,0 @@
-language: java
-jdk:
-  - oraclejdk8
-script: gradle checkCodeQuality
-sudo: false
-addons:
-  apt:
-    packages:
-      - oracle-java8-installer

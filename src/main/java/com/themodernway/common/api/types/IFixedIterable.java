@@ -16,16 +16,34 @@
 
 package com.themodernway.common.api.types;
 
-public interface ICastable<T extends ICastable<T>>
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+public interface IFixedIterable<T> extends Iterable<T>
 {
-    @SuppressWarnings("unchecked")
-    public default T cast(ICastable<? super T> object)
+    public int size();
+
+    public boolean isEmpty();
+
+    public T get(int index);
+
+    @Override
+    default public Iterator<T> iterator()
     {
-        return (T) object;
+        return new FixedIterator<T>(this);
     }
 
-    public default T cast()
+    @Override
+    default public Spliterator<T> spliterator()
     {
-        return cast(this);
+        return Spliterators.spliterator(iterator(), size(), Spliterator.SIZED | Spliterator.ORDERED | Spliterator.IMMUTABLE);
+    }
+
+    default public Stream<T> stream()
+    {
+        return StreamSupport.stream(spliterator(), false);
     }
 }

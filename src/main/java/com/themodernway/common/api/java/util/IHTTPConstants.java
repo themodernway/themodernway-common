@@ -210,10 +210,6 @@ public interface IHTTPConstants
 
     public static final String WWW_AUTHENTICATE                       = "WWW-Authenticate";
 
-    public static final String X_GATEWAY_REQUEST_ID_HEADER            = "request-id";
-
-    public static final String X_GATEWAY_COMPANY_ID_HEADER            = "gateway-company-id";
-
     public static final String X_FRAME_OPTIONS_HEADER                 = "X-Frame-Options";
 
     public static final String X_POWERED_BY_HEADER                    = "X-Powered-By";

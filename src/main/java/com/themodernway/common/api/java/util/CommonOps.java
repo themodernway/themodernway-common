@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.themodernway.common.api;
+package com.themodernway.common.api.java.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -83,6 +83,7 @@ public final class CommonOps
     {
         if (collection instanceof List)
         {
+            collection.parallelStream();
             return ((List<T>) collection);
         }
         else
@@ -93,81 +94,6 @@ public final class CommonOps
 
     public static final <T> List<T> toList(final Iterable<T> iter)
     {
-        if (iter instanceof Collection)
-        {
-            return toList((Collection<T>) iter);
-        }
-        else
-        {
-            return toList(StreamSupport.stream(iter.spliterator(), false));
-        }
-    }
-
-    public static final class LogicOps
-    {
-        private LogicOps()
-        {
-        }
-
-        public static final boolean isTrue(final boolean expr)
-        {
-            return expr;
-        }
-
-        public static final boolean isTrue(final BooleanSupplier expr)
-        {
-            return isTrue(expr.getAsBoolean());
-        }
-
-        public static final boolean isFalse(final boolean expr)
-        {
-            return isSame(expr, false);
-        }
-
-        public static final boolean isFalse(final BooleanSupplier expr)
-        {
-            return isFalse(expr.getAsBoolean());
-        }
-
-        public static final boolean isSame(final boolean expr, final boolean cond)
-        {
-            return expr == cond;
-        }
-
-        public static final boolean isSame(final BooleanSupplier expr, final boolean cond)
-        {
-            return isSame(expr.getAsBoolean(), cond);
-        }
-
-        public static final boolean isSame(final boolean expr, final BooleanSupplier cond)
-        {
-            return isSame(expr, cond.getAsBoolean());
-        }
-
-        public static final boolean isSame(final BooleanSupplier expr, final BooleanSupplier cond)
-        {
-            return isSame(expr.getAsBoolean(), cond.getAsBoolean());
-        }
-
-        public static final boolean isSame(final boolean expr, final boolean... list)
-        {
-            if ((null == list) || (list.length < 1))
-            {
-                return false;
-            }
-            for (final boolean cond : list)
-            {
-                if (expr != cond)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public static final boolean isSame(final BooleanSupplier expr, final boolean... list)
-        {
-            return isSame(expr.getAsBoolean(), list);
-        }
+        return toList(StreamSupport.stream(iter.spliterator(), false));
     }
 }

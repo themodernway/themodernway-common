@@ -25,8 +25,6 @@ import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.function.Supplier;
 
-import com.themodernway.common.api.CommonOps;
-
 public final class StringOps
 {
     public static final String   CHARSET_UTF_8        = CommonOps.CHARSET_UTF_8;
@@ -322,18 +320,12 @@ public final class StringOps
 
     public static final String requireTrimOrNull(final String string, final String reason)
     {
-        return Objects.requireNonNull(toTrimOrNull(string), Objects.requireNonNull(reason));
+        return Objects.requireNonNull(toTrimOrNull(string), reason);
     }
 
-    public static final String requireTrimOrNull(String string, final Supplier<String> reason)
+    public static final String requireTrimOrNull(final String string, final Supplier<String> reason)
     {
-        string = toTrimOrNull(string);
-
-        if (Objects.isNull(string)) // This seems baroque. I'm avoiding code quality triggers, but conforming to GWT 2.8 emulation. DSJ - 05/23/17
-        {
-            Objects.requireNonNull(string, reason.get());
-        }
-        return string;
+        return Objects.requireNonNull(toTrimOrNull(string), reason);
     }
 
     public static final boolean isDigits(final String string)

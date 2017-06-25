@@ -18,11 +18,13 @@ package com.themodernway.common.api.types;
 
 import java.util.Collection;
 
-public interface ITypedList<T>
+public interface ITypedList<T> extends Iterable<T>
 {
-    public T get(int index);
+    public int size();
 
     public boolean isEmpty();
+
+    public T get(int index);
 
     public void pop();
 
@@ -33,8 +35,6 @@ public interface ITypedList<T>
     public void remove(T item);
 
     public void set(int index, T item);
-
-    public int size();
 
     public void clear();
 
