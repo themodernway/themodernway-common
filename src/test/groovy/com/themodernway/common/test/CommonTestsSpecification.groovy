@@ -108,7 +108,7 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     def "Test CommonOps.toOptional(String)"()
     {
         setup:
-        def valu = CommonOps.toOptionl('data')
+        def valu = CommonOps.toOptional('data')
 
         expect:
         valu.isPresent() == true
@@ -122,7 +122,7 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     def "Test CommonOps.toOptional(null String)"()
     {
         setup:
-        def valu = CommonOps.toOptionl(StringOps.NULL_STRING)
+        def valu = CommonOps.toOptional(StringOps.NULL_STRING)
 
         expect:
         valu.isPresent() == false
@@ -135,7 +135,7 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     def "Test CommonOps.toOptional(null String) NoSuchElementException"()
     {
         when:
-            CommonOps.toOptionl(StringOps.NULL_STRING).get()
+            CommonOps.toOptional(StringOps.NULL_STRING).get()
  
         then:
             thrown NoSuchElementException
@@ -144,7 +144,7 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     def "Test CommonOps.toOptional(null String) JSONParserException"()
     {
         when:
-            CommonOps.toOptionl(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new JSONParserException(0)))
+            CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new JSONParserException(0)))
  
         then:
             thrown JSONParserException

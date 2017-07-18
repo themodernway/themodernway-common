@@ -12,9 +12,9 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>org.eclipse.jdt.groovy.core.groovyNature</nature>
 		<nature>org.springsource.ide.eclipse.gradle.core.nature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.jspresso.contrib.sjsplugin.spock.nature</nature>
-		<nature>org.eclipse.jdt.groovy.core.groovyNature</nature>
 	</natures>
 </projectDescription>

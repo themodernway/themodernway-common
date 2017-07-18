@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class StringOps
 {
@@ -67,95 +69,136 @@ public final class StringOps
 
     public static final String[] toArray(final String... collection)
     {
-        if ((null == collection) || (collection.length < 1))
-        {
-            return EMPTY_STRING_ARRAY;
-        }
         return collection;
+    }
+
+    public static final String[] toArray(final Stream<String> stream)
+    {
+        return stream.toArray(String[]::new);
+    }
+
+    public static final List<String> toList(final Stream<String> stream)
+    {
+        return stream.collect(Collectors.toList());
+    }
+
+    public static final Collection<String> toCollection(final Stream<String> stream)
+    {
+        return stream.collect(Collectors.toList());
     }
 
     public static final String[] toUniqueArray(final Collection<String> collection)
     {
-        Objects.requireNonNull(collection);
-
-        if (collection.isEmpty())
+        if (collection.size() < 1)
         {
             return EMPTY_STRING_ARRAY;
         }
-        final ArrayList<String> uniq = new ArrayList<String>(collection.size());
-
-        for (final String s : collection)
+        if (collection.size() < 2)
         {
-            if ((null != s) && (false == uniq.contains(s)))
+            final String[] uniq = collection.toArray(new String[1]);
+
+            if (null != uniq[0])
             {
-                uniq.add(s);
+                return uniq;
             }
+            return EMPTY_STRING_ARRAY;
         }
-        return toArray(uniq);
+        return toArray(toUnique(collection.stream()));
     }
 
     public static final String[] toUniqueArray(final String... collection)
     {
-        if ((null == collection) || (collection.length < 1))
+        if (collection.length < 1)
         {
             return EMPTY_STRING_ARRAY;
         }
-        final ArrayList<String> uniq = new ArrayList<String>(collection.length);
-
-        for (int i = 0; i < collection.length; i++)
+        if (collection.length < 2)
         {
-            final String s = collection[i];
-
-            if ((null != s) && (false == uniq.contains(s)))
+            if (null != collection[0])
             {
-                uniq.add(s);
+                return collection;
             }
+            return EMPTY_STRING_ARRAY;
         }
-        return toArray(uniq);
+        return toArray(toUnique(Arrays.stream(collection)));
     }
 
-    public static final Collection<String> toUnique(final Collection<String> collection)
+    public static final Stream<String> toUnique(final Stream<String> stream)
     {
-        Objects.requireNonNull(collection);
-
-        if (collection.isEmpty())
-        {
-            return collection;
-        }
-        final ArrayList<String> uniq = new ArrayList<String>(collection.size());
-
-        for (final String s : collection)
-        {
-            if ((null != s) && (false == uniq.contains(s)))
-            {
-                uniq.add(s);
-            }
-        }
-        return uniq;
+        return stream.filter(valu -> valu != null).sequential().distinct();
     }
 
-    public static final List<String> toUniqueStringList(String strings)
+    public static final List<String> toUnique(final Collection<String> collection)
+    {
+        if (collection instanceof List)
+        {
+            return toUnique((List<String>) collection);
+        }
+        if (collection.size() < 1)
+        {
+            return new ArrayList<String>(0);
+        }
+        if (collection.size() < 2)
+        {
+            final String[] uniq = collection.toArray(new String[1]);
+
+            if (null != uniq[0])
+            {
+                return Arrays.asList(uniq);
+            }
+            return new ArrayList<String>(0);
+        }
+        return toList(toUnique(collection.stream()));
+    }
+
+    public static final List<String> toUnique(final String... collection)
+    {
+        if (collection.length < 1)
+        {
+            return new ArrayList<String>(0);
+        }
+        if (collection.length < 2)
+        {
+            if (null != collection[0])
+            {
+                return Arrays.asList(collection);
+            }
+            return new ArrayList<String>(0);
+        }
+        return toList(toUnique(Arrays.stream(collection)));
+    }
+
+    public static final List<String> toUnique(final List<String> collection)
+    {
+        if (collection.size() < 1)
+        {
+            return new ArrayList<String>(0);
+        }
+        if (collection.size() < 2)
+        {
+            final String uniq = collection.get(0);
+
+            if (null != uniq)
+            {
+                return Arrays.asList(uniq);
+            }
+            return new ArrayList<String>(0);
+        }
+        return toList(toUnique(collection.stream()));
+    }
+
+    public static final List<String> toUniqueTokenStringList(String strings)
     {
         strings = requireTrimOrNull(strings);
 
         if (strings.contains(COMMA_LIST_TOKENIZER))
         {
-            return Arrays.asList(toUniqueArray(tokenizeToStringCollection(strings, COMMA_LIST_TOKENIZER)));
+            return toUnique(tokenizeToStringCollection(strings, COMMA_LIST_TOKENIZER));
         }
         else
         {
-            return Arrays.asList(toUniqueArray(strings));
+            return toUnique(strings);
         }
-    }
-
-    public static final List<String> toUniqueStringList(final String[] strings)
-    {
-        return Arrays.asList(toUniqueArray(Objects.requireNonNull(strings)));
-    }
-
-    public static final List<String> toUniqueStringList(final Collection<String> strings)
-    {
-        return Arrays.asList(toUniqueArray(Objects.requireNonNull(strings)));
     }
 
     public static final String toPrintableString(final Collection<String> collection)

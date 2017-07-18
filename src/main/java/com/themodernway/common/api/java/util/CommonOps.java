@@ -69,7 +69,7 @@ public final class CommonOps
         return () -> valu;
     }
 
-    public static final <T> Optional<T> toOptionl(final T valu)
+    public static final <T> Optional<T> toOptional(final T valu)
     {
         return Optional.ofNullable(valu);
     }
@@ -83,7 +83,6 @@ public final class CommonOps
     {
         if (collection instanceof List)
         {
-            collection.parallelStream();
             return ((List<T>) collection);
         }
         else

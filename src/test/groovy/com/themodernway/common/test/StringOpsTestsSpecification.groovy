@@ -458,7 +458,7 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
     def "Test StringOps.toUniqueStringList('text')"()
     {
         setup:
-        def list = StringOps.toUniqueStringList("text")
+        def list = StringOps.toUniqueTokenStringList("text")
 
         expect:
         list.size() == 1
@@ -471,7 +471,7 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
     def "Test StringOps.toUniqueStringList('text,text')"()
     {
         setup:
-        def list = StringOps.toUniqueStringList("text, text")
+        def list = StringOps.toUniqueTokenStringList("text, text")
 
         expect:
         list.size() == 1
@@ -484,7 +484,7 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
     def "Test StringOps.toUniqueStringList('text,data,text')"()
     {
         setup:
-        def list = StringOps.toUniqueStringList("text, data, text")
+        def list = StringOps.toUniqueTokenStringList("text, data, text")
 
         expect:
         list.size() == 2
@@ -498,7 +498,7 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
     def "Test StringOps.toUniqueStringList(['text','data','text'])"()
     {
         setup:
-        def list = StringOps.toUniqueStringList(["text", "data", "text"])
+        def list = StringOps.toUnique(["text", "data", "text"])
 
         expect:
         list.size() == 2
@@ -512,7 +512,7 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
     def "Test StringOps.toUniqueStringList((StringOps.toArray(['text','data','text']))"()
     {
         setup:
-        def list = StringOps.toUniqueStringList(StringOps.toArray(["text", "data", "text"]))
+        def list = StringOps.toUnique(StringOps.toArray(["text", "data", "text"]))
 
         expect:
         list.size() == 2
