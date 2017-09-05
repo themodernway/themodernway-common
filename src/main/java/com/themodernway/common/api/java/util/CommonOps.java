@@ -17,8 +17,13 @@
 package com.themodernway.common.api.java.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -39,9 +44,44 @@ public final class CommonOps
     {
     }
 
-    public static final <T> T toNULL()
+    public static final <T> T NULL()
     {
         return null;
+    }
+
+    public static final boolean isNull(final Object object)
+    {
+        return (null == object);
+    }
+
+    public static final boolean isNonNull(final Object object)
+    {
+        return (null != object);
+    }
+
+    public static final <T> T requireNonNullOrElse(final T value, final T otherwise)
+    {
+        return isNonNull(value) ? value : otherwise;
+    }
+
+    public static final <T> T requireNonNullOrElse(final T value, final Supplier<T> otherwise)
+    {
+        return isNonNull(value) ? value : otherwise.get();
+    }
+
+    public static final <T> T requireNonNull(final T value)
+    {
+        return Objects.requireNonNull(value);
+    }
+
+    public static final <T> T requireNonNull(final T value, final String reason)
+    {
+        return Objects.requireNonNull(value, reason);
+    }
+
+    public static final <T> T requireNonNull(final T value, final Supplier<String> reason)
+    {
+        return Objects.requireNonNull(value, reason);
     }
 
     public static final <T> Supplier<T> toSupplier(final T valu)
@@ -74,25 +114,92 @@ public final class CommonOps
         return Optional.ofNullable(valu);
     }
 
+    @SafeVarargs
+    public static final <T> List<T> toList(final T... source)
+    {
+        return Arrays.asList(source);
+    }
+
     public static final <T> List<T> toList(final Stream<T> stream)
     {
         return stream.collect(Collectors.toList());
     }
 
+    public static final <T> List<T> toList(final Enumeration<T> source)
+    {
+        return Collections.list(source);
+    }
+
     public static final <T> List<T> toList(final Collection<T> collection)
     {
-        if (collection instanceof List)
-        {
-            return ((List<T>) collection);
-        }
-        else
-        {
-            return new ArrayList<T>(collection);
-        }
+        return new ArrayList<T>(collection);
     }
 
     public static final <T> List<T> toList(final Iterable<T> iter)
     {
-        return toList(StreamSupport.stream(iter.spliterator(), false));
+        if (iter instanceof Collection)
+        {
+            return toList((Collection<T>) iter);
+        }
+        else
+        {
+            return toList(StreamSupport.stream(iter.spliterator(), false));
+        }
+    }
+
+    public static final <T> List<T> emptyList()
+    {
+        return Collections.emptyList();
+    }
+
+    public static final <K, V> Map<K, V> emptyMap()
+    {
+        return Collections.emptyMap();
+    }
+
+    public static final <K, V> Map<K, V> toUnmodifiableMap(final Map<? extends K, ? extends V> maps)
+    {
+        return Collections.unmodifiableMap(maps);
+    }
+
+    public static final <T> List<T> toUnmodifiableList(final List<? extends T> list)
+    {
+        return Collections.unmodifiableList(list);
+    }
+
+    public static final <T> ArrayList<T> arrayList()
+    {
+        return new ArrayList<T>();
+    }
+
+    public static final <T> ArrayList<T> arrayList(final int size)
+    {
+        return new ArrayList<T>(size);
+    }
+
+    @SafeVarargs
+    public static final <T> T[] toArray(final T... source)
+    {
+        return Arrays.copyOf(source, source.length);
+    }
+
+    public static final int[] toArray(final int... source)
+    {
+        return Arrays.copyOf(source, source.length);
+    }
+
+    public static final long[] toArray(final long... source)
+    {
+        return Arrays.copyOf(source, source.length);
+    }
+
+    public static final double[] toArray(final double... source)
+    {
+        return Arrays.copyOf(source, source.length);
+    }
+
+    public static final boolean[] toArray(final boolean... source)
+    {
+        return Arrays.copyOf(source, source.length);
     }
 }

@@ -30,7 +30,7 @@ public class JSONParserException extends Exception
 
     private int               m_errorType                = ERROR_UNEXPECTED_EXCEPTION;
 
-    private Object            m_unexpectedObject         = CommonOps.toNULL();
+    private Object            m_unexpectedObject         = CommonOps.NULL();
 
     private int               m_position                 = CommonOps.IS_NOT_FOUND;
 

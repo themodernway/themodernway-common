@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -49,6 +50,55 @@ public final class StringOps
 
     private StringOps()
     {
+    }
+
+    public static void setConsumerUniqueStringArray(final String list, final Consumer<String[]> prop)
+    {
+        Objects.requireNonNull(prop);
+
+        final String toks = toTrimOrNull(list);
+
+        if (null != toks)
+        {
+            final String[] uniq = toArray(toUniqueTokenStringList(toks));
+
+            if ((null != uniq) && (uniq.length > 0))
+            {
+                prop.accept(uniq);
+
+                return;
+            }
+        }
+        prop.accept(CommonOps.NULL());
+    }
+
+    public static void setConsumerUniqueStringArray(final Collection<String> list, final Consumer<String[]> prop)
+    {
+        Objects.requireNonNull(prop);
+
+        if ((null != list) && (false == list.isEmpty()))
+        {
+            final String[] uniq = toUniqueArray(list);
+
+            if ((null != uniq) && (uniq.length > 0))
+            {
+                prop.accept(uniq);
+
+                return;
+            }
+        }
+        prop.accept(CommonOps.NULL());
+    }
+
+    public static List<String> getSupplierUniqueStringArray(final Supplier<String[]> prop)
+    {
+        final String[] uniq = Objects.requireNonNull(prop).get();
+
+        if ((null != uniq) && (uniq.length > 0))
+        {
+            return toUnique(uniq);
+        }
+        return new ArrayList<String>(0);
     }
 
     public static final Supplier<String> toSupplier(final String value)

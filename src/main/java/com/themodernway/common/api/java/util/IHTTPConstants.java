@@ -36,6 +36,8 @@ public interface IHTTPConstants
 
     public static final String CONTENT_TYPE_TEXT_CALENDAR             = "text/calendar";
 
+    public static final String CONTENT_TYPE_TEXT_PROPERTIES           = "text/x-java-properties";
+
     public static final String CONTENT_TYPE_IMAGE_PNG                 = "image/png";
 
     public static final String CONTENT_TYPE_IMAGE_GIF                 = "image/gif";
@@ -273,6 +275,14 @@ public interface IHTTPConstants
     public static final String HTTP_METHOD_PUT                        = "PUT";
 
     public static final String HTTP_METHOD_TRACE                      = "TRACE";
+
+    public static final String UNKNOWN_USER                           = "%-UNKNOWN-USER-%";
+
+    public static final String NULL_SESSION                           = "%-NULL-SESSION-%";
+
+    public static final String PROTO_1_1_SUFFIX_DEFAULT               = "1.1";
+
+    public static final String HTTPS_URL_PREFIX_DEFAULT               = "https";
 
     public static final long   HOUR_IN_SECONDS                        = 3600L;
 
