@@ -35,16 +35,16 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     {
         closeCommonDefault()
     }
-    
+
     def "Test CommonOps.toNULL()"()
     {
         setup:
-        String valu = CommonOps.toNULL()
+        String valu = CommonOps.NULL()
 
         expect:
         null == valu
     }
-    
+
     def "Test CommonOps.toSupplier(int)"()
     {
         setup:
@@ -52,11 +52,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         valu.getAsInt() == 10
-        
+
         cleanup:
         echo valu.getAsInt()
     }
-    
+
     def "Test CommonOps.toSupplier(long)"()
     {
         setup:
@@ -64,11 +64,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         valu.getAsLong() == 20L
-        
+
         cleanup:
         echo valu.getAsLong()
     }
-    
+
     def "Test CommonOps.toSupplier(double)"()
     {
         setup:
@@ -76,11 +76,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         valu.getAsDouble() == 30.0d
-        
+
         cleanup:
         echo valu.getAsDouble()
     }
-    
+
     def "Test CommonOps.toSupplier(boolean)"()
     {
         setup:
@@ -88,11 +88,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         valu.getAsBoolean() == true
-        
+
         cleanup:
         echo valu.getAsBoolean()
     }
-    
+
     def "Test CommonOps.toSupplier(String)"()
     {
         setup:
@@ -100,11 +100,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         valu.get() == 'test'
-        
+
         cleanup:
         echo valu.get()
     }
-    
+
     def "Test CommonOps.toOptional(String)"()
     {
         setup:
@@ -114,11 +114,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         valu.isPresent() == true
         valu.get() == 'data'
         valu.orElse('else') == 'data'
-        
+
         cleanup:
         echo valu.get()
     }
-    
+
     def "Test CommonOps.toOptional(null String)"()
     {
         setup:
@@ -127,29 +127,29 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         expect:
         valu.isPresent() == false
         valu.orElse('else') == 'else'
-        
+
         cleanup:
         echo valu.isPresent()
     }
-    
+
     def "Test CommonOps.toOptional(null String) NoSuchElementException"()
     {
         when:
-            CommonOps.toOptional(StringOps.NULL_STRING).get()
- 
+        CommonOps.toOptional(StringOps.NULL_STRING).get()
+
         then:
-            thrown NoSuchElementException
+        thrown NoSuchElementException
     }
-    
+
     def "Test CommonOps.toOptional(null String) JSONParserException"()
     {
         when:
-            CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new JSONParserException(0)))
- 
+        CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new JSONParserException(0)))
+
         then:
-            thrown JSONParserException
+        thrown JSONParserException
     }
-    
+
     def "Test CommonOps.toList()"()
     {
         setup:
@@ -157,11 +157,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         list.size() == 4
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test CommonOps.toList(Arrays.stream())"()
     {
         setup:
@@ -169,11 +169,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         list.size() == 4
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test CommonOps.toList(Arrays.stream().distinct())"()
     {
         setup:
@@ -181,11 +181,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         list.size() == 3
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test CommonOps.toList(Collection).values()"()
     {
         setup:
@@ -193,11 +193,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         list.size() == 4
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test CommonOps.toList(Collection).values().stream().distinct()"()
     {
         setup:
@@ -205,11 +205,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         list.size() == 3
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test CommonOps.toList(Collection).keySet()"()
     {
         setup:
@@ -217,11 +217,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         list.size() == 4
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test CommonOps.toList(FixedListIterable)"()
     {
         setup:
@@ -233,12 +233,12 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         iter.size() == 4
         list.isEmpty() == false
         iter.isEmpty() == false
-        
+
         cleanup:
         echo list
         echo iter
     }
-    
+
     def "Test FixedIterator NoSuchElementException"()
     {
         setup:
@@ -249,12 +249,12 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         }
 
         when:
-            iter.next()
- 
+        iter.next()
+
         then:
-            thrown NoSuchElementException
+        thrown NoSuchElementException
     }
-    
+
     def "Test CommonOps.toList(FixedListIterable.stream().sorted().distinct()"()
     {
         setup:
@@ -262,11 +262,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         list.size() == 4
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test Activatable()"()
     {
         setup:
@@ -274,11 +274,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         valu.isActive() == false
-        
+
         cleanup:
         echo valu.isActive()
     }
-    
+
     def "Test Activatable(false)"()
     {
         setup:
@@ -286,11 +286,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         valu.isActive() == false
-        
+
         cleanup:
         echo valu.isActive()
     }
-    
+
     def "Test Activatable(true)"()
     {
         setup:
@@ -298,11 +298,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         expect:
         valu.isActive() == true
-        
+
         cleanup:
         echo valu.isActive()
     }
-    
+
     def "Test Activatable().setActive()"()
     {
         setup:
@@ -313,11 +313,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         valu.setActive(false) == false
         valu.setActive(true) == true
         valu.isActive() == true
-        
+
         cleanup:
         echo valu.isActive()
     }
-    
+
     def "Test Activatable(false).setActive()"()
     {
         setup:
@@ -328,11 +328,11 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         valu.setActive(false) == false
         valu.setActive(true) == true
         valu.isActive() == true
-        
+
         cleanup:
         echo valu.isActive()
     }
-    
+
     def "Test Activatable(true).setActive()"()
     {
         setup:
@@ -343,7 +343,7 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         valu.setActive(true) == false
         valu.setActive(false) == true
         valu.isActive() == false
-        
+
         cleanup:
         echo valu.isActive()
     }
