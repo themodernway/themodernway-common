@@ -30,16 +30,16 @@ public abstract class AbstractCommonSpecification extends Specification implemen
 
     private boolean     m_logging = true
 
-    public static final setupCommonDefault()
+    public static final void setupCommonDefault()
     {
         ICommonTesting.TestingOps.setupCommonDefault()
     }
-    
-    public static final closeCommonDefault()
+
+    public static final void closeCommonDefault()
     {
         ICommonTesting.TestingOps.closeCommonDefault()
     }
-    
+
     def setup()
     {
         m_logging = true
@@ -82,7 +82,7 @@ public abstract class AbstractCommonSpecification extends Specification implemen
             println "" + o?.toString()
         }
     }
-    
+
     public void oops(JSONStringify o)
     {
         if (m_logging)

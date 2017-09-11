@@ -27,6 +27,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
+import java.util.function.IntFunction;
 import java.util.function.IntSupplier;
 import java.util.function.LongSupplier;
 import java.util.function.Supplier;
@@ -115,9 +116,15 @@ public final class CommonOps
     }
 
     @SafeVarargs
-    public static final <T> List<T> toList(final T... source)
+    public static final <T> List<T> asList(final T... source)
     {
         return Arrays.asList(source);
+    }
+
+    @SafeVarargs
+    public static final <T> List<T> toList(final T... source)
+    {
+        return new ArrayList<T>(asList(source));
     }
 
     public static final <T> List<T> toList(final Stream<T> stream)
@@ -157,6 +164,22 @@ public final class CommonOps
         return Collections.emptyMap();
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static final <K, V> Map<K, V> CAST_RAW_MAP(final Map maps)
+    {
+        return maps;
+    }
+
+    public static final Map<String, Object> CAST_STR_MAP(final Map<String, ?> maps)
+    {
+        return CAST_RAW_MAP(maps);
+    }
+
+    public static final <T> List<T> toKeys(final Map<T, ?> maps)
+    {
+        return toList(maps.keySet());
+    }
+
     public static final <K, V> Map<K, V> toUnmodifiableMap(final Map<? extends K, ? extends V> maps)
     {
         return Collections.unmodifiableMap(maps);
@@ -175,6 +198,21 @@ public final class CommonOps
     public static final <T> ArrayList<T> arrayList(final int size)
     {
         return new ArrayList<T>(size);
+    }
+
+    public static final <T> T[] toArray(final Collection<T> collection, final T[] base)
+    {
+        return collection.toArray(base);
+    }
+
+    public static final <T> T[] toArray(final Collection<T> collection, final IntFunction<T[]> generator)
+    {
+        return toArray(collection, generator.apply(collection.size()));
+    }
+
+    public static final <T> T[] toArray(final Stream<T> stream, final IntFunction<T[]> generator)
+    {
+        return stream.toArray(generator);
     }
 
     @SafeVarargs

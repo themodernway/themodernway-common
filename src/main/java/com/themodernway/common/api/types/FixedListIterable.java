@@ -17,11 +17,11 @@
 package com.themodernway.common.api.types;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import com.themodernway.common.api.java.util.CommonOps;
 
 public class FixedListIterable<T> implements IFixedIterable<T>
 {
@@ -29,13 +29,13 @@ public class FixedListIterable<T> implements IFixedIterable<T>
 
     public FixedListIterable(final List<T> list)
     {
-        m_list = new ArrayList<T>(Objects.requireNonNull(list));
+        m_list = new ArrayList<T>(CommonOps.requireNonNull(list));
     }
 
     @SafeVarargs
     public FixedListIterable(final T... list)
     {
-        this(Arrays.asList(Objects.requireNonNull(list)));
+        this(CommonOps.asList(CommonOps.requireNonNull(list)));
     }
 
     @Override

@@ -18,5 +18,4 @@ package com.themodernway.common.api.types;
 
 public interface IListValued<T extends IListValued<T>> extends IValued<T>
 {
-    public IListValuedList<T> getList();
 }

@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -54,7 +53,7 @@ public final class StringOps
 
     public static void setConsumerUniqueStringArray(final String list, final Consumer<String[]> prop)
     {
-        Objects.requireNonNull(prop);
+        CommonOps.requireNonNull(prop);
 
         final String toks = toTrimOrNull(list);
 
@@ -74,7 +73,7 @@ public final class StringOps
 
     public static void setConsumerUniqueStringArray(final Collection<String> list, final Consumer<String[]> prop)
     {
-        Objects.requireNonNull(prop);
+        CommonOps.requireNonNull(prop);
 
         if ((null != list) && (false == list.isEmpty()))
         {
@@ -92,7 +91,7 @@ public final class StringOps
 
     public static List<String> getSupplierUniqueStringArray(final Supplier<String[]> prop)
     {
-        final String[] uniq = Objects.requireNonNull(prop).get();
+        final String[] uniq = CommonOps.requireNonNull(prop).get();
 
         if ((null != uniq) && (uniq.length > 0))
         {
@@ -119,7 +118,7 @@ public final class StringOps
 
     public static final String[] toArray(final String... collection)
     {
-        return collection;
+        return toArray(Arrays.stream(collection));
     }
 
     public static final String[] toArray(final Stream<String> stream)
@@ -128,11 +127,6 @@ public final class StringOps
     }
 
     public static final List<String> toList(final Stream<String> stream)
-    {
-        return stream.collect(Collectors.toList());
-    }
-
-    public static final Collection<String> toCollection(final Stream<String> stream)
     {
         return stream.collect(Collectors.toList());
     }
@@ -266,7 +260,7 @@ public final class StringOps
 
     public static final String toCommaSeparated(final Collection<String> collection)
     {
-        Objects.requireNonNull(collection);
+        CommonOps.requireNonNull(collection);
 
         final StringBuilder b = new StringBuilder();
 
@@ -408,17 +402,17 @@ public final class StringOps
 
     public static final String requireTrimOrNull(final String string)
     {
-        return Objects.requireNonNull(toTrimOrNull(string));
+        return CommonOps.requireNonNull(toTrimOrNull(string));
     }
 
     public static final String requireTrimOrNull(final String string, final String reason)
     {
-        return Objects.requireNonNull(toTrimOrNull(string), reason);
+        return CommonOps.requireNonNull(toTrimOrNull(string), reason);
     }
 
     public static final String requireTrimOrNull(final String string, final Supplier<String> reason)
     {
-        return Objects.requireNonNull(toTrimOrNull(string), reason);
+        return CommonOps.requireNonNull(toTrimOrNull(string), reason);
     }
 
     public static final boolean isDigits(final String string)

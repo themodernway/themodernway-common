@@ -16,7 +16,7 @@
 
 package com.themodernway.common.api.model;
 
-import java.util.Objects;
+import com.themodernway.common.api.java.util.CommonOps;
 
 public abstract class AbstractModelRepresentation<T> implements IModel<T>
 {
@@ -24,7 +24,7 @@ public abstract class AbstractModelRepresentation<T> implements IModel<T>
 
     protected AbstractModelRepresentation(final T model)
     {
-        m_model = Objects.requireNonNull(model);
+        m_model = CommonOps.requireNonNull(model);
     }
 
     @Override

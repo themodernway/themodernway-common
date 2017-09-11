@@ -16,6 +16,7 @@
 
 package com.themodernway.common.api.json;
 
+@FunctionalInterface
 public interface JSONStringify
 {
     public String toJSONString();

@@ -36,7 +36,7 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         closeCommonDefault()
     }
 
-    def "Test CommonOps.toNULL()"()
+    def "Test CommonOps.NULL()"()
     {
         setup:
         String valu = CommonOps.NULL()
@@ -210,10 +210,10 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         echo list
     }
 
-    def "Test CommonOps.toList(Collection).keySet()"()
+    def "Test CommonOps.toKeys(Collection)"()
     {
         setup:
-        def list = CommonOps.toList([name: 'dean', age: '53', mood: 'good', life: 'good'].keySet())
+        def list = CommonOps.toKeys([name: 'dean', age: '53', mood: 'good', life: 'good'])
 
         expect:
         list.size() == 4
