@@ -118,7 +118,6 @@ test {
     jacoco {
         append = false
         destinationFile = file("${buildDir}/jacoco/testing.exec")
-        classDumpFile = file("${buildDir}/jacoco/classpathdumps")
     }
 }
 
