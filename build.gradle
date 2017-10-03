@@ -132,7 +132,6 @@ pmd {
         'java-optimizations',
         'java-strictexception',
         'java-strings',
-        'java-typeresolution',
         'java-unusedcode'           
         ]
 }
