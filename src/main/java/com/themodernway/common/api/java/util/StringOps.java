@@ -51,7 +51,7 @@ public final class StringOps
     {
     }
 
-    public static void setConsumerUniqueStringArray(final String list, final Consumer<String[]> prop)
+    public static final void setConsumerUniqueStringArray(final String list, final Consumer<String[]> prop)
     {
         CommonOps.requireNonNull(prop);
 
@@ -71,7 +71,7 @@ public final class StringOps
         prop.accept(CommonOps.NULL());
     }
 
-    public static void setConsumerUniqueStringArray(final Collection<String> list, final Consumer<String[]> prop)
+    public static final void setConsumerUniqueStringArray(final Collection<String> list, final Consumer<String[]> prop)
     {
         CommonOps.requireNonNull(prop);
 
@@ -89,7 +89,7 @@ public final class StringOps
         prop.accept(CommonOps.NULL());
     }
 
-    public static List<String> getSupplierUniqueStringArray(final Supplier<String[]> prop)
+    public static final List<String> getSupplierUniqueStringArray(final Supplier<String[]> prop)
     {
         final String[] uniq = CommonOps.requireNonNull(prop).get();
 
@@ -657,5 +657,28 @@ public final class StringOps
             }
         }
         return builder;
+    }
+
+    public static final String toLowerCase(final String string)
+    {
+        return string.toLowerCase();
+    }
+
+    public static final String toUpperCase(final String string)
+    {
+        return string.toUpperCase();
+    }
+
+    public static final void failIfNullBytePresent(final String string)
+    {
+        final int size = string.length();
+
+        for (int i = 0; i < size; i++)
+        {
+            if (string.charAt(i) == 0)
+            {
+                throw new IllegalArgumentException("Null byte present in string. There are no known legitimate use cases for such data, but several injection attacks may use it");
+            }
+        }
     }
 }

@@ -16,8 +16,7 @@
 
 package com.themodernway.common.api.hash;
 
-import java.util.Objects;
-
+import com.themodernway.common.api.java.util.CommonOps;
 import com.themodernway.common.api.java.util.StringOps;
 
 public final class Hasher implements IHasher
@@ -26,27 +25,27 @@ public final class Hasher implements IHasher
 
     public Hasher(final IHash512 hash)
     {
-        m_hash = Objects.requireNonNull(hash);
+        m_hash = CommonOps.requireNonNull(hash);
     }
 
     @Override
     public String sha512(final String text)
     {
-        return m_hash.sha512(Objects.requireNonNull(text));
+        return m_hash.sha512(CommonOps.requireNonNull(text));
     }
 
     @Override
     public String sha512(final String text, final String salt)
     {
-        return sha512(Objects.requireNonNull(text), salt, (salt.length() + 1) * 2);
+        return sha512(CommonOps.requireNonNull(text), salt, (salt.length() + 1) * 2);
     }
 
     @Override
     public String sha512(String text, final String salt, int iter)
     {
-        Objects.requireNonNull(text);
+        CommonOps.requireNonNull(text);
 
-        Objects.requireNonNull(salt);
+        CommonOps.requireNonNull(salt);
 
         if (iter < 2)
         {

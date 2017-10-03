@@ -16,6 +16,7 @@
 
 package com.themodernway.common.api.hash;
 
+@FunctionalInterface
 public interface IHash512
 {
     public String sha512(String text);

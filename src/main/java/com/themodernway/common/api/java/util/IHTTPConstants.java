@@ -284,6 +284,8 @@ public interface IHTTPConstants
 
     public static final String HTTPS_URL_PREFIX_DEFAULT               = "https";
 
+    public static final String HTML_INDEX_DEFAULT                     = "index.html";
+
     public static final long   HOUR_IN_SECONDS                        = 3600L;
 
     public static final long   HOUR_IN_MILLISECONDS                   = 3600000L;
