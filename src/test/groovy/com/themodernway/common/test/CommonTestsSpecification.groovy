@@ -20,8 +20,6 @@ import com.themodernway.common.api.java.util.CommonOps
 import com.themodernway.common.api.java.util.StringOps
 import com.themodernway.common.api.json.JSONParserException
 import com.themodernway.common.api.types.Activatable
-import com.themodernway.common.api.types.FixedIterator
-import com.themodernway.common.api.types.FixedListIterable
 import com.themodernway.common.util.AbstractCommonSpecification
 
 public class CommonTestsSpecification extends AbstractCommonSpecification
@@ -214,51 +212,6 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     {
         setup:
         def list = CommonOps.toKeys([name: 'dean', age: '53', mood: 'good', life: 'good'])
-
-        expect:
-        list.size() == 4
-
-        cleanup:
-        echo list
-    }
-
-    def "Test CommonOps.toList(FixedListIterable)"()
-    {
-        setup:
-        def iter = new FixedListIterable<String>('A', 'B', 'C', 'A')
-        def list = CommonOps.toList(iter)
-
-        expect:
-        list.size() == 4
-        iter.size() == 4
-        list.isEmpty() == false
-        iter.isEmpty() == false
-
-        cleanup:
-        echo list
-        echo iter
-    }
-
-    def "Test FixedIterator NoSuchElementException"()
-    {
-        setup:
-        def iter = new FixedIterator<String>(new FixedListIterable<String>('A'))
-        while (iter.hasNext())
-        {
-            iter.next()
-        }
-
-        when:
-        iter.next()
-
-        then:
-        thrown NoSuchElementException
-    }
-
-    def "Test CommonOps.toList(FixedListIterable.stream().sorted().distinct()"()
-    {
-        setup:
-        def list = CommonOps.toList(new FixedListIterable<String>('Z', 'C', 'B', 'A', 'Z', 'A').stream().sorted().distinct())
 
         expect:
         list.size() == 4
