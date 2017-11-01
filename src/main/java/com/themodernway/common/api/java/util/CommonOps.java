@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.IntFunction;
@@ -33,7 +34,6 @@ import java.util.function.LongSupplier;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public final class CommonOps
 {
@@ -43,6 +43,23 @@ public final class CommonOps
 
     private CommonOps()
     {
+    }
+
+    @SuppressWarnings("unchecked")
+    public static final <T> T CAST(final Object object)
+    {
+        if (isNull(object))
+        {
+            return NULL();
+        }
+        try
+        {
+            return ((T) object);
+        }
+        catch (final Exception e)
+        {
+            return NULL();
+        }
     }
 
     public static final <T> T NULL()
@@ -124,7 +141,7 @@ public final class CommonOps
     @SafeVarargs
     public static final <T> List<T> toList(final T... source)
     {
-        return new ArrayList<T>(asList(source));
+        return arrayList(asList(source));
     }
 
     public static final <T> List<T> toList(final Stream<T> stream)
@@ -132,26 +149,29 @@ public final class CommonOps
         return stream.collect(Collectors.toList());
     }
 
-    public static final <T> List<T> toList(final Enumeration<T> source)
+    public static final <T> List<T> toList(final Enumeration<? extends T> source)
     {
-        return Collections.list(source);
+        return arrayList(source);
     }
 
-    public static final <T> List<T> toList(final Collection<T> collection)
+    public static final <T> List<T> toList(final Set<? extends T> collection)
     {
-        return new ArrayList<T>(collection);
+        return arrayList(collection);
+    }
+
+    public static final <T> List<T> toList(final List<? extends T> collection)
+    {
+        return arrayList(collection);
+    }
+
+    public static final <T> List<T> toList(final Collection<? extends T> collection)
+    {
+        return arrayList(collection);
     }
 
     public static final <T> List<T> toList(final Iterable<T> iter)
     {
-        if (iter instanceof Collection)
-        {
-            return toList((Collection<T>) iter);
-        }
-        else
-        {
-            return toList(StreamSupport.stream(iter.spliterator(), false));
-        }
+        return arrayList(iter);
     }
 
     public static final <T> List<T> emptyList()
@@ -164,20 +184,20 @@ public final class CommonOps
         return Collections.emptyMap();
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings("rawtypes")
     public static final <K, V> Map<K, V> CAST_RAW_MAP(final Map maps)
     {
-        return maps;
+        return CAST(maps);
     }
 
     public static final Map<String, Object> CAST_STR_MAP(final Map<String, ?> maps)
     {
-        return CAST_RAW_MAP(maps);
+        return CAST(maps);
     }
 
-    public static final <T> List<T> toKeys(final Map<T, ?> maps)
+    public static final <T> List<T> toKeys(final Map<? extends T, ?> maps)
     {
-        return toList(maps.keySet());
+        return arrayList(maps.keySet());
     }
 
     public static final <K, V> Map<K, V> toUnmodifiableMap(final Map<? extends K, ? extends V> maps)
@@ -198,6 +218,48 @@ public final class CommonOps
     public static final <T> ArrayList<T> arrayList(final int size)
     {
         return new ArrayList<T>(size);
+    }
+
+    public static final <T> ArrayList<T> arrayList(final Set<? extends T> collection)
+    {
+        return new ArrayList<T>(collection);
+    }
+
+    public static final <T> ArrayList<T> arrayList(final List<? extends T> collection)
+    {
+        return new ArrayList<T>(collection);
+    }
+
+    public static final <T> ArrayList<T> arrayList(final Collection<? extends T> collection)
+    {
+        return new ArrayList<T>(collection);
+    }
+
+    public static final <T> ArrayList<T> arrayList(final Enumeration<? extends T> source)
+    {
+        final ArrayList<T> list = arrayList();
+
+        while (source.hasMoreElements())
+        {
+            list.add(source.nextElement());
+        }
+        return list;
+    }
+
+    public static final <T> ArrayList<T> arrayList(final Iterable<? extends T> iter)
+    {
+        if (iter instanceof Collection)
+        {
+            return arrayList((Collection<? extends T>) iter);
+        }
+        else
+        {
+            final ArrayList<T> list = arrayList();
+
+            iter.forEach(item -> list.add(item));
+
+            return list;
+        }
     }
 
     public static final <T> T[] toArray(final Collection<T> collection, final T[] base)
