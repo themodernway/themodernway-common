@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.IntFunction;
@@ -154,24 +153,9 @@ public final class CommonOps
         return arrayList(source);
     }
 
-    public static final <T> List<T> toList(final Set<? extends T> collection)
-    {
-        return arrayList(collection);
-    }
-
-    public static final <T> List<T> toList(final List<? extends T> collection)
-    {
-        return arrayList(collection);
-    }
-
     public static final <T> List<T> toList(final Collection<? extends T> collection)
     {
         return arrayList(collection);
-    }
-
-    public static final <T> List<T> toList(final Iterable<T> iter)
-    {
-        return arrayList(iter);
     }
 
     public static final <T> List<T> emptyList()
@@ -220,16 +204,6 @@ public final class CommonOps
         return new ArrayList<T>(size);
     }
 
-    public static final <T> ArrayList<T> arrayList(final Set<? extends T> collection)
-    {
-        return new ArrayList<T>(collection);
-    }
-
-    public static final <T> ArrayList<T> arrayList(final List<? extends T> collection)
-    {
-        return new ArrayList<T>(collection);
-    }
-
     public static final <T> ArrayList<T> arrayList(final Collection<? extends T> collection)
     {
         return new ArrayList<T>(collection);
@@ -244,22 +218,6 @@ public final class CommonOps
             list.add(source.nextElement());
         }
         return list;
-    }
-
-    public static final <T> ArrayList<T> arrayList(final Iterable<? extends T> iter)
-    {
-        if (iter instanceof Collection)
-        {
-            return arrayList((Collection<? extends T>) iter);
-        }
-        else
-        {
-            final ArrayList<T> list = arrayList();
-
-            iter.forEach(item -> list.add(item));
-
-            return list;
-        }
     }
 
     public static final <T> T[] toArray(final Collection<T> collection, final T[] base)
