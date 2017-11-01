@@ -56,7 +56,7 @@ public final class CommonOps
         {
             return ((T) object);
         }
-        catch (final Exception e)
+        catch (final ClassCastException e)
         {
             return NULL();
         }
