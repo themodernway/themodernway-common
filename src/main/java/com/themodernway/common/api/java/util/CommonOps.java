@@ -186,7 +186,7 @@ public final class CommonOps
         return CAST(maps);
     }
 
-    public static final <T> List<T> keys(final Map<? extends T, ?> maps)
+    public static final <T> List<T> toKeys(final Map<? extends T, ?> maps)
     {
         return arrayList(maps.keySet());
     }
