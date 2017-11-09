@@ -16,7 +16,8 @@
 
 package com.themodernway.common.api.types;
 
-public interface IAsyncCallback<T> extends IFailable
+@FunctionalInterface
+public interface IFailable
 {
-    public void onSuccess(T result);
+    public void onFailure(Throwable throwable);
 }

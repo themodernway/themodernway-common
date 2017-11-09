@@ -34,6 +34,9 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.themodernway.common.api.types.ICursor;
+import com.themodernway.common.api.types.IFixedIterable;
+
 public final class CommonOps
 {
     public static final int    IS_NOT_FOUND  = (0 - 1);
@@ -132,15 +135,9 @@ public final class CommonOps
     }
 
     @SafeVarargs
-    public static final <T> List<T> asList(final T... source)
-    {
-        return Arrays.asList(source);
-    }
-
-    @SafeVarargs
     public static final <T> List<T> toList(final T... source)
     {
-        return arrayList(asList(source));
+        return Arrays.asList(source);
     }
 
     public static final <T> List<T> toList(final Stream<T> stream)
@@ -156,6 +153,16 @@ public final class CommonOps
     public static final <T> List<T> toList(final Collection<? extends T> collection)
     {
         return arrayList(collection);
+    }
+
+    public static final <T> List<T> toList(final ICursor<? extends T> cursor)
+    {
+        return arrayList(cursor);
+    }
+
+    public static final <T> List<T> toList(final IFixedIterable<? extends T> iterable)
+    {
+        return iterable.stream().collect(Collectors.toList());
     }
 
     public static final <T> List<T> emptyList()
@@ -179,7 +186,7 @@ public final class CommonOps
         return CAST(maps);
     }
 
-    public static final <T> List<T> toKeys(final Map<? extends T, ?> maps)
+    public static final <T> List<T> keys(final Map<? extends T, ?> maps)
     {
         return arrayList(maps.keySet());
     }
@@ -204,9 +211,30 @@ public final class CommonOps
         return new ArrayList<T>(size);
     }
 
+    @SafeVarargs
+    public static final <T> ArrayList<T> arrayList(final T... source)
+    {
+        return new ArrayList<T>(toList(source));
+    }
+
+    public static final <T> ArrayList<T> arrayList(final Stream<T> stream)
+    {
+        return new ArrayList<T>(stream.collect(Collectors.toList()));
+    }
+
     public static final <T> ArrayList<T> arrayList(final Collection<? extends T> collection)
     {
         return new ArrayList<T>(collection);
+    }
+
+    public static final <T> ArrayList<T> arrayList(final ICursor<? extends T> cursor)
+    {
+        return cursor.into(arrayList());
+    }
+
+    public static final <T> ArrayList<T> arrayList(final IFixedIterable<? extends T> iterable)
+    {
+        return new ArrayList<T>(toList(iterable));
     }
 
     public static final <T> ArrayList<T> arrayList(final Enumeration<? extends T> source)

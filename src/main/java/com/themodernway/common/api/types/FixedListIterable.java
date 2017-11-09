@@ -35,7 +35,7 @@ public class FixedListIterable<T> implements IFixedIterable<T>
     @SafeVarargs
     public FixedListIterable(final T... list)
     {
-        this(CommonOps.asList(CommonOps.requireNonNull(list)));
+        this(CommonOps.toList(CommonOps.requireNonNull(list)));
     }
 
     @Override
