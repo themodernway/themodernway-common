@@ -16,47 +16,30 @@
 
 package com.themodernway.common.api.types;
 
-import java.util.Collection;
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.List;
 
-import com.themodernway.common.api.java.util.CommonOps;
-
-public class FixedListIterable<T> implements IFixedIterable<T>
+public interface ICache<T> extends INamed, IRefreshable, Closeable
 {
-    private final List<T> m_list;
+    public void clear();
 
-    public FixedListIterable(final Collection<T> list)
-    {
-        m_list = CommonOps.toList(CommonOps.requireNonNull(list));
-    }
+    public T get(String name);
 
-    @SafeVarargs
-    public FixedListIterable(final T... list)
+    public void remove(String name);
+
+    public List<T> values();
+
+    public List<String> keys();
+
+    @Override
+    default public void close() throws IOException
     {
-        m_list = CommonOps.toList(CommonOps.requireNonNull(list));
     }
 
     @Override
-    public String toString()
+    default public void refresh()
     {
-        return m_list.toString();
-    }
-
-    @Override
-    public int size()
-    {
-        return m_list.size();
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        return m_list.isEmpty();
-    }
-
-    @Override
-    public T get(final int index)
-    {
-        return m_list.get(index);
+        clear();
     }
 }

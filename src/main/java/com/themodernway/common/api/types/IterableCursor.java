@@ -16,43 +16,39 @@
 
 package com.themodernway.common.api.types;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import com.themodernway.common.api.java.util.CommonOps;
 
-public interface ICursor<T> extends Iterator<T>, IFailable, Closeable
+public interface IterableCursor<T> extends Iterable<T>, ICursor<T>
 {
+    @Override
     default public <A extends Collection<? super T>> A into(final A target)
     {
-        CommonOps.requireNonNull(target);
+        forEach(target::add);
 
-        while (hasNext())
-        {
-            target.add(next());
-        }
-        try
-        {
-            close();
-        }
-        catch (final IOException e)
-        {
-            onFailure(e);
-        }
         return target;
     }
 
     @Override
-    default public void forEachRemaining(final Consumer<? super T> action)
+    default public Iterator<T> iterator()
+    {
+        return this;
+    }
+
+    @Override
+    default public void forEach(final Consumer<? super T> action)
     {
         CommonOps.requireNonNull(action);
 
-        while (hasNext())
+        for (final T t : this)
         {
-            action.accept(next());
+            action.accept(t);
         }
         try
         {
@@ -64,20 +60,17 @@ public interface ICursor<T> extends Iterator<T>, IFailable, Closeable
         }
     }
 
-    @Override
-    default public void onFailure(final Throwable throwable)
+    default public Stream<T> stream()
     {
-        throwable.printStackTrace();
-    }
-
-    @Override
-    default public void close() throws IOException
-    {
-    }
-
-    @Override
-    default public void remove()
-    {
-        throw new UnsupportedOperationException("remove()");
+        return StreamSupport.stream(spliterator(), false).onClose(() -> {
+            try
+            {
+                close();
+            }
+            catch (final IOException e)
+            {
+                onFailure(e);
+            }
+        });
     }
 }

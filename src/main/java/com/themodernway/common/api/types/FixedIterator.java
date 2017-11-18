@@ -18,6 +18,9 @@ package com.themodernway.common.api.types;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
+
+import com.themodernway.common.api.java.util.CommonOps;
 
 public class FixedIterator<T> implements Iterator<T>
 {
@@ -29,11 +32,9 @@ public class FixedIterator<T> implements Iterator<T>
 
     public FixedIterator(final IFixedIterable<T> iter)
     {
-        m_posn = 0;
+        m_iter = CommonOps.requireNonNull(iter);
 
-        m_iter = iter;
-
-        m_size = iter.size();
+        m_size = m_iter.size();
     }
 
     @Override
@@ -54,5 +55,22 @@ public class FixedIterator<T> implements Iterator<T>
         m_posn = i + 1;
 
         return m_iter.get(i);
+    }
+
+    @Override
+    public void remove()
+    {
+        throw new UnsupportedOperationException("remove()");
+    }
+
+    @Override
+    public void forEachRemaining(final Consumer<? super T> action)
+    {
+        CommonOps.requireNonNull(action);
+
+        while (hasNext())
+        {
+            action.accept(next());
+        }
     }
 }

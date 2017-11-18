@@ -16,6 +16,7 @@
 
 package com.themodernway.common.api.types;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -45,5 +46,12 @@ public interface IFixedIterable<T> extends Iterable<T>
     default public Stream<T> stream()
     {
         return StreamSupport.stream(spliterator(), false);
+    }
+
+    default public <A extends Collection<? super T>> A into(final A target)
+    {
+        forEach(target::add);
+
+        return target;
     }
 }
