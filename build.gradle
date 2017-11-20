@@ -46,7 +46,7 @@ sourceCompatibility = 1.8
 
 targetCompatibility = 1.8
 
-version = '1.2.11-RELEASE'
+version = '1.2.12-RELEASE'
 
 group = 'com.themodernway'
 
@@ -140,7 +140,7 @@ findbugs {
     ignoreFailures = true
     toolVersion = "3.0.1"
     effort = "max"
-    excludeFilter = file("$rootProject.projectDir/config/findbugs/filter.xml")
+    excludeFilter = file("config/findbugs/filter.xml")
 }
 
 tasks.withType(FindBugs) {
@@ -230,7 +230,7 @@ sourceSets {
 }
 
 dependencies {
-    compile(group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2')
+    compile(group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2')    
     testCompile(group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.12', classifier: 'indy')
     testCompile(group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4') {
         exclude(group: 'org.codehaus.groovy', module: 'groovy-all')
