@@ -16,6 +16,7 @@
 
 package com.themodernway.common.test
 
+import com.themodernway.common.api.java.util.CommonOps
 import com.themodernway.common.api.java.util.StringOps
 import com.themodernway.common.util.AbstractCommonSpecification
 
@@ -30,151 +31,151 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
     {
         closeCommonDefault()
     }
-    
+
     def "Test StringOps.reverse('1234') == '4321'"()
     {
         expect:
         StringOps.reverse("1234") == "4321"
     }
-    
+
     def "Test StringOps.reverse('A') == 'A'"()
     {
         expect:
         StringOps.reverse("A") == "A"
     }
-    
+
     def "Test StringOps.reverse(null) == null"()
     {
         expect:
         StringOps.reverse(null) == null
     }
-    
+
     def "Test StringOps.isDigits('1234') true"()
     {
         expect:
         StringOps.isDigits("1234") == true
     }
-    
+
     def "Test StringOps.isDigits('text') false"()
     {
         expect:
         StringOps.isDigits("text") == false
     }
-    
+
     def "Test StringOps.isAlpha('1234') false"()
     {
         expect:
         StringOps.isAlpha("1234") == false
     }
-    
+
     def "Test StringOps.isAlpha('text') true"()
     {
         expect:
         StringOps.isAlpha("text") == true
     }
-    
+
     def "Test StringOps.isAlphaOrDigits('1234') true"()
     {
         expect:
         StringOps.isAlphaOrDigits("1234") == true
     }
-    
+
     def "Test StringOps.isAlphaOrDigits('text') true"()
     {
         expect:
         StringOps.isAlphaOrDigits("text") == true
     }
-    
+
     def "Test StringOps.isAlphaOrDigits('1234text') true"()
     {
         expect:
         StringOps.isAlphaOrDigits("1234text") == true
     }
-    
+
     def "Test StringOps.isAlphaOrDigits('_') false"()
     {
         expect:
         StringOps.isAlphaOrDigits("_") == false
     }
-    
+
     def "Test StringOps.isAlphaOrDigitsStartsAlpha('text1234') true"()
     {
         expect:
         StringOps.isAlphaOrDigitsStartsAlpha("text1234") == true
     }
-    
+
     def "Test StringOps.isAlphaOrDigitsStartsAlpha('1234text') false"()
     {
         expect:
         StringOps.isAlphaOrDigitsStartsAlpha("1234text") == false
     }
-    
+
     def "Test StringOps.isVersionID(null) false"()
     {
         expect:
         StringOps.isVersionID(null) == false
     }
-    
+
     def "Test StringOps.isVersionID('') false"()
     {
         expect:
         StringOps.isVersionID('') == false
     }
-    
+
     def "Test StringOps.isVersionID('1') false"()
     {
         expect:
         StringOps.isVersionID("1") == false
     }
-    
+
     def "Test StringOps.isVersionID('1.0') true"()
     {
         expect:
         StringOps.isVersionID("1.0") == true
     }
-    
+
     def "Test StringOps.isVersionID('1.0.53') true"()
     {
         expect:
         StringOps.isVersionID("1.0.53") == true
     }
-    
+
     def "Test StringOps.isVersionID('1.X') false"()
     {
         expect:
         StringOps.isVersionID("1.X") == false
     }
-    
+
     def "Test StringOps.isVersionID('v1.0') true"()
     {
         expect:
         StringOps.isVersionID("v1.0") == true
     }
-    
+
     def "Test StringOps.isVersionID('v1') false"()
     {
         expect:
         StringOps.isVersionID("v1") == false
     }
-    
+
     def "Test StringOps.isVersionID('v12') false"()
     {
         expect:
         StringOps.isVersionID("v12") == false
     }
-    
+
     def "Test StringOps.isVersionID('v.') false"()
     {
         expect:
         StringOps.isVersionID("v.") == false
     }
-    
+
     def "Test StringOps.isVersionID('v') false"()
     {
         expect:
         StringOps.isVersionID("v") == false
     }
-    
+
     def "Test StringOps.toTrimOrNull('text')"()
     {
         setup:
@@ -182,11 +183,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
 
         expect:
         text == "text"
-        
+
         cleanup:
         echo text
     }
-    
+
     def "Test StringOps.toTrimOrNull(' text ')"()
     {
         setup:
@@ -194,11 +195,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
 
         expect:
         text == "text"
-        
+
         cleanup:
         echo text
     }
-    
+
     def "Test StringOps.toTrimOrNull(null)"()
     {
         setup:
@@ -206,11 +207,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
 
         expect:
         text == null
-        
+
         cleanup:
         echo text
     }
-    
+
     def "Test StringOps.toTrimOrNull('')"()
     {
         setup:
@@ -218,11 +219,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
 
         expect:
         text == null
-        
+
         cleanup:
         echo text
     }
-    
+
     def "Test StringOps.toTrimOrElse('', 'text')"()
     {
         setup:
@@ -230,11 +231,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
 
         expect:
         text == "text"
-        
+
         cleanup:
         echo text
     }
-    
+
     def "Test StringOps.toTrimOrElse(null, 'text')"()
     {
         setup:
@@ -242,98 +243,98 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
 
         expect:
         text == "text"
-        
+
         cleanup:
         echo text
     }
-    
+
     def "Test StringOps.toTrimOrElse('', toSupplier('text'))"()
     {
         setup:
-        def text = StringOps.toTrimOrElse("", StringOps.toSupplier("text"))
+        def text = StringOps.toTrimOrElse("", CommonOps.toSupplier("text"))
 
         expect:
         text == "text"
-        
+
         cleanup:
         echo text
     }
-    
+
     def "Test StringOps.toTrimOrElse(null, toSupplier('text'))"()
     {
         setup:
-        def text = StringOps.toTrimOrElse(null, StringOps.toSupplier("text"))
+        def text = StringOps.toTrimOrElse(null, CommonOps.toSupplier("text"))
 
         expect:
         text == "text"
-        
+
         cleanup:
         echo text
     }
-    
+
     def "Test StringOps.requireTrimOrNull('')"()
     {
         when:
-            StringOps.requireTrimOrNull("")
- 
+        StringOps.requireTrimOrNull("")
+
         then:
-            thrown NullPointerException
+        thrown NullPointerException
     }
-    
+
     def "Test StringOps.requireTrimOrNull('', 'oops')"()
     {
         when:
-            StringOps.requireTrimOrNull("", "oops")
- 
+        StringOps.requireTrimOrNull("", "oops")
+
         then:
-            thrown NullPointerException
+        thrown NullPointerException
     }
-    
+
     def "Test StringOps.requireTrimOrNull('text', 'oops')"()
     {
         when:
-            StringOps.requireTrimOrNull("text", "oops")
- 
+        StringOps.requireTrimOrNull("text", "oops")
+
         then:
-            notThrown NullPointerException
+        notThrown NullPointerException
     }
-    
+
     def "Test StringOps.requireTrimOrNull('', toSupplier('oops'))"()
     {
         when:
-            StringOps.requireTrimOrNull("", StringOps.toSupplier("oops"))
- 
+        StringOps.requireTrimOrNull("", CommonOps.toSupplier("oops"))
+
         then:
-            thrown NullPointerException
+        thrown NullPointerException
     }
-    
+
     def "Test StringOps.requireTrimOrNull('text', toSupplier('oops'))"()
     {
         when:
-            StringOps.requireTrimOrNull("text", StringOps.toSupplier("oops"))
- 
+        StringOps.requireTrimOrNull("text", CommonOps.toSupplier("oops"))
+
         then:
-            notThrown NullPointerException
+        notThrown NullPointerException
     }
-    
+
     def "Test StringOps.requireTrimOrNull(null)"()
     {
         when:
-            StringOps.requireTrimOrNull(null)
- 
+        StringOps.requireTrimOrNull(null)
+
         then:
-            thrown NullPointerException
+        thrown NullPointerException
     }
-    
+
     def "Test StringOps.requireTrimOrNull('text')"()
     {
         when:
-            StringOps.requireTrimOrNull("text")
- 
+        StringOps.requireTrimOrNull("text")
+
         then:
-            notThrown NullPointerException
+        notThrown NullPointerException
     }
-    
+
     def "Test StringOps.toArray(['text'])"()
     {
         setup:
@@ -342,11 +343,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         expect:
         list.length == 1
         list[0] == "text"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toArray(['text','data'])"()
     {
         setup:
@@ -356,11 +357,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         list.length == 2
         list[0] == "text"
         list[1] == "data"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toArray('text')"()
     {
         setup:
@@ -369,11 +370,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         expect:
         list.length == 1
         list[0] == "text"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toArray('text','data')"()
     {
         setup:
@@ -383,11 +384,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         list.length == 2
         list[0] == "text"
         list[1] == "data"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toUnique(['text','text'])"()
     {
         setup:
@@ -396,11 +397,24 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         expect:
         list.size() == 1
         list[0] == "text"
-        
+
         cleanup:
         echo list
     }
-    
+
+    def "Test StringOps.toUniqueArray(['text'])"()
+    {
+        setup:
+        def list = StringOps.toUniqueArray(["text"])
+
+        expect:
+        list.length == 1
+        list[0] == "text"
+
+        cleanup:
+        echo list
+    }
+
     def "Test StringOps.toUniqueArray(['text','text'])"()
     {
         setup:
@@ -409,11 +423,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         expect:
         list.length == 1
         list[0] == "text"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toUniqueArray(['text','data','text'])"()
     {
         setup:
@@ -423,11 +437,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         list.length == 2
         list[0] == "text"
         list[1] == "data"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toUniqueArray('text','text')"()
     {
         setup:
@@ -436,11 +450,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         expect:
         list.length == 1
         list[0] == "text"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toUniqueArray('text','data','text')"()
     {
         setup:
@@ -450,11 +464,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         list.length == 2
         list[0] == "text"
         list[1] == "data"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toUniqueStringList('text')"()
     {
         setup:
@@ -463,11 +477,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         expect:
         list.size() == 1
         list[0] == "text"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toUniqueStringList('text,text')"()
     {
         setup:
@@ -476,11 +490,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         expect:
         list.size() == 1
         list[0] == "text"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toUniqueStringList('text,data,text')"()
     {
         setup:
@@ -490,11 +504,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         list.size() == 2
         list[0] == "text"
         list[1] == "data"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toUniqueStringList(['text','data','text'])"()
     {
         setup:
@@ -504,11 +518,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         list.size() == 2
         list[0] == "text"
         list[1] == "data"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toUniqueStringList((StringOps.toArray(['text','data','text']))"()
     {
         setup:
@@ -518,11 +532,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         list.size() == 2
         list[0] == "text"
         list[1] == "data"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toCommaSeparated(['text','data','text'])"()
     {
         setup:
@@ -531,11 +545,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         expect:
         list != null
         list == "text, data, text"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toCommaSeparated('text','data','text')"()
     {
         setup:
@@ -544,11 +558,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         expect:
         list != null
         list == "text, data, text"
-        
+
         cleanup:
         echo list
     }
-    
+
     def "Test StringOps.toPrintableString(['text','data','text'])"()
     {
         setup:
@@ -557,7 +571,7 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         expect:
         list != null
         list == '["text", "data", "text"]'
-        
+
         cleanup:
         echo list
     }

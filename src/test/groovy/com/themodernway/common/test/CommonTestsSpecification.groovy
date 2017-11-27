@@ -20,7 +20,11 @@ import com.themodernway.common.api.java.util.CommonOps
 import com.themodernway.common.api.java.util.StringOps
 import com.themodernway.common.api.json.JSONParserException
 import com.themodernway.common.api.types.Activatable
+import com.themodernway.common.api.types.CoreCursor
+import com.themodernway.common.api.types.FixedListIterable
 import com.themodernway.common.util.AbstractCommonSpecification
+
+import groovy.transform.CompileStatic
 
 public class CommonTestsSpecification extends AbstractCommonSpecification
 {
@@ -151,6 +155,18 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     def "Test CommonOps.toList()"()
     {
         setup:
+        def list = CommonOps.toList('A', 'B', 'C', 'D')
+
+        expect:
+        list.size() == 4
+
+        cleanup:
+        echo list
+    }
+
+    def "Test CommonOps.toList([])"()
+    {
+        setup:
         def list = CommonOps.toList(['A', 'B', 'C', 'A'])
 
         expect:
@@ -184,10 +200,22 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         echo list
     }
 
-    def "Test CommonOps.toList(Collection).values()"()
+    def "Test CommonOps.toList(Map).values()"()
     {
         setup:
         def list = CommonOps.toList([name: 'dean', age: '53', mood: 'good', life: 'good'].values())
+
+        expect:
+        list.size() == 4
+
+        cleanup:
+        echo list
+    }
+
+    def "Test CommonOps.toList(Map).keySet()"()
+    {
+        setup:
+        def list = CommonOps.toList([name: 'dean', age: '53', mood: 'good', life: 'good'].keySet())
 
         expect:
         list.size() == 4
@@ -208,7 +236,67 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         echo list
     }
 
-    def "Test CommonOps.toKeys(Collection)"()
+    def "Test CommonOps.toList(Enumeration)"()
+    {
+        setup:
+        def list = CommonOps.toList(new Hashtable<String, String>([name: 'dean', age: '53', mood: 'good', life: 'good']).keys())
+
+        expect:
+        list.size() == 4
+
+        cleanup:
+        echo list
+    }
+
+    def "Test CommonOps.toList(FixedListIterable)"()
+    {
+        setup:
+        def list = CommonOps.toList(new FixedListIterable<String>('A', 'B', 'C', 'D'))
+
+        expect:
+        list.size() == 4
+
+        cleanup:
+        echo list
+    }
+
+    def "Test CommonOps.toList(FixedListIterable[])"()
+    {
+        setup:
+        def list = CommonOps.toList(new FixedListIterable<String>(['A', 'B', 'C', 'D']))
+
+        expect:
+        list.size() == 4
+
+        cleanup:
+        echo list
+    }
+
+    def "Test CommonOps.toList(FixedCursor)"()
+    {
+        setup:
+        def list = CommonOps.toList(new CoreCursor<String>('A', 'B', 'C', 'D'))
+
+        expect:
+        list.size() == 4
+
+        cleanup:
+        echo list
+    }
+
+    def "Test CommonOps.toList(FixedCursor[])"()
+    {
+        setup:
+        def list = CommonOps.toList(new CoreCursor<String>(['A', 'B', 'C', 'D']))
+
+        expect:
+        list.size() == 4
+
+        cleanup:
+        echo list
+    }
+
+    def "Test CommonOps.toKeys(Map)"()
     {
         setup:
         def list = CommonOps.toKeys([name: 'dean', age: '53', mood: 'good', life: 'good'])
@@ -299,5 +387,411 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         cleanup:
         echo valu.isActive()
+    }
+
+    def "Test emptyMap()"()
+    {
+        setup:
+        def valu = CommonOps.emptyMap()
+
+        expect:
+        valu.size() == 0
+        valu.isEmpty() == true
+
+        cleanup:
+        echo valu.isEmpty()
+    }
+
+    def "Test emptyList()"()
+    {
+        setup:
+        def valu = CommonOps.emptyList()
+
+        expect:
+        valu.size() == 0
+        valu.isEmpty() == true
+
+        cleanup:
+        echo valu.isEmpty()
+    }
+
+    def "Test arrayListOfSize(0)"()
+    {
+        setup:
+        def valu = CommonOps.arrayListOfSize(0)
+        valu << "dean"
+
+        expect:
+        valu.size() == 1
+        valu.isEmpty() == false
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test arrayListOfSize(IS_NOT_FOUND)"()
+    {
+        setup:
+        def valu = CommonOps.arrayListOfSize(CommonOps.IS_NOT_FOUND)
+        valu << "dean"
+
+        expect:
+        valu.size() == 1
+        valu.isEmpty() == false
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test arrayList()"()
+    {
+        setup:
+        def valu = CommonOps.arrayList()
+        valu << "dean"
+
+        expect:
+        valu.size() == 1
+        valu.isEmpty() == false
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test arrayList(...)"()
+    {
+        setup:
+        def valu = CommonOps.arrayList('A', 'B', 'C', 'D')
+
+        expect:
+        valu.size() == 4
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test arrayList(Stream)"()
+    {
+        setup:
+        def valu = CommonOps.arrayList(Arrays.stream('A', 'B', 'C', 'A').distinct())
+
+        expect:
+        valu.size() == 3
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test toUnmodifiableList(...)"()
+    {
+        setup:
+        def valu = CommonOps.toUnmodifiableList('A', 'B', 'C', 'D')
+
+        expect:
+        valu.size() == 4
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test toUnmodifiableList([])"()
+    {
+        setup:
+        def valu = CommonOps.toUnmodifiableList(['A', 'B', 'C', 'D'])
+
+        expect:
+        valu.size() == 4
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test linkedMap()"()
+    {
+        setup:
+        def valu = CommonOps.linkedMap()
+        valu['dean'] = "test"
+
+        expect:
+        valu.size() == 1
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test linkedMap([:])"()
+    {
+        setup:
+        def valu = CommonOps.linkedMap([dean: 'test'])
+
+        expect:
+        valu.size() == 1
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test toUnmodifiableMap([:])"()
+    {
+        setup:
+        def valu = CommonOps.toUnmodifiableMap([dean: 'test'])
+
+        expect:
+        valu.size() == 1
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test toUnmodifiableMap([:]) fail"()
+    {
+        when:
+        CommonOps.toUnmodifiableMap([dean: 'test']).put('data', 'oops')
+
+        then:
+        thrown UnsupportedOperationException
+    }
+
+    def "Test isNull()"()
+    {
+        setup:
+        def valu = "dean"
+
+        expect:
+        CommonOps.isNull(null) == true
+        CommonOps.isNull(valu) == false
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test isNonNull()"()
+    {
+        setup:
+        def valu = "dean"
+
+        expect:
+        CommonOps.isNonNull(valu) == true
+        CommonOps.isNonNull(null) == false
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test requireNonNullOrElse()"()
+    {
+        setup:
+        def valu = "dean"
+
+        expect:
+        CommonOps.requireNonNullOrElse(valu, "test") == "dean"
+        CommonOps.requireNonNullOrElse(null, "test") == "test"
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test requireNonNullOrElse(Supplier)"()
+    {
+        setup:
+        def valu = "dean"
+
+        expect:
+        CommonOps.requireNonNullOrElse(valu, CommonOps.toSupplier("test")) == "dean"
+        CommonOps.requireNonNullOrElse(null, CommonOps.toSupplier("test")) == "test"
+
+        cleanup:
+        echo valu
+    }
+
+    @CompileStatic
+    def "Test CAST()"()
+    {
+        setup:
+        def valu = CommonOps.CAST(null)
+
+        expect:
+        valu == null
+    }
+
+    @CompileStatic
+    def "Test CAST(String, String)"()
+    {
+        setup:
+        String valu = CommonOps.CAST("test")
+
+        expect:
+        valu == "test"
+
+        cleanup:
+        echo valu
+    }
+
+    @CompileStatic
+    def "Test CAST(Integer)"()
+    {
+        setup:
+        Integer valu = CommonOps.CAST(new Integer(50))
+
+        expect:
+        valu == 50
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test STRMAP(RAWMAP)"()
+    {
+        setup:
+        Map<String, Object> valu = CommonOps.STRMAP(CommonOps.RAWMAP([:]))
+
+        expect:
+        valu.isEmpty() == true
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test all(['A', 'B', 'C', 'D'], ['A', 'B', 'C', 'D'])"()
+    {
+        setup:
+        def valu = CommonOps.all(['A', 'B', 'C', 'D'], ['A', 'B', 'C', 'D'])
+
+        expect:
+        valu == true
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test all(['A', 'B', 'C', 'D'], ['A', 'B'])"()
+    {
+        setup:
+        def valu = CommonOps.all(['A', 'B', 'C', 'D'], ['A', 'B'])
+
+        expect:
+        valu == true
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test all(['A', 'B'], ['B', 'A'])"()
+    {
+        setup:
+        def valu = CommonOps.all(['A', 'B'], ['B', 'A'])
+
+        expect:
+        valu == true
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test all(['A'], ['A'])"()
+    {
+        setup:
+        def valu = CommonOps.all(['A'], ['A'])
+
+        expect:
+        valu == true
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test all(['A'], ['B'])"()
+    {
+        setup:
+        def valu = CommonOps.all(['A'], ['B'])
+
+        expect:
+        valu == false
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test all(['A', 'B'], ['A', 'B', 'C'])"()
+    {
+        setup:
+        def valu = CommonOps.all(['A', 'B'], ['A', 'B', 'C'])
+
+        expect:
+        valu == false
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test any(['A', 'B', 'C', 'D'], ['A', 'B', 'C', 'D'])"()
+    {
+        setup:
+        def valu = CommonOps.any(['A', 'B', 'C', 'D'], ['A', 'B', 'C', 'D'])
+
+        expect:
+        valu == true
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test any(['A', 'B', 'C', 'D'], ['A', 'B'])"()
+    {
+        setup:
+        def valu = CommonOps.any(['A', 'B', 'C', 'D'], ['A', 'B'])
+
+        expect:
+        valu == true
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test any(['A', 'B', 'C', 'D'], ['E', 'F'])"()
+    {
+        setup:
+        def valu = CommonOps.any(['A', 'B', 'C', 'D'], ['E', 'F'])
+
+        expect:
+        valu == false
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test none(['A', 'B', 'C', 'D'], ['A', 'B', 'C', 'D'])"()
+    {
+        setup:
+        def valu = CommonOps.none(['A', 'B', 'C', 'D'], ['A', 'B', 'C', 'D'])
+
+        expect:
+        valu == false
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test none(['A', 'B', 'C', 'D'], ['A', 'B'])"()
+    {
+        setup:
+        def valu = CommonOps.none(['A', 'B', 'C', 'D'], ['A', 'B'])
+
+        expect:
+        valu == false
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test none(['A', 'B', 'C', 'D'], ['E', 'F'])"()
+    {
+        setup:
+        def valu = CommonOps.none(['A', 'B', 'C', 'D'], ['E', 'F'])
+
+        expect:
+        valu == true
+
+        cleanup:
+        echo valu
     }
 }

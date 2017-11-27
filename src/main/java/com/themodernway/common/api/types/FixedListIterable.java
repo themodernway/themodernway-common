@@ -16,30 +16,43 @@
 
 package com.themodernway.common.api.types;
 
-import java.util.Collection;
-import java.util.List;
+import static com.themodernway.common.api.java.util.CommonOps.CAST;
+import static com.themodernway.common.api.java.util.CommonOps.toList;
+import static com.themodernway.common.api.java.util.CommonOps.toUnmodifiableList;
 
-import com.themodernway.common.api.java.util.CommonOps;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class FixedListIterable<T> implements IFixedIterable<T>
 {
     private final List<T> m_list;
 
-    public FixedListIterable(final Collection<T> list)
-    {
-        m_list = CommonOps.toList(CommonOps.requireNonNull(list));
-    }
-
     @SafeVarargs
-    public FixedListIterable(final T... list)
+    public FixedListIterable(final T... source)
     {
-        m_list = CommonOps.toList(CommonOps.requireNonNull(list));
+        m_list = toList(source);
     }
 
-    @Override
-    public String toString()
+    public FixedListIterable(final ICursor<T> source)
     {
-        return m_list.toString();
+        m_list = toList(source);
+    }
+
+    public FixedListIterable(final Stream<T> source)
+    {
+        m_list = toList(source);
+    }
+
+    public FixedListIterable(final Collection<T> source)
+    {
+        m_list = toList(source);
+    }
+
+    public FixedListIterable(final Enumeration<T> source)
+    {
+        m_list = toList(source);
     }
 
     @Override
@@ -58,5 +71,38 @@ public class FixedListIterable<T> implements IFixedIterable<T>
     public T get(final int index)
     {
         return m_list.get(index);
+    }
+
+    public List<T> asList()
+    {
+        return toUnmodifiableList(m_list);
+    }
+
+    @Override
+    public String toString()
+    {
+        return m_list.toString();
+    }
+
+    @Override
+    public boolean equals(final Object other)
+    {
+        if (other == this)
+        {
+            return true;
+        }
+        if (other instanceof FixedListIterable)
+        {
+            final FixedListIterable<T> fixed = CAST(other);
+
+            return m_list.equals(fixed.m_list);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return m_list.hashCode();
     }
 }

@@ -22,12 +22,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * A class annotated &#64;Versioned is defined to have a version number.
- *
- * @author   Dean S Jones
- * @since    1.0.17-RELEASE
- */
 @Documented
 @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)

@@ -16,6 +16,8 @@
 
 package com.themodernway.common.api.types;
 
+import static com.themodernway.common.api.java.util.CommonOps.requireNonNull;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Spliterator;
@@ -50,6 +52,8 @@ public interface IFixedIterable<T> extends Iterable<T>
 
     default public <A extends Collection<? super T>> A into(final A target)
     {
+        requireNonNull(target);
+
         forEach(target::add);
 
         return target;

@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class StringOps
@@ -46,6 +45,11 @@ public final class StringOps
     public static final String[] EMPTY_STRING_ARRAY   = new String[0];
 
     public static final String   HEXIDECIMAL_STRING   = "0123456789ABCDEF";
+
+    static
+    {
+        new StringOps();
+    }
 
     private StringOps()
     {
@@ -97,38 +101,31 @@ public final class StringOps
         {
             return toUnique(uniq);
         }
-        return new ArrayList<String>(0);
-    }
-
-    public static final Supplier<String> toSupplier(final String value)
-    {
-        return () -> value;
+        return CommonOps.arrayListOfSize(0);
     }
 
     public static final String[] toArray(final Collection<String> collection)
     {
-        final int size = collection.size();
-
-        if (size < 1)
+        if (collection.size() < 1)
         {
             return EMPTY_STRING_ARRAY;
         }
-        return collection.toArray(new String[size]);
+        return CommonOps.toArray(collection, String[]::new);
     }
 
     public static final String[] toArray(final String... collection)
     {
-        return toArray(Arrays.stream(collection));
+        return CommonOps.toArray(collection);
     }
 
     public static final String[] toArray(final Stream<String> stream)
     {
-        return stream.toArray(String[]::new);
+        return CommonOps.toArray(stream, String[]::new);
     }
 
     public static final List<String> toList(final Stream<String> stream)
     {
-        return stream.collect(Collectors.toList());
+        return CommonOps.toList(stream);
     }
 
     public static final String[] toUniqueArray(final Collection<String> collection)
@@ -139,7 +136,7 @@ public final class StringOps
         }
         if (collection.size() < 2)
         {
-            final String[] uniq = collection.toArray(new String[1]);
+            final String[] uniq = CommonOps.toArray(collection, new String[1]);
 
             if (null != uniq[0])
             {
@@ -172,34 +169,11 @@ public final class StringOps
         return stream.filter(valu -> valu != null).sequential().distinct();
     }
 
-    public static final List<String> toUnique(final Collection<String> collection)
-    {
-        if (collection instanceof List)
-        {
-            return toUnique((List<String>) collection);
-        }
-        if (collection.size() < 1)
-        {
-            return new ArrayList<String>(0);
-        }
-        if (collection.size() < 2)
-        {
-            final String[] uniq = collection.toArray(new String[1]);
-
-            if (null != uniq[0])
-            {
-                return Arrays.asList(uniq);
-            }
-            return new ArrayList<String>(0);
-        }
-        return toList(toUnique(collection.stream()));
-    }
-
     public static final List<String> toUnique(final String... collection)
     {
         if (collection.length < 1)
         {
-            return new ArrayList<String>(0);
+            return CommonOps.arrayListOfSize(0);
         }
         if (collection.length < 2)
         {
@@ -207,26 +181,26 @@ public final class StringOps
             {
                 return Arrays.asList(collection);
             }
-            return new ArrayList<String>(0);
+            return CommonOps.arrayListOfSize(0);
         }
         return toList(toUnique(Arrays.stream(collection)));
     }
 
-    public static final List<String> toUnique(final List<String> collection)
+    public static final List<String> toUnique(final Collection<String> collection)
     {
         if (collection.size() < 1)
         {
-            return new ArrayList<String>(0);
+            return CommonOps.arrayListOfSize(0);
         }
         if (collection.size() < 2)
         {
-            final String uniq = collection.get(0);
+            final String[] uniq = CommonOps.toArray(collection, new String[1]);
 
-            if (null != uniq)
+            if (null != uniq[0])
             {
                 return Arrays.asList(uniq);
             }
-            return new ArrayList<String>(0);
+            return CommonOps.arrayListOfSize(0);
         }
         return toList(toUnique(collection.stream()));
     }
@@ -260,8 +234,6 @@ public final class StringOps
 
     public static final String toCommaSeparated(final Collection<String> collection)
     {
-        CommonOps.requireNonNull(collection);
-
         final StringBuilder b = new StringBuilder();
 
         final Iterator<String> i = collection.iterator();
@@ -306,9 +278,9 @@ public final class StringOps
         {
             return null;
         }
-        final StringTokenizer st = new StringTokenizer(string, delimiters);
+        final ArrayList<String> li = CommonOps.arrayList();
 
-        final ArrayList<String> li = new ArrayList<String>();
+        final StringTokenizer st = new StringTokenizer(string, delimiters);
 
         while (st.hasMoreTokens())
         {
@@ -657,16 +629,6 @@ public final class StringOps
             }
         }
         return builder;
-    }
-
-    public static final String toLowerCase(final String string)
-    {
-        return string.toLowerCase();
-    }
-
-    public static final String toUpperCase(final String string)
-    {
-        return string.toUpperCase();
     }
 
     public static final void failIfNullBytePresent(final String string)

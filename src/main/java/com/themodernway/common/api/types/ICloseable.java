@@ -16,11 +16,9 @@
 
 package com.themodernway.common.api.types;
 
-import java.io.Serializable;
+import java.io.Closeable;
 
-public interface IActivatable extends Serializable
+public interface ICloseable extends Closeable
 {
-    public boolean isActive();
-
-    public boolean setActive(boolean active);
+    public boolean isOpen();
 }

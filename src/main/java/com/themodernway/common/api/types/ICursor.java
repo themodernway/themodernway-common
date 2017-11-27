@@ -16,51 +16,58 @@
 
 package com.themodernway.common.api.types;
 
-import java.io.Closeable;
+import static com.themodernway.common.api.java.util.CommonOps.requireNonNull;
+
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-import com.themodernway.common.api.java.util.CommonOps;
-
-public interface ICursor<T> extends Iterator<T>, IFailable, Closeable
+public interface ICursor<T> extends Iterator<T>, IFailable, IAutoCloseable, Serializable
 {
     default public <A extends Collection<? super T>> A into(final A target)
     {
-        CommonOps.requireNonNull(target);
+        requireNonNull(target);
 
-        while (hasNext())
+        if (isOpen())
         {
-            target.add(next());
-        }
-        try
-        {
-            close();
-        }
-        catch (final IOException e)
-        {
-            onFailure(e);
+            forEachRemaining(target::add);
         }
         return target;
+    }
+
+    default public Iterator<T> self()
+    {
+        return this;
     }
 
     @Override
     default public void forEachRemaining(final Consumer<? super T> action)
     {
-        CommonOps.requireNonNull(action);
+        requireNonNull(action);
 
-        while (hasNext())
+        if (isOpen())
         {
-            action.accept(next());
-        }
-        try
-        {
-            close();
-        }
-        catch (final IOException e)
-        {
-            onFailure(e);
+            while (hasNext())
+            {
+                action.accept(next());
+            }
+            if (isAutoClosed() && isOpen())
+            {
+                try
+                {
+                    close();
+                }
+                catch (final IOException e)
+                {
+                    onFailure(e);
+                }
+            }
         }
     }
 
@@ -75,9 +82,30 @@ public interface ICursor<T> extends Iterator<T>, IFailable, Closeable
     {
     }
 
-    @Override
-    default public void remove()
+    default public Spliterator<T> spliterator()
     {
-        throw new UnsupportedOperationException("remove()");
+        return Spliterators.spliteratorUnknownSize(this, 0);
+    }
+
+    default public Stream<T> stream()
+    {
+        if (isOpen())
+        {
+            return StreamSupport.stream(spliterator(), false).onClose(() -> {
+
+                if (isAutoClosed() && isOpen())
+                {
+                    try
+                    {
+                        close();
+                    }
+                    catch (final IOException e)
+                    {
+                        onFailure(e);
+                    }
+                }
+            });
+        }
+        return Stream.empty();
     }
 }

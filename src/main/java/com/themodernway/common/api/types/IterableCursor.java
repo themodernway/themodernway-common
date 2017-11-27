@@ -16,22 +16,28 @@
 
 package com.themodernway.common.api.types;
 
+import static com.themodernway.common.api.java.util.CommonOps.requireNonNull;
+
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import com.themodernway.common.api.java.util.CommonOps;
 
 public interface IterableCursor<T> extends Iterable<T>, ICursor<T>
 {
     @Override
     default public <A extends Collection<? super T>> A into(final A target)
     {
-        forEach(target::add);
+        requireNonNull(target);
 
+        if (isOpen())
+        {
+            forEach(target::add);
+        }
         return target;
     }
 
@@ -44,25 +50,14 @@ public interface IterableCursor<T> extends Iterable<T>, ICursor<T>
     @Override
     default public void forEach(final Consumer<? super T> action)
     {
-        CommonOps.requireNonNull(action);
+        requireNonNull(action);
 
         for (final T t : this)
         {
             action.accept(t);
         }
-        try
+        if (isAutoClosed() && isOpen())
         {
-            close();
-        }
-        catch (final IOException e)
-        {
-            onFailure(e);
-        }
-    }
-
-    default public Stream<T> stream()
-    {
-        return StreamSupport.stream(spliterator(), false).onClose(() -> {
             try
             {
                 close();
@@ -71,6 +66,35 @@ public interface IterableCursor<T> extends Iterable<T>, ICursor<T>
             {
                 onFailure(e);
             }
-        });
+        }
+    }
+
+    @Override
+    default public Spliterator<T> spliterator()
+    {
+        return Spliterators.spliteratorUnknownSize(iterator(), 0);
+    }
+
+    @Override
+    default public Stream<T> stream()
+    {
+        if (isOpen())
+        {
+            return StreamSupport.stream(spliterator(), false).onClose(() -> {
+
+                if (isAutoClosed() && isOpen())
+                {
+                    try
+                    {
+                        close();
+                    }
+                    catch (final IOException e)
+                    {
+                        onFailure(e);
+                    }
+                }
+            });
+        }
+        return Stream.empty();
     }
 }

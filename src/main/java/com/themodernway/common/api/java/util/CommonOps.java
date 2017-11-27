@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
-import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.IntSupplier;
 import java.util.function.LongSupplier;
@@ -46,6 +44,11 @@ public final class CommonOps
 
     public static final String CHARSET_UTF_8 = "UTF-8";
 
+    static
+    {
+        new CommonOps();
+    }
+
     private CommonOps()
     {
     }
@@ -53,18 +56,7 @@ public final class CommonOps
     @SuppressWarnings("unchecked")
     public static final <T> T CAST(final Object value)
     {
-        if (isNull(value))
-        {
-            return NULL();
-        }
-        try
-        {
-            return ((T) value);
-        }
-        catch (final ClassCastException e)
-        {
-            return NULL();
-        }
+        return ((T) value);
     }
 
     public static final <T> T NULL()
@@ -140,7 +132,7 @@ public final class CommonOps
     @SafeVarargs
     public static final <T> List<T> toList(final T... source)
     {
-        return Arrays.asList(requireNonNull(source));
+        return Arrays.asList(source);
     }
 
     public static final <T> List<T> toList(final Stream<T> source)
@@ -150,22 +142,22 @@ public final class CommonOps
 
     public static final <T> List<T> toList(final Enumeration<? extends T> source)
     {
-        return arrayList(requireNonNull(source));
+        return arrayList(source);
     }
 
     public static final <T> List<T> toList(final Collection<? extends T> source)
     {
-        return arrayList(requireNonNull(source));
+        return arrayList(source);
     }
 
     public static final <T> List<T> toList(final ICursor<? extends T> source)
     {
-        return arrayList(requireNonNull(source));
+        return arrayList(source);
     }
 
     public static final <T> List<T> toList(final IFixedIterable<? extends T> source)
     {
-        return arrayList(requireNonNull(source));
+        return arrayList(source);
     }
 
     public static final <T> List<T> emptyList()
@@ -178,16 +170,6 @@ public final class CommonOps
         return Collections.emptyMap();
     }
 
-    public static final <K, V> HashMap<K, V> hashMap()
-    {
-        return new HashMap<K, V>();
-    }
-
-    public static final <K, V> HashMap<K, V> hashMap(final Map<? extends K, ? extends V> source)
-    {
-        return new HashMap<K, V>(requireNonNull(source));
-    }
-
     public static final <K, V> LinkedHashMap<K, V> linkedMap()
     {
         return new LinkedHashMap<K, V>();
@@ -198,36 +180,15 @@ public final class CommonOps
         return new LinkedHashMap<K, V>(requireNonNull(source));
     }
 
-    public static final <K, V> Map<K, V> computedMap(final Collection<? extends K> source, final Function<K, V> builds)
-    {
-        requireNonNull(source);
-
-        requireNonNull(builds);
-
-        final Map<K, V> linked = linkedMap();
-
-        if (false == source.isEmpty())
-        {
-            source.forEach(mapkey -> {
-
-                if (null != mapkey)
-                {
-                    linked.put(mapkey, builds.apply(mapkey));
-                }
-            });
-        }
-        return linked;
-    }
-
     @SuppressWarnings("rawtypes")
     public static final <K, V> Map<K, V> RAWMAP(final Map source)
     {
-        return CAST(requireNonNull(source));
+        return CAST(source);
     }
 
     public static final Map<String, Object> STRMAP(final Map<String, ?> source)
     {
-        return CAST(requireNonNull(source));
+        return CAST(source);
     }
 
     public static final <T> List<T> toKeys(final Map<? extends T, ?> source)
@@ -242,15 +203,18 @@ public final class CommonOps
 
     public static final <T> List<T> toUnmodifiableList(final Collection<? extends T> source)
     {
-        if (requireNonNull(source).isEmpty())
-        {
-            return Collections.unmodifiableList(emptyList());
-        }
-        if (source instanceof List)
-        {
-            return Collections.unmodifiableList(CAST(source));
-        }
         return Collections.unmodifiableList(toList(source));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static final <T> List<T> toUnmodifiableList(final T... source)
+    {
+        return Collections.unmodifiableList(toList(source));
+    }
+
+    public static final <T> ArrayList<T> arrayListOfSize(final int size)
+    {
+        return new ArrayList<T>(Math.max(0, size));
     }
 
     public static final <T> ArrayList<T> arrayList()
@@ -258,20 +222,15 @@ public final class CommonOps
         return new ArrayList<T>();
     }
 
-    public static final <T> ArrayList<T> arrayList(final int size)
-    {
-        return new ArrayList<T>(Math.max(0, size));
-    }
-
     @SafeVarargs
     public static final <T> ArrayList<T> arrayList(final T... source)
     {
-        return new ArrayList<T>(toList(requireNonNull(source)));
+        return new ArrayList<T>(toList(source));
     }
 
     public static final <T> ArrayList<T> arrayList(final Stream<T> source)
     {
-        return new ArrayList<T>(toList(requireNonNull(source)));
+        return new ArrayList<T>(toList(source));
     }
 
     public static final <T> ArrayList<T> arrayList(final Collection<? extends T> source)
@@ -286,7 +245,7 @@ public final class CommonOps
 
     public static final <T> ArrayList<T> arrayList(final IFixedIterable<? extends T> source)
     {
-        return source.into(arrayList(source.size()));
+        return source.into(arrayList());
     }
 
     public static final <T> ArrayList<T> arrayList(final Enumeration<? extends T> source)
@@ -307,7 +266,7 @@ public final class CommonOps
 
     public static final <T> T[] toArray(final Collection<T> source, final IntFunction<T[]> generator)
     {
-        return toArray(requireNonNull(source), requireNonNull(generator).apply(source.size()));
+        return source.toArray(generator.apply(source.size()));
     }
 
     public static final <T> T[] toArray(final Stream<T> source, final IntFunction<T[]> generator)
@@ -318,20 +277,20 @@ public final class CommonOps
     @SafeVarargs
     public static final <T> T[] toArray(final T... source)
     {
-        return Arrays.copyOf(requireNonNull(source), source.length);
+        return Arrays.copyOf(source, source.length);
     }
 
-    public static boolean all(final Collection<?> arg0, final Collection<?> arg1)
+    public static final boolean all(final Collection<?> arg0, final Collection<?> arg1)
     {
-        return requireNonNull(arg0).containsAll(requireNonNull(arg1));
+        return arg0.containsAll(requireNonNull(arg1));
     }
 
-    public static boolean any(final Collection<?> arg0, final Collection<?> arg1)
+    public static final boolean any(final Collection<?> arg0, final Collection<?> arg1)
     {
-        return (false == none(requireNonNull(arg0), requireNonNull(arg1)));
+        return (false == none(arg0, arg1));
     }
 
-    public static boolean none(final Collection<?> arg0, final Collection<?> arg1)
+    public static final boolean none(final Collection<?> arg0, final Collection<?> arg1)
     {
         return Collections.disjoint(requireNonNull(arg0), requireNonNull(arg1));
     }

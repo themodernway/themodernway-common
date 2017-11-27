@@ -16,13 +16,13 @@
 
 package com.themodernway.common.api.types;
 
+import static com.themodernway.common.api.java.util.CommonOps.requireNonNull;
+import static com.themodernway.common.api.java.util.CommonOps.toOptional;
+
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-
-import com.themodernway.common.api.java.util.CommonOps;
 
 @FunctionalInterface
 public interface BooleanOp
@@ -31,14 +31,14 @@ public interface BooleanOp
 
     default public BooleanOp and(final BooleanOp op)
     {
-        CommonOps.requireNonNull(op);
+        requireNonNull(op);
 
         return () -> (test() && op.test());
     }
 
     default public BooleanOp or(final BooleanOp op)
     {
-        CommonOps.requireNonNull(op);
+        requireNonNull(op);
 
         return () -> (test() || op.test());
     }
@@ -50,21 +50,21 @@ public interface BooleanOp
 
     public static <T> BooleanOp compose(final T valu, final Predicate<T> pred)
     {
-        CommonOps.requireNonNull(pred);
+        requireNonNull(pred);
 
         return () -> pred.test(valu);
     }
 
     public static BooleanOp of(final BooleanOp op)
     {
-        return CommonOps.requireNonNull(op);
+        return requireNonNull(op);
     }
 
     public static <T> BooleanOp compose(final Supplier<T> valu, final Predicate<T> pred)
     {
-        CommonOps.requireNonNull(valu);
+        requireNonNull(valu);
 
-        CommonOps.requireNonNull(pred);
+        requireNonNull(pred);
 
         return () -> pred.test(valu.get());
     }
@@ -76,16 +76,16 @@ public interface BooleanOp
 
     public static BooleanOp of(final BooleanSupplier op)
     {
-        CommonOps.requireNonNull(op);
+        requireNonNull(op);
 
         return () -> op.getAsBoolean();
     }
 
     public static BooleanOp of(final Supplier<Boolean> op)
     {
-        CommonOps.requireNonNull(op);
+        requireNonNull(op);
 
-        return () -> Optional.ofNullable(op.get()).orElse(false);
+        return () -> toOptional(op.get()).orElse(false);
     }
 
     public static BooleanOp any(final BooleanOp... ops)

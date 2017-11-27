@@ -16,9 +16,13 @@
 
 package com.themodernway.common.api.types;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Activatable implements IActivatable
 {
-    private boolean m_active;
+    private static final long   serialVersionUID = 4994910595915077646L;
+
+    private final AtomicBoolean m_active;
 
     public Activatable()
     {
@@ -27,24 +31,18 @@ public class Activatable implements IActivatable
 
     public Activatable(final boolean active)
     {
-        m_active = active;
+        m_active = new AtomicBoolean(active);
     }
 
     @Override
     public boolean isActive()
     {
-        return m_active;
+        return m_active.get();
     }
 
     @Override
     public boolean setActive(final boolean active)
     {
-        if (active != m_active)
-        {
-            m_active = active;
-
-            return true;
-        }
-        return false;
+        return (m_active.getAndSet(active) != active);
     }
 }
