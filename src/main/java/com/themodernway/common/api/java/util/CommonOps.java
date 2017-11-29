@@ -137,7 +137,11 @@ public final class CommonOps
 
     public static final <T> List<T> toList(final Stream<T> source)
     {
-        return source.collect(Collectors.toList());
+        final List<T> result = source.collect(Collectors.toList());
+
+        source.close();
+
+        return result;
     }
 
     public static final <T> List<T> toList(final Enumeration<? extends T> source)
@@ -271,7 +275,11 @@ public final class CommonOps
 
     public static final <T> T[] toArray(final Stream<T> source, final IntFunction<T[]> generator)
     {
-        return source.toArray(requireNonNull(generator));
+        final T[] result = source.toArray(requireNonNull(generator));
+
+        source.close();
+
+        return result;
     }
 
     @SafeVarargs
