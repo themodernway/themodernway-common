@@ -49,7 +49,7 @@ http://docs.themodernway.com/documents/reports/themodernway-common/findbugs/main
 
 License:
 
-Copyright (c) 2017, The Modern Way. All rights reserved.
+Copyright (c) 2017, 2018, The Modern Way. All rights reserved.
 
 The Modern Way Common is released under version 2.0 of the Apache License.
 
