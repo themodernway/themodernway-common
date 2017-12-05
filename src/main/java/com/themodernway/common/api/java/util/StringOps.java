@@ -19,11 +19,11 @@ package com.themodernway.common.api.java.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class StringOps
@@ -46,13 +46,28 @@ public final class StringOps
 
     public static final String   HEXIDECIMAL_STRING   = "0123456789ABCDEF";
 
-    static
-    {
-        new StringOps();
-    }
-
     private StringOps()
     {
+    }
+
+    public static final boolean test()
+    {
+        return CommonOps.isNonNull(new StringOps());
+    }
+
+    public static final String repeat(final String string, final int times)
+    {
+        if ((CommonOps.requireNonNull(string).isEmpty()) || (times < 2))
+        {
+            return string;
+        }
+        final StringBuilder builder = new StringBuilder(string.length() * times);
+
+        for (int i = 0; i < times; i++)
+        {
+            builder.append(string);
+        }
+        return builder.toString();
     }
 
     public static final void setConsumerUniqueStringArray(final String list, final Consumer<String[]> prop)
@@ -234,27 +249,17 @@ public final class StringOps
 
     public static final String toCommaSeparated(final Collection<String> collection)
     {
-        final StringBuilder b = new StringBuilder();
+        return toCommaSeparated(collection.stream());
+    }
 
-        final Iterator<String> i = collection.iterator();
-
-        while (i.hasNext())
-        {
-            final String v = i.next();
-
-            b.append(v);
-
-            if (i.hasNext())
-            {
-                b.append(COMMA_LIST_SEPARATOR);
-            }
-        }
-        return b.toString();
+    public static final String toCommaSeparated(final Stream<String> stream)
+    {
+        return stream.collect(Collectors.joining(COMMA_LIST_SEPARATOR));
     }
 
     public static final String toCommaSeparated(final String... collection)
     {
-        return toCommaSeparated(Arrays.asList(collection));
+        return toCommaSeparated(Arrays.stream(collection));
     }
 
     public static final Collection<String> tokenizeToStringCollection(final String string)

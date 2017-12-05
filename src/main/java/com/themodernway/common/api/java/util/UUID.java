@@ -36,6 +36,11 @@ public final class UUID
     {
     }
 
+    public static final boolean test()
+    {
+        return CommonOps.isNonNull(new UUID());
+    }
+
     public static final String uuid()
     {
         final char[] uuid = new char[UUID_LENGTH];

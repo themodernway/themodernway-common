@@ -38,6 +38,12 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         closeCommonDefault()
     }
 
+    def "Test CommonOps.test()"()
+    {
+        expect:
+        CommonOps.test() == true
+    }
+
     def "Test CommonOps.NULL()"()
     {
         setup:

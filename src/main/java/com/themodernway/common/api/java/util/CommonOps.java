@@ -44,13 +44,13 @@ public final class CommonOps
 
     public static final String CHARSET_UTF_8 = "UTF-8";
 
-    static
-    {
-        new CommonOps();
-    }
-
     private CommonOps()
     {
+    }
+
+    public static final boolean test()
+    {
+        return isNonNull(new CommonOps());
     }
 
     @SuppressWarnings("unchecked")

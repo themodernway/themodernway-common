@@ -32,6 +32,12 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         closeCommonDefault()
     }
 
+    def "Test StringOps.test()'"()
+    {
+        expect:
+        StringOps.test() == true
+    }
+
     def "Test StringOps.reverse('1234') == '4321'"()
     {
         expect:

@@ -32,7 +32,13 @@ public class UUIDTestsSpecification extends AbstractCommonSpecification
     {
         closeCommonDefault()
     }
-    
+
+    def "Test UUID.test()"()
+    {
+        expect:
+        UUID.test() == true
+    }
+
     def "Test UUID isValid() true"()
     {
         setup:
@@ -40,11 +46,11 @@ public class UUIDTestsSpecification extends AbstractCommonSpecification
 
         expect:
         UUID.isValid(uuid) == true
-        
+
         cleanup:
         echo uuid
     }
-    
+
     def "Test UUID isValid() length false"()
     {
         setup:
@@ -52,11 +58,11 @@ public class UUIDTestsSpecification extends AbstractCommonSpecification
 
         expect:
         UUID.isValid(uuid) == false
-        
+
         cleanup:
         echo uuid
     }
-    
+
     def "Test UUID isValid() toLowerCase() false"()
     {
         setup:
@@ -64,11 +70,11 @@ public class UUIDTestsSpecification extends AbstractCommonSpecification
 
         expect:
         UUID.isValid(uuid) == false
-        
+
         cleanup:
         echo uuid
     }
-    
+
     def "Test UUID isValid() toUpperCase() true"()
     {
         setup:
@@ -76,11 +82,11 @@ public class UUIDTestsSpecification extends AbstractCommonSpecification
 
         expect:
         UUID.isValid(uuid) == true
-        
+
         cleanup:
         echo uuid
     }
-    
+
     def "Test UUID isValid() format dash false"()
     {
         setup:
@@ -88,11 +94,11 @@ public class UUIDTestsSpecification extends AbstractCommonSpecification
 
         expect:
         UUID.isValid(uuid) == false
-        
+
         cleanup:
         echo uuid
     }
-    
+
     def "Test UUID isValid() format [14]==4 false"()
     {
         setup:
@@ -102,11 +108,11 @@ public class UUIDTestsSpecification extends AbstractCommonSpecification
 
         expect:
         UUID.isValid(uuid) == false
-        
+
         cleanup:
         echo uuid
     }
-    
+
     def "Test UUID isValid() format false"()
     {
         setup:
@@ -116,11 +122,11 @@ public class UUIDTestsSpecification extends AbstractCommonSpecification
 
         expect:
         UUID.isValid(uuid) == false
-        
+
         cleanup:
         echo uuid
     }
-    
+
     def "Test UUID isValid() null false"()
     {
         setup:
@@ -129,7 +135,7 @@ public class UUIDTestsSpecification extends AbstractCommonSpecification
         expect:
         UUID.isValid(uuid) == false
     }
-    
+
     @Unroll
     def "Test UUID isValid() format [#i] false"(int i)
     {
@@ -140,7 +146,7 @@ public class UUIDTestsSpecification extends AbstractCommonSpecification
 
         expect:
         UUID.isValid(uuid) == false
-        
+
         cleanup:
         echo uuid
 
