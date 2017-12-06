@@ -16,11 +16,9 @@
 
 package com.themodernway.common.api.java.util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -57,7 +55,7 @@ public final class StringOps
 
     public static final String repeat(final String string, final int times)
     {
-        if ((CommonOps.requireNonNull(string).isEmpty()) || (times < 2))
+        if ((null == string) || (string.isEmpty()) || (times < 2))
         {
             return string;
         }
@@ -121,10 +119,6 @@ public final class StringOps
 
     public static final String[] toArray(final Collection<String> collection)
     {
-        if (collection.size() < 1)
-        {
-            return EMPTY_STRING_ARRAY;
-        }
         return CommonOps.toArray(collection, String[]::new);
     }
 
@@ -145,37 +139,11 @@ public final class StringOps
 
     public static final String[] toUniqueArray(final Collection<String> collection)
     {
-        if (collection.size() < 1)
-        {
-            return EMPTY_STRING_ARRAY;
-        }
-        if (collection.size() < 2)
-        {
-            final String[] uniq = CommonOps.toArray(collection, new String[1]);
-
-            if (null != uniq[0])
-            {
-                return uniq;
-            }
-            return EMPTY_STRING_ARRAY;
-        }
         return toArray(toUnique(collection.stream()));
     }
 
     public static final String[] toUniqueArray(final String... collection)
     {
-        if (collection.length < 1)
-        {
-            return EMPTY_STRING_ARRAY;
-        }
-        if (collection.length < 2)
-        {
-            if (null != collection[0])
-            {
-                return collection;
-            }
-            return EMPTY_STRING_ARRAY;
-        }
         return toArray(toUnique(Arrays.stream(collection)));
     }
 
@@ -186,37 +154,11 @@ public final class StringOps
 
     public static final List<String> toUnique(final String... collection)
     {
-        if (collection.length < 1)
-        {
-            return CommonOps.arrayListOfSize(0);
-        }
-        if (collection.length < 2)
-        {
-            if (null != collection[0])
-            {
-                return Arrays.asList(collection);
-            }
-            return CommonOps.arrayListOfSize(0);
-        }
         return toList(toUnique(Arrays.stream(collection)));
     }
 
     public static final List<String> toUnique(final Collection<String> collection)
     {
-        if (collection.size() < 1)
-        {
-            return CommonOps.arrayListOfSize(0);
-        }
-        if (collection.size() < 2)
-        {
-            final String[] uniq = CommonOps.toArray(collection, new String[1]);
-
-            if (null != uniq[0])
-            {
-                return Arrays.asList(uniq);
-            }
-            return CommonOps.arrayListOfSize(0);
-        }
         return toList(toUnique(collection.stream()));
     }
 
@@ -252,14 +194,18 @@ public final class StringOps
         return toCommaSeparated(collection.stream());
     }
 
-    public static final String toCommaSeparated(final Stream<String> stream)
-    {
-        return stream.collect(Collectors.joining(COMMA_LIST_SEPARATOR));
-    }
-
     public static final String toCommaSeparated(final String... collection)
     {
         return toCommaSeparated(Arrays.stream(collection));
+    }
+
+    public static final String toCommaSeparated(final Stream<String> stream)
+    {
+        final String string = stream.collect(Collectors.joining(COMMA_LIST_SEPARATOR));
+
+        stream.close();
+
+        return string;
     }
 
     public static final Collection<String> tokenizeToStringCollection(final String string)
@@ -279,28 +225,23 @@ public final class StringOps
 
     public static final Collection<String> tokenizeToStringCollection(final String string, final String delimiters, final boolean trim, final boolean ignore)
     {
-        if (null == string)
+        final Collection<String> list = CommonOps.arrayList();
+
+        if (CommonOps.not((null == string) || (string.isEmpty()) || (null == delimiters) || (delimiters.isEmpty())))
         {
-            return null;
-        }
-        final ArrayList<String> li = CommonOps.arrayList();
-
-        final StringTokenizer st = new StringTokenizer(string, delimiters);
-
-        while (st.hasMoreTokens())
-        {
-            String token = st.nextToken();
-
-            if (trim)
+            for (String token : string.split(delimiters))
             {
-                token = token.trim();
-            }
-            if ((false == ignore) || (token.length() > 0))
-            {
-                li.add(token);
+                if (trim)
+                {
+                    token = token.trim();
+                }
+                if ((false == ignore) || (token.length() > 0))
+                {
+                    list.add(token);
+                }
             }
         }
-        return li;
+        return list;
     }
 
     public static final String toPrintableString(final String... list)
@@ -313,21 +254,11 @@ public final class StringOps
         {
             return EMPTY_ARRAY_STRING;
         }
-        final StringBuilder builder = new StringBuilder();
-
-        builder.append('[');
+        final StringBuilder builder = new StringBuilder().append('[');
 
         for (final String item : list)
         {
-            if (null != item)
-            {
-                builder.append('"').append(escapeForJavaScript(item)).append('"');
-            }
-            else
-            {
-                builder.append(NULL_AS_STRING);
-            }
-            builder.append(COMMA_LIST_SEPARATOR);
+            escapeForJavaScript(item, builder).append(COMMA_LIST_SEPARATOR);
         }
         final int sepr = COMMA_LIST_SEPARATOR.length();
 
@@ -551,25 +482,14 @@ public final class StringOps
         return new StringBuilder(string).reverse().toString();
     }
 
-    public static final String escapeForJavaScript(final String string)
-    {
-        if (null == string)
-        {
-            return NULL_AS_STRING;
-        }
-        if (string.isEmpty())
-        {
-            return string;
-        }
-        return escapeForJavaScript(string, new StringBuilder()).toString();
-    }
-
     public static final StringBuilder escapeForJavaScript(final String string, final StringBuilder builder)
     {
         if (null == string)
         {
             return builder.append(NULL_AS_STRING);
         }
+        builder.append('"');
+
         final int leng = string.length();
 
         for (int i = 0; i < leng; i++)
@@ -633,19 +553,23 @@ public final class StringOps
                 }
             }
         }
-        return builder;
+        return builder.append('"');
     }
 
-    public static final void failIfNullBytePresent(final String string)
+    public static final String failIfNullBytePresent(final String string)
     {
-        final int size = string.length();
-
-        for (int i = 0; i < size; i++)
+        if (null != string)
         {
-            if (string.charAt(i) == 0)
+            final int size = string.length();
+
+            for (int i = 0; i < size; i++)
             {
-                throw new IllegalArgumentException("Null byte present in string. There are no known legitimate use cases for such data, but several injection attacks may use it");
+                if (string.charAt(i) == 0)
+                {
+                    throw new IllegalArgumentException("Null byte present in string. There are no known legitimate use cases for such data, but several injection attacks may use it.");
+                }
             }
         }
+        return string;
     }
 }

@@ -511,6 +511,18 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         echo valu
     }
 
+    def "Test toUnmodifiableList(Stream)"()
+    {
+        setup:
+        def valu = CommonOps.toUnmodifiableList(Arrays.stream('A', 'B', 'C', 'A').distinct())
+
+        expect:
+        valu.size() == 3
+
+        cleanup:
+        echo valu
+    }
+
     def "Test linkedMap()"()
     {
         setup:
@@ -793,6 +805,30 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     {
         setup:
         def valu = CommonOps.none(['A', 'B', 'C', 'D'], ['E', 'F'])
+
+        expect:
+        valu == true
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test not(true)"()
+    {
+        setup:
+        def valu = CommonOps.not(true)
+
+        expect:
+        valu == false
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test not(false)"()
+    {
+        setup:
+        def valu = CommonOps.not(false)
 
         expect:
         valu == true

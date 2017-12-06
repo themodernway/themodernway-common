@@ -64,6 +64,11 @@ public final class CommonOps
         return null;
     }
 
+    public static final boolean not(final boolean value)
+    {
+        return (false == value);
+    }
+
     public static final boolean isNull(final Object value)
     {
         return (null == value);
@@ -137,11 +142,11 @@ public final class CommonOps
 
     public static final <T> List<T> toList(final Stream<T> source)
     {
-        final List<T> result = source.collect(Collectors.toList());
+        final List<T> list = source.collect(Collectors.toList());
 
         source.close();
 
-        return result;
+        return list;
     }
 
     public static final <T> List<T> toList(final Enumeration<? extends T> source)
@@ -210,6 +215,11 @@ public final class CommonOps
         return Collections.unmodifiableList(toList(source));
     }
 
+    public static final <T> List<T> toUnmodifiableList(final Stream<T> source)
+    {
+        return Collections.unmodifiableList(toList(source));
+    }
+
     @SuppressWarnings("unchecked")
     public static final <T> List<T> toUnmodifiableList(final T... source)
     {
@@ -270,16 +280,16 @@ public final class CommonOps
 
     public static final <T> T[] toArray(final Collection<T> source, final IntFunction<T[]> generator)
     {
-        return source.toArray(generator.apply(source.size()));
+        return toArray(source, generator.apply(source.size()));
     }
 
     public static final <T> T[] toArray(final Stream<T> source, final IntFunction<T[]> generator)
     {
-        final T[] result = source.toArray(requireNonNull(generator));
+        final T[] list = source.toArray(requireNonNull(generator));
 
         source.close();
 
-        return result;
+        return list;
     }
 
     @SafeVarargs
@@ -295,7 +305,7 @@ public final class CommonOps
 
     public static final boolean any(final Collection<?> arg0, final Collection<?> arg1)
     {
-        return (false == none(arg0, arg1));
+        return not(none(arg0, arg1));
     }
 
     public static final boolean none(final Collection<?> arg0, final Collection<?> arg1)

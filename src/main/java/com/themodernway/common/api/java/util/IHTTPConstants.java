@@ -302,81 +302,11 @@ public interface IHTTPConstants
 
     public static final long   YEAR_IN_MILLISECONDS                   = 31536000000L;
 
-    public static final long   NANOSECONDS_IN_MILLISECONDS            = 1000000L;
+    public static final long   MILLISECONDS_IN_SECOND                 = 1000L;
+
+    public static final long   NANOSECONDS_IN_MILLISECOND             = 1000000L;
 
     public static final int    DEFAULT_CONTENT_TYPE_MAX_HEADER_LENGTH = 64;
 
     public static final int    MAXIMUM_CONTENT_TYPE_MAX_HEADER_LENGTH = 128;
-
-    public static final long   DEFAULT_CACHE_DELTA_IN_MILLISECONDS    = 1000L;
-
-    public static String doContentDispositionAttahcmentFileNameHeader(final String name)
-    {
-        return ATTACHMENT_FILENAME_PREFIX + name;
-    }
-
-    public static String doContentDispositionInlineFileNameHeader(final String name)
-    {
-        return ATTACHMENT_INLINE_FILENAME_PREFIX + name;
-    }
-
-    public static String doMaxAgeHeaderInSecords(final long seconds)
-    {
-        return CACHE_CONTROL_MAX_AGE_PREFIX + seconds;
-    }
-
-    public static String doMaxAgeHeaderInHours(final long hours)
-    {
-        return doMaxAgeHeaderInSecords(hours * HOUR_IN_SECONDS);
-    }
-
-    public static String doMaxAgeHeaderInDays(final long days)
-    {
-        return doMaxAgeHeaderInSecords(days * DAY_IN_SECONDS);
-    }
-
-    public static String doMaxAgeHeaderInWeeks(final long weeks)
-    {
-        return doMaxAgeHeaderInSecords(weeks * WEEK_IN_SECONDS);
-    }
-
-    public static String doMaxAgeHeaderInYears(final long years)
-    {
-        return doMaxAgeHeaderInSecords(years * YEAR_IN_SECONDS);
-    }
-
-    public static String doStrictTransportSecurityHeaderInSeconds(final long seconds, final boolean subdomains)
-    {
-        return CACHE_CONTROL_MAX_AGE_PREFIX + seconds + ((subdomains) ? "; includeSubDomains" : "");
-    }
-
-    public static String doStrictTransportSecurityHeaderInSeconds(final long seconds)
-    {
-        return doStrictTransportSecurityHeaderInSeconds(seconds, true);
-    }
-
-    public static String doStrictTransportSecurityHeaderInYears(final long years)
-    {
-        return doStrictTransportSecurityHeaderInYears(years, true);
-    }
-
-    public static String doStrictTransportSecurityHeaderInYears(final long years, final boolean subdomains)
-    {
-        return doStrictTransportSecurityHeaderInSeconds(years * YEAR_IN_SECONDS, subdomains);
-    }
-
-    public static String doStrictTransportSecurityHeader()
-    {
-        return doStrictTransportSecurityHeaderInYears(1, true);
-    }
-
-    public static String doStrictTransportSecurityHeader(final boolean subdomains)
-    {
-        return doStrictTransportSecurityHeaderInYears(1, subdomains);
-    }
-
-    public static boolean isHTTPCodeInRange(final int code, final int minc, final int maxc)
-    {
-        return ((code >= minc) && (code <= maxc));
-    }
 }
