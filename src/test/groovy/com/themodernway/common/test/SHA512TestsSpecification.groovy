@@ -14,11 +14,28 @@
  * limitations under the License.
  */
 
-package com.themodernway.common.api.types;
+package com.themodernway.common.test
 
-public interface IOrdered<O extends Comparable<O>>
+import com.themodernway.common.util.AbstractCommonSpecification
+import com.themodernway.common.util.SHA512Helper
+
+public class SHA512TestsSpecification extends AbstractCommonSpecification
 {
-    public O getOrder();
+    def setupSpec()
+    {
+        setupCommonDefault()
+    }
 
-    public void setOrder(O order);
+    def cleanupSpec()
+    {
+        closeCommonDefault()
+    }
+
+    def "Test SHA512Helper.test()"()
+    {
+        def help = new SHA512Helper()
+
+        expect:
+        help.sha512("dean", "test", 17)  != null
+    }
 }
