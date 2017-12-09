@@ -20,8 +20,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Activatable implements IActivatable
 {
-    private static final long   serialVersionUID = 4994910595915077646L;
-
     private final AtomicBoolean m_active;
 
     public Activatable()

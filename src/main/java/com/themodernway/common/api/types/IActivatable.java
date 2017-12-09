@@ -16,9 +16,7 @@
 
 package com.themodernway.common.api.types;
 
-import java.io.Serializable;
-
-public interface IActivatable extends Serializable
+public interface IActivatable
 {
     public boolean isActive();
 
