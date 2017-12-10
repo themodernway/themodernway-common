@@ -16,15 +16,11 @@
 
 package com.themodernway.common.test
 
+import com.themodernway.common.api.json.JSONType
 import com.themodernway.common.util.AbstractCommonSpecification
-import com.themodernway.common.util.SHA512Helper
 
-import spock.lang.Shared
-
-public class SHA512TestsSpecification extends AbstractCommonSpecification
+public class JSONTestsSpecification extends AbstractCommonSpecification
 {
-    @Shared helper = new SHA512Helper()
-
     def setupSpec()
     {
         setupCommonDefault()
@@ -35,39 +31,33 @@ public class SHA512TestsSpecification extends AbstractCommonSpecification
         closeCommonDefault()
     }
 
-    def "Test SHA512Helper.test 0()"()
+    def "Test JSONType.test()"()
     {
         expect:
-        helper.sha512("dean")  == helper.sha512("dean")
+        JSONType.ARRAY.getValue() == "array"
     }
 
-    def "Test SHA512Helper.test 1()"()
+    def "Test JSONType.test 1()"()
     {
         expect:
-        helper.sha512("dean", "test", 17)  == helper.sha512("dean", "test", 17)
+        JSONType.OBJECT.toString() == "object"
     }
 
-    def "Test SHA512Helper.test 2()"()
+    def "Test JSONType.test 2()"()
     {
+        setup:
+        def list = JSONType.values()
+
         expect:
-        helper.sha512("dean", "test")  == helper.sha512("dean", "test")
+        list.length == 9
     }
 
-    def "Test SHA512Helper.test 3()"()
+    def "Test JSONType.test 3()"()
     {
-        expect:
-        helper.sha512("dean", "test", 1)  == helper.sha512("dean", "test", 1)
-    }
+        setup:
+        def valu = JSONType.valueOf("OBJECT")
 
-    def "Test SHA512Helper.test 4()"()
-    {
         expect:
-        helper.sha512("dean", "test", 3)  == helper.sha512("dean", "test", 3)
-    }
-
-    def "Test SHA512Helper.test 5()"()
-    {
-        expect:
-        helper.sha512("dean", "test", 30)  == helper.sha512("dean", "test", 30)
+        valu == JSONType.OBJECT
     }
 }

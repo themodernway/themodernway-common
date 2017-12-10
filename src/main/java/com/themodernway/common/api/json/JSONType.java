@@ -38,6 +38,6 @@ public enum JSONType implements IStringValued
     @Override
     public final String toString()
     {
-        return m_value;
+        return getValue();
     }
 }

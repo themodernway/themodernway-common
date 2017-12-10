@@ -16,33 +16,44 @@
 
 package com.themodernway.common.api.java.util;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.IntFunction;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class StringOps
 {
-    public static final String   CHARSET_UTF_8        = CommonOps.CHARSET_UTF_8;
+    public static final String                CHARSET_UTF_8        = CommonOps.CHARSET_UTF_8;
 
-    public static final String   COMMA_LIST_TOKENIZER = ",";
+    public static final String                NULL_STRING          = null;
 
-    public static final String   COMMA_LIST_SEPARATOR = ", ";
+    public static final String                EMPTY_STRING         = "";
 
-    public static final String   NULL_STRING          = null;
+    public static final String                SPACE_STRING         = " ";
 
-    public static final String   EMPTY_STRING         = "";
+    public static final String                COMMA_STRING         = ",";
 
-    public static final String   NULL_AS_STRING       = "null";
+    public static final String                START_ARRAY_STRING   = "[";
 
-    public static final String   EMPTY_ARRAY_STRING   = "[]";
+    public static final String                CLOSE_ARRAY_STRING   = "]";
 
-    public static final String[] EMPTY_STRING_ARRAY   = new String[0];
+    public static final String                NULL_AS_STRING       = "null";
 
-    public static final String   HEXIDECIMAL_STRING   = "0123456789ABCDEF";
+    public static final String                HEXIDECIMAL_STRING   = "0123456789ABCDEF";
+
+    public static final String                EMPTY_ARRAY_STRING   = START_ARRAY_STRING + CLOSE_ARRAY_STRING;
+
+    public static final String                COMMA_LIST_TOKENIZER = COMMA_STRING;
+
+    public static final String                COMMA_LIST_SEPARATOR = COMMA_STRING + SPACE_STRING;
+
+    public static final String[]              EMPTY_STRING_ARRAY   = new String[0];
+
+    public static final IntFunction<String[]> BUILD_STRING_ARRAY   = String[]::new;
 
     private StringOps()
     {
@@ -119,7 +130,7 @@ public final class StringOps
 
     public static final String[] toArray(final Collection<String> collection)
     {
-        return CommonOps.toArray(collection, String[]::new);
+        return CommonOps.toArray(collection, BUILD_STRING_ARRAY);
     }
 
     public static final String[] toArray(final String... collection)
@@ -129,7 +140,7 @@ public final class StringOps
 
     public static final String[] toArray(final Stream<String> stream)
     {
-        return CommonOps.toArray(stream, String[]::new);
+        return CommonOps.toArray(stream, BUILD_STRING_ARRAY);
     }
 
     public static final List<String> toList(final Stream<String> stream)
@@ -144,7 +155,7 @@ public final class StringOps
 
     public static final String[] toUniqueArray(final String... collection)
     {
-        return toArray(toUnique(Arrays.stream(collection)));
+        return toArray(toUnique(CommonOps.toStream(collection)));
     }
 
     public static final Stream<String> toUnique(final Stream<String> stream)
@@ -154,7 +165,7 @@ public final class StringOps
 
     public static final List<String> toUnique(final String... collection)
     {
-        return toList(toUnique(Arrays.stream(collection)));
+        return toList(toUnique(CommonOps.toStream(collection)));
     }
 
     public static final List<String> toUnique(final Collection<String> collection)
@@ -176,19 +187,6 @@ public final class StringOps
         }
     }
 
-    public static final String toPrintableString(final Collection<String> collection)
-    {
-        if (null == collection)
-        {
-            return NULL_AS_STRING;
-        }
-        if (collection.isEmpty())
-        {
-            return EMPTY_ARRAY_STRING;
-        }
-        return toPrintableString(toArray(collection));
-    }
-
     public static final String toCommaSeparated(final Collection<String> collection)
     {
         return toCommaSeparated(collection.stream());
@@ -196,7 +194,7 @@ public final class StringOps
 
     public static final String toCommaSeparated(final String... collection)
     {
-        return toCommaSeparated(Arrays.stream(collection));
+        return toCommaSeparated(CommonOps.toStream(collection));
     }
 
     public static final String toCommaSeparated(final Stream<String> stream)
@@ -225,7 +223,7 @@ public final class StringOps
 
     public static final Collection<String> tokenizeToStringCollection(final String string, final String delimiters, final boolean trim, final boolean ignore)
     {
-        final Collection<String> list = CommonOps.arrayList();
+        final ArrayList<String> list = CommonOps.arrayList();
 
         if (CommonOps.not((null == string) || (string.isEmpty()) || (null == delimiters) || (delimiters.isEmpty())))
         {
@@ -244,19 +242,19 @@ public final class StringOps
         return list;
     }
 
-    public static final String toPrintableString(final String... list)
+    public static final String toPrintableString(final Collection<String> collection)
     {
-        if (null == list)
+        if (null == collection)
         {
             return NULL_AS_STRING;
         }
-        if (list.length == 0)
+        if (collection.isEmpty())
         {
             return EMPTY_ARRAY_STRING;
         }
-        final StringBuilder builder = new StringBuilder().append('[');
+        final StringBuilder builder = new StringBuilder(START_ARRAY_STRING);
 
-        for (final String item : list)
+        for (final String item : collection)
         {
             escapeForJavaScript(item, builder).append(COMMA_LIST_SEPARATOR);
         }
@@ -270,7 +268,20 @@ public final class StringOps
         {
             builder.setLength(leng - sepr);
         }
-        return builder.append(']').toString();
+        return builder.append(CLOSE_ARRAY_STRING).toString();
+    }
+
+    public static final String toPrintableString(final String... list)
+    {
+        if (null == list)
+        {
+            return NULL_AS_STRING;
+        }
+        if (list.length == 0)
+        {
+            return EMPTY_ARRAY_STRING;
+        }
+        return toPrintableString(CommonOps.toList(list));
     }
 
     public static final String toTrimOrNull(String string)

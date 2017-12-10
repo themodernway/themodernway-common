@@ -293,6 +293,12 @@ public final class CommonOps
     }
 
     @SafeVarargs
+    public static final <T> Stream<T> toStream(final T... source)
+    {
+        return Arrays.stream(source);
+    }
+
+    @SafeVarargs
     public static final <T> T[] toArray(final T... source)
     {
         return Arrays.copyOf(source, source.length);

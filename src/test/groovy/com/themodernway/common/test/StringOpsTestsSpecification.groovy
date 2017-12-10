@@ -865,6 +865,19 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         echo list
     }
 
+    def "Test StringOps.toPrintableString(['text','data','text']) s"()
+    {
+        setup:
+        def list = StringOps.toPrintableString(["text\n", "data", "text"])
+
+        expect:
+        list != null
+        list == '["text\\n", "data", "text"]'
+
+        cleanup:
+        echo list
+    }
+
     def "Test StringOpsHelper.getNames('text','data','text')"()
     {
         setup:
