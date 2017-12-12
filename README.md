@@ -14,13 +14,13 @@ Maven:
 <dependency>
   <groupId>com.themodernway</groupId>
   <artifactId>themodernway-common</artifactId>
-  <version>1.2.18-RELEASE</version>
+  <version>1.2.19-RELEASE</version>
 </dependency>
 ```
 Gradle:
 ```
 dependencies {
-    compile(group:'com.themodernway',name:'themodernway-common',version:'1.2.18-RELEASE')
+    compile(group:'com.themodernway',name:'themodernway-common',version:'1.2.19-RELEASE')
 }
 ```
 Javadoc URL:
