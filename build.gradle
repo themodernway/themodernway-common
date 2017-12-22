@@ -23,6 +23,7 @@ buildscript {
         classpath(group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.4')
         classpath(group: 'org.fusesource.jansi', name: 'jansi', version: '1.16')
         classpath(group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.13', classifier: 'indy')
+        classpath(group: 'org.owasp', name: 'dependency-check-gradle', version: '3.0.2')
     }
 }
 
@@ -39,6 +40,7 @@ apply plugin: 'signing'
 apply plugin: 'eclipse'
 apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
+apply plugin: 'org.owasp.dependencycheck'
 
 compileJava.options.encoding = 'UTF-8'
 
@@ -150,9 +152,14 @@ tasks.withType(FindBugs) {
     }
 }
 
+dependencyCheck {
+    failOnError=false
+    outputDirectory="${buildDir}/reports/cve"
+}
+
 task checkCodeQuality << { println ":checkCodeQuality-done" }
 
-checkCodeQuality.dependsOn codeCoverage,checkstyleMain,pmdMain,findbugsMain
+checkCodeQuality.dependsOn codeCoverage,checkstyleMain,pmdMain,findbugsMain,dependencyCheckAnalyze
 
 jar {
     manifest {
