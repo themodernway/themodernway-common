@@ -48,7 +48,7 @@ sourceCompatibility = 1.8
 
 targetCompatibility = 1.8
 
-version = '1.2.23-RELEASE'
+version = '1.2.24-RELEASE'
 
 group = 'com.themodernway'
 
@@ -71,7 +71,7 @@ task doJavaDocs(type: Groovydoc) {
     classpath = sourceSets.main.runtimeClasspath + buildscript.configurations.classpath
     destinationDir = file("${buildDir}/docs/javadoc")
     includes = ['com/themodernway/common/**']
-    docTitle = "TheModernWay Common"
+    docTitle = "${getProjectCommonName()}"
     footer = "<small><a href=\"${getBuildGITHomeURL()}\" target=\"_blank\">${getProjectCommonName()} - &copy; 2017, 2018</a> - <a href=\"${getBuildGITCommitHash()}\" target=\"_blank\">${getBuildModuleVersion()}</a> - <a href=\"mailto:deansjones@gmail.com\">Author: Dean S. Jones</a></small>"
     getGroovydocLinks().each { name, list ->
         link(name, *list)
@@ -89,7 +89,7 @@ task javadocJar(type: Jar, dependsOn: doJavaDocs) {
 }
 
 checkstyle {
-    toolVersion = "7.7"
+    toolVersion = '7.7'
     ignoreFailures = true
 }
 
@@ -99,7 +99,9 @@ compileJava.dependsOn(clean)
 
 jar.dependsOn(filterConfigs)
 
-task codeCoverage << { println ":codeCoverage-done" }
+task codeCoverage {
+    doLast { println ':codeCoverage-done' }
+}
 
 codeCoverage.dependsOn jacocoTestReport
 
@@ -107,10 +109,10 @@ jacocoTestReport {
     reports {
         csv {
             enabled true
-            destination "${buildDir}/reports/jacoco/coverage-${version}.csv"
+            destination file("${buildDir}/reports/jacoco/coverage-${version}.csv")
         }
         xml.enabled false
-        html.destination "${buildDir}/reports/coverage"
+        html.destination file("${buildDir}/reports/coverage")
     }
 }
 
@@ -125,7 +127,7 @@ test {
 
 pmd {
     ignoreFailures = true
-    toolVersion = "5.6.1"
+    toolVersion = '5.6.1'
     ruleSets = [
         'java-basic',
         'java-braces',
@@ -134,15 +136,15 @@ pmd {
         'java-optimizations',
         'java-strictexception',
         'java-strings',
-        'java-unusedcode'           
-        ]
+        'java-unusedcode'
+    ]
 }
-    
+
 findbugs {
     ignoreFailures = true
-    toolVersion = "3.0.1"
-    effort = "max"
-    excludeFilter = file("config/findbugs/filter.xml")
+    toolVersion = '3.0.1'
+    effort = 'max'
+    excludeFilter = file('config/findbugs/filter.xml')
 }
 
 tasks.withType(FindBugs) {
@@ -155,10 +157,12 @@ tasks.withType(FindBugs) {
 dependencyCheck {
     failOnError = false
     outputDirectory = "${buildDir}/reports/cve"
-    suppressionFile = file("config/cve/suppress.xml")
+    suppressionFile = file('config/cve/suppress.xml')
 }
 
-task checkCodeQuality << { println ":checkCodeQuality-done" }
+task checkCodeQuality {
+    doLast { println ':checkCodeQuality-done' }
+}
 
 checkCodeQuality.dependsOn codeCoverage,checkstyleMain,pmdMain,findbugsMain,dependencyCheckAnalyze
 
@@ -197,7 +201,7 @@ def String getBuildServerHost() {
         InetAddress.getLocalHost().getHostName()
     }
     catch (Exception e) {
-        "localhost"
+        'localhost'
     }
 }
 
@@ -210,7 +214,7 @@ def String getBuildUser() {
 }
 
 def String getBuildServerBuild() {
-    System.getenv('BUILD_DISPLAY_NAME') ?: 'Command line ' + GradleVersion.current().toString()
+    System.getenv('BUILD_DISPLAY_NAME') ?: "Command line gradle version ${gradle.gradleVersion}"
 }
 
 def String getBuildGITHomeURL() {
@@ -232,20 +236,17 @@ def String getBuildGITCommitMessage() {
 repositories { mavenCentral() }
 
 sourceSets {
-    main {
-        resources { source java }
-    }
+    main { resources { source java } }
 }
 
 dependencies {
-    compile(group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2')    
+    compile(group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2')
     testCompile(group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.13', classifier: 'indy')
     testCompile(group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4') {
         exclude(group: 'org.codehaus.groovy', module: 'groovy-all')
     }
     testCompile(group: 'commons-codec', name: 'commons-codec', version: '1.11')
     testCompile(group: 'log4j', name: 'log4j', version: '1.2.17')
-    testCompile(group: 'log4j', name: 'apache-log4j-extras', version: '1.2.17')
     testCompile(group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25')
     testCompile(group: 'org.slf4j', name: 'jul-to-slf4j', version: '1.7.25')
     testCompile(group: 'org.slf4j', name: 'log4j-over-slf4j', version: '1.7.25')
@@ -310,25 +311,27 @@ def Map<String, List<String>> getGroovydocLinks() {
     lmap
 }
 
-task(buildGroovydocLinks) << {
-    def site = [:]
-    File data = file('groovydoc/GROOVYDOC_LINK_SITES.txt')
-    if (data.exists()) {
-        data.eachLine { line ->
-            site[line] = ((CharSequence) new URL("${line}/package-list").text).tokenize('\n')
+task buildGroovydocLinks {
+    doLast {
+        def site = [:]
+        File data = file('groovydoc/GROOVYDOC_LINK_SITES.txt')
+        if (data.exists()) {
+            data.eachLine { line ->
+                site[line] = ((CharSequence) new URL("${line}/package-list").text).tokenize('\n')
+            }
         }
+        File make = file('groovydoc/GROOVYDOC_LINK_LISTS.txt')
+        if(make.exists()) {
+            make.delete()
+        }
+        make.createNewFile()
+        def save = make.newPrintWriter()
+        site.each { link, list ->
+            def show = "${link}"
+            list.each { line -> show = "${show},${line}" }
+            save.println("${show}")
+        }
+        save.flush()
+        save.close()
     }
-    File make = file('groovydoc/GROOVYDOC_LINK_LISTS.txt')
-    if(make.exists()) {
-        make.delete()
-    }
-    make.createNewFile()
-    def save = make.newPrintWriter()
-    site.each { link, list ->
-        def show = "${link}"
-        list.each { line -> show = "${show},${line}" }
-        save.println("${show}")
-    }
-    save.flush()
-    save.close()
 }
