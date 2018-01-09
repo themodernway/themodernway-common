@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018, The Modern Way. All rights reserved.
+ * Copyright (c) 2018, The Modern Way. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,6 @@
 
 package com.themodernway.common.api.types;
 
-import static com.themodernway.common.api.java.util.CommonOps.requireNonNull;
-import static com.themodernway.common.api.java.util.CommonOps.toList;
-
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -26,49 +23,47 @@ import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
+import com.themodernway.common.api.java.util.CommonOps;
+
 public class CoreCursor<T> implements ICursor<T>
 {
     private static final long   serialVersionUID = 1L;
 
     private final Iterator<T>   m_iter;
 
-    private final AtomicBoolean m_open;
+    private final AtomicBoolean m_open           = new AtomicBoolean(true);
 
-    private final AtomicBoolean m_auto;
+    private final AtomicBoolean m_auto           = new AtomicBoolean(true);
 
     public CoreCursor(final Iterator<T> srciter)
     {
-        m_iter = requireNonNull(srciter);
-
-        m_open = new AtomicBoolean(true);
-
-        m_auto = new AtomicBoolean(true);
+        m_iter = CommonOps.requireNonNull(srciter);
     }
 
     @SafeVarargs
     public CoreCursor(final T... source)
     {
-        this(toList(source).iterator());
+        this(CommonOps.toList(source).iterator());
     }
 
     public CoreCursor(final Stream<T> source)
     {
-        this(toList(source).iterator());
+        this(CommonOps.toList(source).iterator());
     }
 
     public CoreCursor(final Collection<T> source)
     {
-        this(toList(source).iterator());
+        this(CommonOps.toList(source).iterator());
     }
 
     public CoreCursor(final Enumeration<T> source)
     {
-        this(toList(source).iterator());
+        this(CommonOps.toList(source).iterator());
     }
 
     public CoreCursor(final IFixedIterable<T> source)
     {
-        this(toList(source).iterator());
+        this(CommonOps.toList(source).iterator());
     }
 
     @Override

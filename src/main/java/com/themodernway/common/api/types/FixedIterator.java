@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018, The Modern Way. All rights reserved.
+ * Copyright (c) 2018, The Modern Way. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 package com.themodernway.common.api.types;
 
-import static com.themodernway.common.api.java.util.CommonOps.requireNonNull;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
+
+import com.themodernway.common.api.java.util.CommonOps;
 
 public class FixedIterator<T> implements Iterator<T>
 {
@@ -32,7 +32,7 @@ public class FixedIterator<T> implements Iterator<T>
 
     public FixedIterator(final IFixedIterable<T> iter)
     {
-        m_size = (m_iter = requireNonNull(iter)).size();
+        m_size = (m_iter = CommonOps.requireNonNull(iter)).size();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class FixedIterator<T> implements Iterator<T>
     @Override
     public void forEachRemaining(final Consumer<? super T> action)
     {
-        requireNonNull(action);
+        CommonOps.requireNonNull(action);
 
         while (hasNext())
         {

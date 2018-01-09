@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018, The Modern Way. All rights reserved.
+ * Copyright (c) 2018, The Modern Way. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,12 +81,12 @@ public final class CommonOps
 
     public static final <T> T requireNonNullOrElse(final T value, final T otherwise)
     {
-        return isNonNull(value) ? value : otherwise;
+        return (null != value) ? value : otherwise;
     }
 
     public static final <T> T requireNonNullOrElse(final T value, final Supplier<T> otherwise)
     {
-        return isNonNull(value) ? value : otherwise.get();
+        return (null != value) ? value : otherwise.get();
     }
 
     public static final <T> T requireNonNull(final T value)
@@ -212,6 +212,10 @@ public final class CommonOps
 
     public static final <T> List<T> toUnmodifiableList(final Collection<? extends T> source)
     {
+        if (source instanceof List)
+        {
+            return Collections.unmodifiableList(CAST(source));
+        }
         return Collections.unmodifiableList(toList(source));
     }
 
@@ -222,6 +226,21 @@ public final class CommonOps
 
     @SuppressWarnings("unchecked")
     public static final <T> List<T> toUnmodifiableList(final T... source)
+    {
+        return Collections.unmodifiableList(toList(source));
+    }
+
+    public static final <T> List<T> toUnmodifiableList(final ICursor<? extends T> source)
+    {
+        return Collections.unmodifiableList(toList(source));
+    }
+
+    public static final <T> List<T> toUnmodifiableList(final IFixedIterable<? extends T> source)
+    {
+        return Collections.unmodifiableList(toList(source));
+    }
+
+    public static final <T> List<T> toUnmodifiableList(final Enumeration<? extends T> source)
     {
         return Collections.unmodifiableList(toList(source));
     }

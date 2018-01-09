@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018, The Modern Way. All rights reserved.
+ * Copyright (c) 2018, The Modern Way. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 package com.themodernway.common.api.types;
 
-import static com.themodernway.common.api.java.util.CommonOps.requireNonNull;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import com.themodernway.common.api.java.util.CommonOps;
 
 public interface IFixedIterable<T> extends Iterable<T>
 {
@@ -52,7 +52,7 @@ public interface IFixedIterable<T> extends Iterable<T>
 
     default public <A extends Collection<? super T>> A into(final A target)
     {
-        requireNonNull(target);
+        CommonOps.requireNonNull(target);
 
         forEach(target::add);
 

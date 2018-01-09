@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018, The Modern Way. All rights reserved.
+ * Copyright (c) 2018, The Modern Way. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,12 @@
 
 package com.themodernway.common.api.types;
 
-import static com.themodernway.common.api.java.util.CommonOps.CAST;
-import static com.themodernway.common.api.java.util.CommonOps.toList;
-import static com.themodernway.common.api.java.util.CommonOps.toUnmodifiableList;
-
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Stream;
+
+import com.themodernway.common.api.java.util.CommonOps;
 
 public class FixedListIterable<T> implements IFixedIterable<T>
 {
@@ -32,27 +30,27 @@ public class FixedListIterable<T> implements IFixedIterable<T>
     @SafeVarargs
     public FixedListIterable(final T... source)
     {
-        m_list = toList(source);
+        m_list = CommonOps.toList(source);
     }
 
     public FixedListIterable(final ICursor<T> source)
     {
-        m_list = toList(source);
+        m_list = CommonOps.toList(source);
     }
 
     public FixedListIterable(final Stream<T> source)
     {
-        m_list = toList(source);
+        m_list = CommonOps.toList(source);
     }
 
     public FixedListIterable(final Collection<T> source)
     {
-        m_list = toList(source);
+        m_list = CommonOps.toList(source);
     }
 
     public FixedListIterable(final Enumeration<T> source)
     {
-        m_list = toList(source);
+        m_list = CommonOps.toList(source);
     }
 
     @Override
@@ -75,7 +73,7 @@ public class FixedListIterable<T> implements IFixedIterable<T>
 
     public List<T> asList()
     {
-        return toUnmodifiableList(m_list);
+        return CommonOps.toUnmodifiableList(m_list);
     }
 
     @Override
@@ -93,7 +91,7 @@ public class FixedListIterable<T> implements IFixedIterable<T>
         }
         if (other instanceof FixedListIterable)
         {
-            final FixedListIterable<T> fixed = CAST(other);
+            final FixedListIterable<T> fixed = CommonOps.CAST(other);
 
             return m_list.equals(fixed.m_list);
         }

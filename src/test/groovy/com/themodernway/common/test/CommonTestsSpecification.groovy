@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018, The Modern Way. All rights reserved.
+ * Copyright (c) 2018, The Modern Way. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -521,6 +521,54 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
 
         cleanup:
         echo valu
+    }
+
+    def "Test toUnmodifiableList(Set)"()
+    {
+        setup:
+        def valu = CommonOps.toUnmodifiableList([name: 'dean', age: '53', mood: 'good', life: 'good'].keySet())
+
+        expect:
+        valu.size() == 4
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test CommonOps.toUnmodifiableList(Enumeration)"()
+    {
+        setup:
+        def list = CommonOps.toUnmodifiableList(new Hashtable<String, String>([name: 'dean', age: '53', mood: 'good', life: 'good']).keys())
+
+        expect:
+        list.size() == 4
+
+        cleanup:
+        echo list
+    }
+
+    def "Test CommonOps.toUnmodifiableList(FixedListIterable)"()
+    {
+        setup:
+        def list = CommonOps.toUnmodifiableList(new FixedListIterable<String>('A', 'B', 'C', 'D'))
+
+        expect:
+        list.size() == 4
+
+        cleanup:
+        echo list
+    }
+
+    def "Test CommonOps.toUnmodifiableList(FixedCursor)"()
+    {
+        setup:
+        def list = CommonOps.toUnmodifiableList(new CoreCursor<String>('A', 'B', 'C', 'D'))
+
+        expect:
+        list.size() == 4
+
+        cleanup:
+        echo list
     }
 
     def "Test linkedMap()"()

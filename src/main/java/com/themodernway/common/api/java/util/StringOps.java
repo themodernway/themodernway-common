@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018, The Modern Way. All rights reserved.
+ * Copyright (c) 2018, The Modern Way. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,11 +35,19 @@ public final class StringOps
 
     public static final String                SPACE_STRING         = " ";
 
+    public static final String                PLACE_STRING         = ".";
+
     public static final String                COMMA_STRING         = ",";
+
+    public static final String                MINUS_STRING         = "-";
 
     public static final String                START_ARRAY_STRING   = "[";
 
     public static final String                CLOSE_ARRAY_STRING   = "]";
+
+    public static final String                SINGLE_QUOT_STRING   = "'";
+
+    public static final String                DOUBLE_QUOT_STRING   = "\"";
 
     public static final String                NULL_AS_STRING       = "null";
 
@@ -499,7 +507,7 @@ public final class StringOps
         {
             return builder.append(NULL_AS_STRING);
         }
-        builder.append('"');
+        builder.append(DOUBLE_QUOT_STRING);
 
         final int leng = string.length();
 
@@ -564,7 +572,7 @@ public final class StringOps
                 }
             }
         }
-        return builder.append('"');
+        return builder.append(DOUBLE_QUOT_STRING);
     }
 
     public static final String failIfNullBytePresent(final String string)
@@ -577,7 +585,7 @@ public final class StringOps
             {
                 if (string.charAt(i) == 0)
                 {
-                    throw new IllegalArgumentException("Null byte present in string. There are no known legitimate use cases for such data, but several injection attacks may use it.");
+                    throw new IllegalArgumentException("null byte present in string, there are no known legitimate use cases for such data, but several injection attacks may use it.");
                 }
             }
         }

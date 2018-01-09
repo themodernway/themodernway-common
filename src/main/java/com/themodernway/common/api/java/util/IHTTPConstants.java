@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018, The Modern Way. All rights reserved.
+ * Copyright (c) 2018, The Modern Way. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -305,6 +305,8 @@ public interface IHTTPConstants
     public static final long   MILLISECONDS_IN_SECOND                 = 1000L;
 
     public static final long   NANOSECONDS_IN_MILLISECOND             = 1000000L;
+
+    public static final double NANOSECONDS_TO_MILLISECOND             = 1.0E-6;
 
     public static final int    DEFAULT_CONTENT_TYPE_MAX_HEADER_LENGTH = 64;
 

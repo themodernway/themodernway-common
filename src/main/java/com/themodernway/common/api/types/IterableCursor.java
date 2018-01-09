@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018, The Modern Way. All rights reserved.
+ * Copyright (c) 2018, The Modern Way. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package com.themodernway.common.api.types;
 
-import static com.themodernway.common.api.java.util.CommonOps.requireNonNull;
-
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -27,12 +25,14 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import com.themodernway.common.api.java.util.CommonOps;
+
 public interface IterableCursor<T> extends Iterable<T>, ICursor<T>
 {
     @Override
     default public <A extends Collection<? super T>> A into(final A target)
     {
-        requireNonNull(target);
+        CommonOps.requireNonNull(target);
 
         if (isOpen())
         {
@@ -50,7 +50,7 @@ public interface IterableCursor<T> extends Iterable<T>, ICursor<T>
     @Override
     default public void forEach(final Consumer<? super T> action)
     {
-        requireNonNull(action);
+        CommonOps.requireNonNull(action);
 
         for (final T t : this)
         {
