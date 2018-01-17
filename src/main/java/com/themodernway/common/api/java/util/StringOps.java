@@ -16,9 +16,12 @@
 
 package com.themodernway.common.api.java.util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+import java.util.StringJoiner;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
@@ -260,23 +263,13 @@ public final class StringOps
         {
             return EMPTY_ARRAY_STRING;
         }
-        final StringBuilder builder = new StringBuilder(START_ARRAY_STRING);
+        final StringJoiner joiner = new StringJoiner(COMMA_LIST_SEPARATOR, START_ARRAY_STRING, CLOSE_ARRAY_STRING);
 
         for (final String item : collection)
         {
-            escapeForJavaScript(item, builder).append(COMMA_LIST_SEPARATOR);
+            joiner.add(toEscapedStringForJavaScript(item));
         }
-        final int sepr = COMMA_LIST_SEPARATOR.length();
-
-        final int leng = builder.length();
-
-        final int tail = builder.lastIndexOf(COMMA_LIST_SEPARATOR);
-
-        if ((tail >= 0) && (tail == (leng - sepr)))
-        {
-            builder.setLength(leng - sepr);
-        }
-        return builder.append(CLOSE_ARRAY_STRING).toString();
+        return joiner.toString();
     }
 
     public static final String toPrintableString(final String... list)
@@ -289,7 +282,13 @@ public final class StringOps
         {
             return EMPTY_ARRAY_STRING;
         }
-        return toPrintableString(CommonOps.toList(list));
+        final StringJoiner joiner = new StringJoiner(COMMA_LIST_SEPARATOR, START_ARRAY_STRING, CLOSE_ARRAY_STRING);
+
+        for (final String item : list)
+        {
+            joiner.add(toEscapedStringForJavaScript(item));
+        }
+        return joiner.toString();
     }
 
     public static final String toTrimOrNull(String string)
@@ -440,23 +439,21 @@ public final class StringOps
         {
             return false;
         }
-        int leng = string.length();
+        int leng = (string = string.toLowerCase()).length();
 
-        if (leng < 3)
-        {
-            return false;
-        }
         if (string.charAt(0) == 'v')
         {
-            leng = (string = string.substring(1).trim()).length();
+            leng = (string = string.substring(1)).length();
 
-            if (leng < 3)
+            if (leng < 1)
             {
                 return false;
             }
         }
-        int dots = 0;
-
+        else
+        {
+            return false;
+        }
         boolean digi = false;
 
         for (int i = 0; i < leng; i++)
@@ -472,8 +469,6 @@ public final class StringOps
                         return false;
                     }
                     digi = false;
-
-                    dots++;
                 }
                 else
                 {
@@ -485,7 +480,7 @@ public final class StringOps
                 digi = true;
             }
         }
-        return ((true == digi) && (dots > 0));
+        return digi;
     }
 
     public static final String reverse(final String string)
@@ -501,13 +496,47 @@ public final class StringOps
         return new StringBuilder(string).reverse().toString();
     }
 
-    public static final StringBuilder escapeForJavaScript(final String string, final StringBuilder builder)
+    public static final String toHexString(final char c)
+    {
+        return Integer.toHexString(c).toUpperCase(Locale.ENGLISH);
+    }
+
+    public static final String toEscapedStringForJavaScript(final String string)
     {
         if (null == string)
         {
-            return builder.append(NULL_AS_STRING);
+            return NULL_AS_STRING;
         }
-        builder.append(DOUBLE_QUOT_STRING);
+        return toEscapedForJavaScript(string, new StringBuilder()).toString();
+    }
+
+    public static final StringBuilder toEscapedForJavaScript(final String string, final StringBuilder builder)
+    {
+        try
+        {
+            return toEscapedForJavaScriptAppendable(string, builder);
+        }
+        catch (final IOException e)
+        {
+            throw new IllegalArgumentException(e.getCause());
+        }
+    }
+
+    public static final <T extends Appendable> T toEscapedForJavaScriptAppendable(final String string, final T appender) throws IOException
+    {
+        try
+        {
+            CommonOps.requireNonNull(appender, "null appender");
+        }
+        catch (final NullPointerException e)
+        {
+            throw new IOException(e);
+        }
+        if (null == string)
+        {
+            return CommonOps.CAST(appender.append(NULL_AS_STRING));
+        }
+        appender.append(DOUBLE_QUOT_STRING);
 
         final int leng = string.length();
 
@@ -517,62 +546,70 @@ public final class StringOps
 
             if (((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')) || (c == ' ') || ((c >= '0') && (c <= '9')))
             {
-                builder.append(c); // ASCII will be most common, this improves write speed about 5%, FWIW.
+                appender.append(c); // ASCII will be most common, this improves write speed about 5%, FWIW.
             }
             else
             {
-                switch (c)
+                if (c > 0xfff)
                 {
-                    case '"':
-                        builder.append("\\\"");
-                        break;
-                    case '\\':
-                        builder.append("\\\\");
-                        break;
-                    case '\b':
-                        builder.append("\\b");
-                        break;
-                    case '\f':
-                        builder.append("\\f");
-                        break;
-                    case '\n':
-                        builder.append("\\n");
-                        break;
-                    case '\r':
-                        builder.append("\\r");
-                        break;
-                    case '\t':
-                        builder.append("\\t");
-                        break;
-                    case '/':
-                        builder.append("\\/");
-                        break;
-                    default:
-                        // Reference: http://www.unicode.org/versions/Unicode5.1.0/
-
-                        if (((c >= '\u0000') && (c <= '\u001F')) || ((c >= '\u007F') && (c <= '\u009F')) || ((c >= '\u2000') && (c <= '\u20FF')))
-                        {
-                            final String unic = Integer.toHexString(c);
-
-                            final int size = 4 - unic.length();
-
-                            builder.append("\\u");
-
-                            for (int k = 0; k < size; k++)
-                            {
-                                builder.append('0');
-                            }
-                            builder.append(unic.toUpperCase());
-                        }
-                        else
-                        {
-                            builder.append(c);
-                        }
-                        break;
+                    appender.append("\\u").append(toHexString(c));
+                }
+                else if (c > 0xff)
+                {
+                    appender.append("\\u0").append(toHexString(c));
+                }
+                else if (c > 0x7f)
+                {
+                    appender.append("\\u00").append(toHexString(c));
+                }
+                else if (c < 32)
+                {
+                    switch (c)
+                    {
+                        case '\b':
+                            appender.append('\\').append('b');
+                            break;
+                        case '\n':
+                            appender.append('\\').append('n');
+                            break;
+                        case '\t':
+                            appender.append('\\').append('t');
+                            break;
+                        case '\f':
+                            appender.append('\\').append('f');
+                            break;
+                        case '\r':
+                            appender.append('\\').append('r');
+                            break;
+                        default:
+                            appender.append((c > 0xf) ? "\\u00" : "\\u000").append(toHexString(c));
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (c)
+                    {
+                        case '\'':
+                            appender.append('\\').append('\'');
+                            break;
+                        case '"':
+                            appender.append('\\').append('"');
+                            break;
+                        case '\\':
+                            appender.append('\\').append('\\');
+                            break;
+                        case '/':
+                            appender.append('\\').append('/');
+                            break;
+                        default:
+                            appender.append(c);
+                            break;
+                    }
                 }
             }
         }
-        return builder.append(DOUBLE_QUOT_STRING);
+        return CommonOps.CAST(appender.append(DOUBLE_QUOT_STRING));
     }
 
     public static final String failIfNullBytePresent(final String string)

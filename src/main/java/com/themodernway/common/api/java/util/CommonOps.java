@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -184,6 +185,16 @@ public final class CommonOps
         return new LinkedHashMap<K, V>();
     }
 
+    public static final <T> LinkedHashSet<T> linkedSet()
+    {
+        return new LinkedHashSet<T>();
+    }
+
+    public static final <T> LinkedHashSet<T> linkedSet(final Collection<? extends T> source)
+    {
+        return new LinkedHashSet<T>(requireNonNull(source));
+    }
+
     public static final <K, V> LinkedHashMap<K, V> linkedMap(final Map<? extends K, ? extends V> source)
     {
         return new LinkedHashMap<K, V>(requireNonNull(source));
@@ -224,7 +235,7 @@ public final class CommonOps
         return Collections.unmodifiableList(toList(source));
     }
 
-    @SuppressWarnings("unchecked")
+    @SafeVarargs
     public static final <T> List<T> toUnmodifiableList(final T... source)
     {
         return Collections.unmodifiableList(toList(source));
@@ -243,6 +254,36 @@ public final class CommonOps
     public static final <T> List<T> toUnmodifiableList(final Enumeration<? extends T> source)
     {
         return Collections.unmodifiableList(toList(source));
+    }
+
+    @SafeVarargs
+    public static final <T> List<T> toListOfLists(final List<T>... lists)
+    {
+        final List<T> list = arrayList();
+
+        for (final List<T> adds : lists)
+        {
+            if ((null != adds) && (false == adds.isEmpty()))
+            {
+                list.addAll(adds);
+            }
+        }
+        return list;
+    }
+
+    @SafeVarargs
+    public static final <T> List<T> toListOfListsUnique(final List<T>... lists)
+    {
+        final LinkedHashSet<T> look = linkedSet();
+
+        for (final List<T> adds : lists)
+        {
+            if ((null != adds) && (false == adds.isEmpty()))
+            {
+                look.addAll(adds);
+            }
+        }
+        return toList(look);
     }
 
     public static final <T> ArrayList<T> arrayListOfSize(final int size)

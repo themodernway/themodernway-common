@@ -219,16 +219,16 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         StringOps.isVersionID("1") == false
     }
 
-    def "Test StringOps.isVersionID('1.0') true"()
+    def "Test StringOps.isVersionID('1.0') false"()
     {
         expect:
-        StringOps.isVersionID("1.0") == true
+        StringOps.isVersionID("1.0") == false
     }
 
-    def "Test StringOps.isVersionID('1.0.53') true"()
+    def "Test StringOps.isVersionID('1.0.53') false"()
     {
         expect:
-        StringOps.isVersionID("1.0.53") == true
+        StringOps.isVersionID("1.0.53") == false
     }
 
     def "Test StringOps.isVersionID('1.X') false"()
@@ -243,16 +243,16 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         StringOps.isVersionID("v1.0") == true
     }
 
-    def "Test StringOps.isVersionID('v1') false"()
+    def "Test StringOps.isVersionID('v1') true"()
     {
         expect:
-        StringOps.isVersionID("v1") == false
+        StringOps.isVersionID("v1") == true
     }
 
-    def "Test StringOps.isVersionID('v12') false"()
+    def "Test StringOps.isVersionID('v12') true"()
     {
         expect:
-        StringOps.isVersionID("v12") == false
+        StringOps.isVersionID("v10") == true
     }
 
     def "Test StringOps.isVersionID('v.') false"()
@@ -265,6 +265,12 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
     {
         expect:
         StringOps.isVersionID("v") == false
+    }
+
+    def "Test StringOps.isVersionID('vX') false"()
+    {
+        expect:
+        StringOps.isVersionID("vX") == false
     }
 
     def "Test StringOps.failIfNullBytePresent()"()
@@ -673,6 +679,30 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         echo list
     }
 
+    def "Test StringOps.tokenizeToStringCollection(null)"()
+    {
+        setup:
+        def list = StringOps.tokenizeToStringCollection(null)
+
+        expect:
+        list.size() == 0
+
+        cleanup:
+        echo list
+    }
+
+    def "Test StringOps.tokenizeToStringCollection('')"()
+    {
+        setup:
+        def list = StringOps.tokenizeToStringCollection('')
+
+        expect:
+        list.size() == 0
+
+        cleanup:
+        echo list
+    }
+
     def "Test StringOps.tokenizeToStringCollection('text, data, dean')"()
     {
         setup:
@@ -772,6 +802,54 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         echo list
     }
 
+    def "Test StringOps.toEscapedForJavaScript()"()
+    {
+        when:
+        StringOps.toEscapedForJavaScript("dean", null as StringBuilder)
+
+        then:
+        thrown IllegalArgumentException
+    }
+
+    def "Test StringOps.toEscapedStringForJavaScript(dean)"()
+    {
+        setup:
+        def text = StringOps.toEscapedStringForJavaScript("dean")
+
+        expect:
+        text != null
+        text == '"dean"'
+
+        cleanup:
+        echo text
+    }
+
+    def "Test StringOps.toEscapedStringForJavaScript(null)"()
+    {
+        setup:
+        def text = StringOps.toEscapedStringForJavaScript(null)
+
+        expect:
+        text != null
+        text == 'null'
+
+        cleanup:
+        echo text
+    }
+
+    def "Test StringOps.toEscapedForJavaScriptAppendable(null)"()
+    {
+        setup:
+        def text = StringOps.toEscapedForJavaScriptAppendable(null, new StringBuilder()).toString()
+
+        expect:
+        text != null
+        text == 'null'
+
+        cleanup:
+        echo text
+    }
+
     def "Test StringOps.toPrintableString(['text','data','text'])"()
     {
         setup:
@@ -785,7 +863,7 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         echo list
     }
 
-    def "Test StringOps.toPrintableString(['text','data','text',null])"()
+    def "Test StringOps.toPrintableString(['text', 'data', 'text', null])"()
     {
         setup:
         def list = StringOps.toPrintableString(["text", "data", "text", null])
@@ -801,11 +879,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
     def "Test StringOps.toPrintableString('text','data','text')"()
     {
         setup:
-        def list = StringOps.toPrintableString("text", "data", "text")
+        def list = StringOps.toPrintableString("text", "data", "text\u00A9")
 
         expect:
         list != null
-        list == '["text", "data", "text"]'
+        list == '["text", "data", "text\\u00A9"]'
 
         cleanup:
         echo list
@@ -868,11 +946,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
     def "Test StringOps.toPrintableString(['text','data','text']) s"()
     {
         setup:
-        def list = StringOps.toPrintableString(["text\n", "data", "text"])
+        def list = StringOps.toPrintableString(["text\n", "data\t", "text\r"])
 
         expect:
         list != null
-        list == '["text\\n", "data", "text"]'
+        list == '["text\\n", "data\\t", "text\\r"]'
 
         cleanup:
         echo list

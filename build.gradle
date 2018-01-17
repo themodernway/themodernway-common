@@ -48,7 +48,7 @@ sourceCompatibility = 1.8
 
 targetCompatibility = 1.8
 
-version = '1.2.29-RELEASE'
+version = '1.2.30-RELEASE'
 
 group = 'com.themodernway'
 
@@ -117,6 +117,9 @@ jacocoTestReport {
 jacocoTestReport.dependsOn test
 
 test {
+    minHeapSize = '2048m'
+    maxHeapSize = '2048m'
+    testLogging.showStandardStreams = true
     jacoco {
         append = false
         destinationFile = file("${buildDir}/jacoco/testing.exec")
@@ -132,7 +135,6 @@ pmd {
         'java-empty',
         'java-imports',
         'java-optimizations',
-        'java-strictexception',
         'java-strings',
         'java-unusedcode'
     ]
