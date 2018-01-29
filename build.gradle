@@ -48,7 +48,7 @@ sourceCompatibility = 1.8
 
 targetCompatibility = 1.8
 
-version = '1.2.33-RELEASE'
+version = '1.3.0-RELEASE'
 
 group = 'com.themodernway'
 
@@ -244,10 +244,9 @@ dependencies {
         exclude(group: 'org.codehaus.groovy', module: 'groovy-all')
     }
     testCompile(group: 'commons-codec', name: 'commons-codec', version: '1.11')
-    testCompile(group: 'log4j', name: 'log4j', version: '1.2.17')
+    testCompile(group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3')
     testCompile(group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25')
     testCompile(group: 'org.slf4j', name: 'jul-to-slf4j', version: '1.7.25')
-    testCompile(group: 'org.slf4j', name: 'log4j-over-slf4j', version: '1.7.25')
     testCompile(group: 'commons-logging', name: 'commons-logging', version: '1.2')
 }
 

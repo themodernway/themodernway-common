@@ -19,7 +19,8 @@ package com.themodernway.common.util;
 import java.security.MessageDigest;
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.themodernway.common.api.hash.Hasher;
 import com.themodernway.common.api.hash.IHasher;
@@ -27,7 +28,7 @@ import com.themodernway.common.api.java.util.CommonOps;
 
 public final class SHA512Helper implements IHasher
 {
-    private static final Logger logger   = Logger.getLogger(SHA512Helper.class);
+    private static final Logger logger   = LoggerFactory.getLogger(SHA512Helper.class);
 
     private final Hasher        m_hasher = new Hasher(this);
 

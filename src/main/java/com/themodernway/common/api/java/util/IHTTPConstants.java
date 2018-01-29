@@ -124,6 +124,10 @@ public interface IHTTPConstants
 
     public static final String CONTENT_RANGE_HEADER                   = "Content-Range";
 
+    public static final String CONTENT_SECURITY_POLICY_HEADER         = "Content-Security-Policy";
+
+    public static final String CONTENT_SECURITY_POLICY_REPORT_HEADER  = "Content-Security-Policy-Report-Only";
+
     public static final String ETAG_HEADER                            = "ETag";
 
     public static final String EXPECT_HEADER                          = "Expect";
@@ -259,6 +263,8 @@ public interface IHTTPConstants
     public static final String MUST_REVALIDATE_PRAGMA_HEADER_VALUE    = "must-revalidate";
 
     public static final String NO_CACHE_CONTROL_HEADER_VALUE          = "no-cache, no-store, must-revalidate";
+
+    public static final String X_XSS_PROTECTION_HEADER_VALUE          = "1; mode=block";
 
     public static final String HTTP_METHOD_DELETE                     = "DELETE";
 

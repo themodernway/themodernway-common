@@ -18,9 +18,12 @@ package com.themodernway.common.util;
 
 import java.net.URL;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.xml.DOMConfigurator;
+import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.joran.JoranConfigurator;
+import ch.qos.logback.core.joran.spi.JoranException;
+import ch.qos.logback.core.util.StatusPrinter;
 
 public interface ICommonTesting
 {
@@ -28,7 +31,7 @@ public interface ICommonTesting
     {
         public static final void setupCommonLogging() throws Exception
         {
-            setupCommonLogging("/testing-log4j.xml");
+            setupCommonLogging("logback-testing.xml");
         }
 
         public static final void setupCommonLogging(final String location) throws Exception
@@ -41,14 +44,25 @@ public interface ICommonTesting
             }
             else
             {
-                if (location.toLowerCase().endsWith(".xml"))
+                final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+
+                try
                 {
-                    DOMConfigurator.configure(url);
+                    final JoranConfigurator configurator = new JoranConfigurator();
+
+                    configurator.setContext(context);
+
+                    context.reset();
+
+                    configurator.doConfigure(url);
                 }
-                else
+                catch (final JoranException e)
                 {
-                    PropertyConfigurator.configure(url);
+                    StatusPrinter.printInCaseOfErrorsOrWarnings(context);
+
+                    return;
                 }
+                StatusPrinter.printInCaseOfErrorsOrWarnings(context);
             }
         }
 
@@ -59,7 +73,9 @@ public interface ICommonTesting
 
         public static final void closeCommonLogging()
         {
-            LogManager.shutdown();
+            final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+
+            context.stop();
         }
 
         public static final void closeCommonDefault()

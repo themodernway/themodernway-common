@@ -18,7 +18,8 @@ package com.themodernway.common.util
 
 import static java.lang.System.err
 
-import org.apache.log4j.Logger
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import com.themodernway.common.api.json.JSONStringify
 
@@ -49,7 +50,7 @@ public abstract class AbstractCommonSpecification extends Specification implemen
     {
         if (null == m_logger)
         {
-            m_logger = Logger.getLogger(getClass())
+            m_logger = LoggerFactory.getLogger(getClass())
         }
         m_logger
     }
