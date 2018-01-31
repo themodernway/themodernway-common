@@ -16,14 +16,9 @@
 
 package com.themodernway.common.util;
 
-import java.net.URL;
-
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.core.joran.spi.JoranException;
-import ch.qos.logback.core.util.StatusPrinter;
 
 public interface ICommonTesting
 {
@@ -31,39 +26,6 @@ public interface ICommonTesting
     {
         public static final void setupCommonLogging() throws Exception
         {
-            setupCommonLogging("logback-testing.xml");
-        }
-
-        public static final void setupCommonLogging(final String location) throws Exception
-        {
-            final URL url = TestingOps.class.getResource(location);
-
-            if (null == url)
-            {
-                System.err.println("can't find " + location);
-            }
-            else
-            {
-                final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-
-                try
-                {
-                    final JoranConfigurator configurator = new JoranConfigurator();
-
-                    configurator.setContext(context);
-
-                    context.reset();
-
-                    configurator.doConfigure(url);
-                }
-                catch (final JoranException e)
-                {
-                    StatusPrinter.printInCaseOfErrorsOrWarnings(context);
-
-                    return;
-                }
-                StatusPrinter.printInCaseOfErrorsOrWarnings(context);
-            }
         }
 
         public static final void setupCommonDefault() throws Exception
