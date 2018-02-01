@@ -14,42 +14,42 @@ Maven:
 <dependency>
   <groupId>com.themodernway</groupId>
   <artifactId>themodernway-common</artifactId>
-  <version>1.3.2-RELEASE</version>
+  <version>2.0.0-RC1</version>
 </dependency>
 ```
 Gradle:
 ```
 dependencies {
-    compile(group: 'com.themodernway', name: 'themodernway-common', version: '1.3.2-RELEASE')
+    compile(group: 'com.themodernway', name: 'themodernway-common', version: '2.0.0-RC1')
 }
 ```
 Javadoc URL:
 
-http://docs.themodernway.com/documents/javadoc/themodernway-common/
+http://docs.themodernway.com/documents/javadoc/themodernway-common-v2/
 
 Tests URL:
 
-http://docs.themodernway.com/documents/reports/themodernway-common/tests/test/
+http://docs.themodernway.com/documents/reports/themodernway-common-v2/tests/test/
 
 Code Coverage URL:
 
-http://docs.themodernway.com/documents/reports/themodernway-common/coverage/
+http://docs.themodernway.com/documents/reports/themodernway-common-v2/coverage/
 
 Check Style URL:
 
-http://docs.themodernway.com/documents/reports/themodernway-common/checkstyle/main.html
+http://docs.themodernway.com/documents/reports/themodernway-common-v2/checkstyle/main.html
 
 PMD URL:
 
-http://docs.themodernway.com/documents/reports/themodernway-common/pmd/main.html
+http://docs.themodernway.com/documents/reports/themodernway-common-v2/pmd/main.html
 
 FindBugs URL:
 
-http://docs.themodernway.com/documents/reports/themodernway-common/findbugs/main.html
+http://docs.themodernway.com/documents/reports/themodernway-common-v2/findbugs/main.html
 
 CVE Dependency Check URL:
 
-http://docs.themodernway.com/documents/reports/themodernway-common/cve/dependency-check-report.html
+http://docs.themodernway.com/documents/reports/themodernway-common-v2/cve/dependency-check-report.html
 
 License:
 
