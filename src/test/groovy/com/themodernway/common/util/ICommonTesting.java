@@ -16,10 +16,6 @@
 
 package com.themodernway.common.util;
 
-import org.slf4j.LoggerFactory;
-
-import ch.qos.logback.classic.LoggerContext;
-
 public interface ICommonTesting
 {
     public static class TestingOps
@@ -35,9 +31,6 @@ public interface ICommonTesting
 
         public static final void closeCommonLogging()
         {
-            final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-
-            context.stop();
         }
 
         public static final void closeCommonDefault()
