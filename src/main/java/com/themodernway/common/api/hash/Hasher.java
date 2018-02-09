@@ -37,35 +37,37 @@ public final class Hasher implements IHasher
     @Override
     public String sha512(final String text, final String salt)
     {
-        return sha512(CommonOps.requireNonNull(text), salt, (salt.length() + 1) * 2);
+        return sha512(CommonOps.requireNonNull(text), salt, 20000);
     }
 
     @Override
-    public String sha512(String text, final String salt, int iter)
+    public String sha512(final String text, final int iter)
+    {
+        return sha512(CommonOps.requireNonNull(text), null, 20000);
+    }
+
+    @Override
+    public String sha512(String text, final String salt, final int iter)
     {
         CommonOps.requireNonNull(text);
 
-        CommonOps.requireNonNull(salt);
+        final String sval = CommonOps.requireNonNullOrElse(salt, StringOps.EMPTY_STRING);
 
         if (iter < 2)
         {
-            return sha512(text + salt);
-        }
-        if ((iter < 5) || (iter > 25))
-        {
-            iter = 13;
+            return sha512(text + sval);
         }
         for (int i = 0; i < iter; i++)
         {
             if ((i % 2) == 0)
             {
-                text = text + salt;
+                text = text + sval;
             }
             else
             {
-                text = salt + text;
+                text = sval + text;
             }
-            text = StringOps.reverse(sha512(text));
+            text = sha512(text);
         }
         return text;
     }
