@@ -68,7 +68,7 @@ task filterConfigs(dependsOn: deleteConfigs, type: Copy) {
 
 task doJavaDocs(type: Groovydoc) {
     source = sourceSets.main.allSource
-    classpath = sourceSets.main.compileClasspath
+    classpath = sourceSets.main.runtimeClasspath + buildscript.configurations.classpath
     destinationDir = file("${buildDir}/docs/javadoc")
     includes = ['com/themodernway/common/**']
     docTitle = "${getProjectCommonName()}"
