@@ -32,6 +32,7 @@ import java.util.function.DoubleSupplier;
 import java.util.function.IntFunction;
 import java.util.function.IntSupplier;
 import java.util.function.LongSupplier;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -150,6 +151,11 @@ public final class CommonOps
         return list;
     }
 
+    public static final <T> List<T> toList(final Stream<T> source, final Predicate<? super T> predicate)
+    {
+        return toList(source.filter(predicate));
+    }
+
     public static final <T> List<T> toList(final Enumeration<? extends T> source)
     {
         return arrayList(source);
@@ -235,6 +241,11 @@ public final class CommonOps
         return Collections.unmodifiableList(toList(source));
     }
 
+    public static final <T> List<T> toUnmodifiableList(final Stream<T> source, final Predicate<? super T> predicate)
+    {
+        return Collections.unmodifiableList(toList(source, predicate));
+    }
+
     @SafeVarargs
     public static final <T> List<T> toUnmodifiableList(final T... source)
     {
@@ -307,6 +318,11 @@ public final class CommonOps
         return new ArrayList<T>(toList(source));
     }
 
+    public static final <T> ArrayList<T> arrayList(final Stream<T> source, final Predicate<? super T> predicate)
+    {
+        return new ArrayList<T>(toList(source, predicate));
+    }
+
     public static final <T> ArrayList<T> arrayList(final Collection<? extends T> source)
     {
         return new ArrayList<T>(requireNonNull(source));
@@ -350,6 +366,11 @@ public final class CommonOps
         source.close();
 
         return list;
+    }
+
+    public static final <T> T[] toArray(final Stream<T> source, final Predicate<? super T> predicate, final IntFunction<T[]> generator)
+    {
+        return toArray(source.filter(predicate), generator);
     }
 
     @SafeVarargs

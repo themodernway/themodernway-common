@@ -24,6 +24,7 @@ import java.util.Locale;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -65,6 +66,8 @@ public final class StringOps
     public static final String[]              EMPTY_STRING_ARRAY   = new String[0];
 
     public static final IntFunction<String[]> BUILD_STRING_ARRAY   = String[]::new;
+
+    public static final Predicate<String>     STRING_NULL_FILTER   = valu -> valu != null;
 
     private StringOps()
     {
@@ -144,6 +147,11 @@ public final class StringOps
         return CommonOps.toArray(collection, BUILD_STRING_ARRAY);
     }
 
+    public static final String[] toArray(final Collection<String> collection, final Predicate<String> predicate)
+    {
+        return toArray(collection.stream(), predicate);
+    }
+
     public static final String[] toArray(final String... collection)
     {
         return CommonOps.toArray(collection);
@@ -154,14 +162,29 @@ public final class StringOps
         return CommonOps.toArray(stream, BUILD_STRING_ARRAY);
     }
 
+    public static final String[] toArray(final Stream<String> stream, final Predicate<String> predicate)
+    {
+        return CommonOps.toArray(stream, predicate, BUILD_STRING_ARRAY);
+    }
+
     public static final List<String> toList(final Stream<String> stream)
     {
         return CommonOps.toList(stream);
     }
 
+    public static final List<String> toList(final Stream<String> stream, final Predicate<String> predicate)
+    {
+        return CommonOps.toList(stream, predicate);
+    }
+
     public static final String[] toUniqueArray(final Collection<String> collection)
     {
         return toArray(toUnique(collection.stream()));
+    }
+
+    public static final String[] toUniqueArray(final Collection<String> collection, final Predicate<String> predicate)
+    {
+        return toArray(toUnique(collection.stream(), predicate));
     }
 
     public static final String[] toUniqueArray(final String... collection)
@@ -171,7 +194,12 @@ public final class StringOps
 
     public static final Stream<String> toUnique(final Stream<String> stream)
     {
-        return stream.filter(valu -> valu != null).sequential().distinct();
+        return stream.filter(STRING_NULL_FILTER).sequential().distinct();
+    }
+
+    public static final Stream<String> toUnique(final Stream<String> stream, final Predicate<String> predicate)
+    {
+        return stream.filter(STRING_NULL_FILTER.and(predicate)).sequential().distinct();
     }
 
     public static final List<String> toUnique(final String... collection)
@@ -182,6 +210,11 @@ public final class StringOps
     public static final List<String> toUnique(final Collection<String> collection)
     {
         return toList(toUnique(collection.stream()));
+    }
+
+    public static final List<String> toUnique(final Collection<String> collection, final Predicate<String> predicate)
+    {
+        return toList(toUnique(collection.stream(), predicate));
     }
 
     public static final List<String> toUniqueTokenStringList(String strings)
