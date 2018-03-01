@@ -267,20 +267,21 @@ public final class StringOps
 
     public static final Collection<String> tokenizeToStringCollection(final String string, final String delimiters, final boolean trim, final boolean ignore)
     {
+        if ((null == string) || (string.isEmpty()) || (null == delimiters) || (delimiters.isEmpty()))
+        {
+            return CommonOps.emptyList();
+        }
         final ArrayList<String> list = CommonOps.arrayList();
 
-        if (CommonOps.not((null == string) || (string.isEmpty()) || (null == delimiters) || (delimiters.isEmpty())))
+        for (String token : string.split(delimiters))
         {
-            for (String token : string.split(delimiters))
+            if (trim)
             {
-                if (trim)
-                {
-                    token = token.trim();
-                }
-                if ((false == ignore) || (token.length() > 0))
-                {
-                    list.add(token);
-                }
+                token = token.trim();
+            }
+            if ((false == ignore) || (token.length() > 0))
+            {
+                list.add(token);
             }
         }
         return list;

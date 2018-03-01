@@ -30,7 +30,7 @@ import com.themodernway.common.api.java.util.CommonOps;
 
 public interface ICursor<T> extends Iterator<T>, IFailable, IAutoCloseable, Serializable
 {
-    default public <A extends Collection<? super T>> A into(final A target)
+    default <A extends Collection<? super T>> A into(final A target)
     {
         CommonOps.requireNonNull(target);
 
@@ -41,13 +41,13 @@ public interface ICursor<T> extends Iterator<T>, IFailable, IAutoCloseable, Seri
         return target;
     }
 
-    default public Iterator<T> self()
+    default Iterator<T> self()
     {
         return this;
     }
 
     @Override
-    default public void forEachRemaining(final Consumer<? super T> action)
+    default void forEachRemaining(final Consumer<? super T> action)
     {
         CommonOps.requireNonNull(action);
 
@@ -72,22 +72,23 @@ public interface ICursor<T> extends Iterator<T>, IFailable, IAutoCloseable, Seri
     }
 
     @Override
-    default public void onFailure(final Throwable throwable)
+    default void onFailure(final Throwable throwable)
     {
-        throwable.printStackTrace();
+        // don't do anything for the default case
     }
 
     @Override
-    default public void close() throws IOException
+    default void close() throws IOException
     {
+        // don't do anything for the default case
     }
 
-    default public Spliterator<T> spliterator()
+    default Spliterator<T> spliterator()
     {
         return Spliterators.spliteratorUnknownSize(this, 0);
     }
 
-    default public Stream<T> stream()
+    default Stream<T> stream()
     {
         if (isOpen())
         {
