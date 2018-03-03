@@ -299,7 +299,7 @@ public final class CommonOps
 
     public static final <T> ArrayList<T> arrayListOfSize(final int size)
     {
-        return new ArrayList<T>(Math.max(0, size));
+        return new ArrayList<>(Math.max(0, size));
     }
 
     public static final <T> ArrayList<T> arrayList()

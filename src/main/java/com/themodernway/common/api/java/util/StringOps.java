@@ -332,7 +332,9 @@ public final class StringOps
         {
             return null;
         }
-        if ((string = string.trim()).isEmpty())
+        string = string.trim();
+
+        if (string.isEmpty())
         {
             return null;
         }
@@ -466,56 +468,6 @@ public final class StringOps
             }
         }
         return true;
-    }
-
-    public static final boolean isVersionID(String string)
-    {
-        if (null == (string = toTrimOrNull(string)))
-        {
-            return false;
-        }
-        int leng = (string = string.toLowerCase()).length();
-
-        if (string.charAt(0) == 'v')
-        {
-            leng = (string = string.substring(1)).length();
-
-            if (leng < 1)
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return false;
-        }
-        boolean digi = false;
-
-        for (int i = 0; i < leng; i++)
-        {
-            final char c = string.charAt(i);
-
-            if (false == Character.isDigit(c))
-            {
-                if (c == '.')
-                {
-                    if (false == digi)
-                    {
-                        return false;
-                    }
-                    digi = false;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                digi = true;
-            }
-        }
-        return digi;
     }
 
     public static final String reverse(final String string)
