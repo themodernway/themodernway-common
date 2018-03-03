@@ -36,7 +36,7 @@ public interface IFixedIterable<T> extends Iterable<T>
     @Override
     default Iterator<T> iterator()
     {
-        return new FixedIterator<T>(this);
+        return new FixedIterator<>(this);
     }
 
     @Override

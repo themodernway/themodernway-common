@@ -16,98 +16,26 @@
 
 package com.themodernway.common.api.json;
 
-import com.themodernway.common.api.java.util.CommonOps;
-
 public class JSONParserException extends Exception
 {
-    private static final long serialVersionUID           = 2577571614214539296L;
+    private static final long serialVersionUID = 2113014474531442350L;
 
-    public static final int   ERROR_UNEXPECTED_CHAR      = 0;
-
-    public static final int   ERROR_UNEXPECTED_TOKEN     = 1;
-
-    public static final int   ERROR_UNEXPECTED_EXCEPTION = 2;
-
-    private int               m_errorType                = ERROR_UNEXPECTED_EXCEPTION;
-
-    private Object            m_unexpectedObject         = CommonOps.nulled();
-
-    private int               m_position                 = CommonOps.IS_NOT_FOUND;
-
-    public JSONParserException(final Throwable e)
+    public JSONParserException()
     {
-        super(e);
     }
 
-    public JSONParserException(final int errorType)
+    public JSONParserException(final String message)
     {
-        this(CommonOps.IS_NOT_FOUND, errorType, null);
+        super(message);
     }
 
-    public JSONParserException(final int errorType, final Object unexpectedObject)
+    public JSONParserException(final Throwable cause)
     {
-        this(CommonOps.IS_NOT_FOUND, errorType, unexpectedObject);
+        super(cause);
     }
 
-    public JSONParserException(final int position, final int errorType, final Object unexpectedObject)
+    public JSONParserException(final String message, final Throwable cause)
     {
-        m_position = position;
-
-        m_errorType = errorType;
-
-        m_unexpectedObject = unexpectedObject;
-    }
-
-    public int getErrorType()
-    {
-        return m_errorType;
-    }
-
-    public void setErrorType(final int errorType)
-    {
-        m_errorType = errorType;
-    }
-
-    public int getPosition()
-    {
-        return m_position;
-    }
-
-    public void setPosition(final int position)
-    {
-        m_position = position;
-    }
-
-    public Object getUnexpectedObject()
-    {
-        return m_unexpectedObject;
-    }
-
-    public void setUnexpectedObject(final Object unexpectedObject)
-    {
-        m_unexpectedObject = unexpectedObject;
-    }
-
-    @Override
-    public String toString()
-    {
-        final StringBuilder sb = new StringBuilder();
-
-        switch (getErrorType())
-        {
-            case ERROR_UNEXPECTED_CHAR:
-                sb.append("Unexpected character (").append(getUnexpectedObject()).append(") at position ").append(getPosition()).append('.');
-                break;
-            case ERROR_UNEXPECTED_TOKEN:
-                sb.append("Unexpected token ").append(getUnexpectedObject()).append(" at position ").append(getPosition()).append('.');
-                break;
-            case ERROR_UNEXPECTED_EXCEPTION:
-                sb.append("Unexpected exception at position ").append(getPosition()).append(": ").append(getUnexpectedObject());
-                break;
-            default:
-                sb.append("Unkown error at position ").append(getPosition()).append('.');
-                break;
-        }
-        return sb.toString();
+        super(message, cause);
     }
 }

@@ -22,8 +22,6 @@ import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import com.themodernway.common.api.java.util.CommonOps;
 
@@ -73,28 +71,5 @@ public interface IterableCursor<T> extends Iterable<T>, ICursor<T>
     default Spliterator<T> spliterator()
     {
         return Spliterators.spliteratorUnknownSize(iterator(), 0);
-    }
-
-    @Override
-    default Stream<T> stream()
-    {
-        if (isOpen())
-        {
-            return StreamSupport.stream(spliterator(), false).onClose(() -> {
-
-                if (isAutoClosed() && isOpen())
-                {
-                    try
-                    {
-                        close();
-                    }
-                    catch (final IOException e)
-                    {
-                        onFailure(e);
-                    }
-                }
-            });
-        }
-        return Stream.empty();
     }
 }
