@@ -152,7 +152,7 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     def "Test CommonOps.toOptional(null String) JSONParserException"()
     {
         when:
-        CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new JSONParserException(0)))
+        CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new JSONParserException('null')))
 
         then:
         thrown JSONParserException
