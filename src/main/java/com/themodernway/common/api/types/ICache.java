@@ -33,12 +33,12 @@ public interface ICache<T> extends INamed, IRefreshable, Closeable
     public List<String> keys();
 
     @Override
-    default public void close() throws IOException
+    default void close() throws IOException
     {
     }
 
     @Override
-    default public void refresh()
+    default void refresh()
     {
         clear();
     }

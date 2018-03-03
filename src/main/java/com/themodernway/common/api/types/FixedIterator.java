@@ -32,7 +32,9 @@ public class FixedIterator<T> implements Iterator<T>
 
     public FixedIterator(final IFixedIterable<T> iter)
     {
-        m_size = (m_iter = CommonOps.requireNonNull(iter)).size();
+        m_iter = iter;
+
+        m_size = m_iter.size();
     }
 
     @Override

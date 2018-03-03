@@ -30,7 +30,7 @@ import com.themodernway.common.api.java.util.CommonOps;
 public interface IterableCursor<T> extends Iterable<T>, ICursor<T>
 {
     @Override
-    default public <A extends Collection<? super T>> A into(final A target)
+    default <A extends Collection<? super T>> A into(final A target)
     {
         CommonOps.requireNonNull(target);
 
@@ -42,13 +42,13 @@ public interface IterableCursor<T> extends Iterable<T>, ICursor<T>
     }
 
     @Override
-    default public Iterator<T> iterator()
+    default Iterator<T> iterator()
     {
         return this;
     }
 
     @Override
-    default public void forEach(final Consumer<? super T> action)
+    default void forEach(final Consumer<? super T> action)
     {
         CommonOps.requireNonNull(action);
 
@@ -70,13 +70,13 @@ public interface IterableCursor<T> extends Iterable<T>, ICursor<T>
     }
 
     @Override
-    default public Spliterator<T> spliterator()
+    default Spliterator<T> spliterator()
     {
         return Spliterators.spliteratorUnknownSize(iterator(), 0);
     }
 
     @Override
-    default public Stream<T> stream()
+    default Stream<T> stream()
     {
         if (isOpen())
         {

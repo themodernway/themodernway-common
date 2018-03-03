@@ -34,23 +34,23 @@ public interface IFixedIterable<T> extends Iterable<T>
     public T get(int index);
 
     @Override
-    default public Iterator<T> iterator()
+    default Iterator<T> iterator()
     {
         return new FixedIterator<T>(this);
     }
 
     @Override
-    default public Spliterator<T> spliterator()
+    default Spliterator<T> spliterator()
     {
         return Spliterators.spliterator(iterator(), size(), Spliterator.SIZED | Spliterator.ORDERED | Spliterator.IMMUTABLE);
     }
 
-    default public Stream<T> stream()
+    default Stream<T> stream()
     {
         return StreamSupport.stream(spliterator(), false);
     }
 
-    default public <A extends Collection<? super T>> A into(final A target)
+    default <A extends Collection<? super T>> A into(final A target)
     {
         CommonOps.requireNonNull(target);
 
