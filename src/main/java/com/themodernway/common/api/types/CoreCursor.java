@@ -27,13 +27,11 @@ import com.themodernway.common.api.java.util.CommonOps;
 
 public class CoreCursor<T> implements ICursor<T>
 {
-    private static final long   serialVersionUID = 1L;
-
     private final Iterator<T>   m_iter;
 
-    private final AtomicBoolean m_open           = new AtomicBoolean(true);
+    private final AtomicBoolean m_open = new AtomicBoolean(true);
 
-    private final AtomicBoolean m_auto           = new AtomicBoolean(true);
+    private final AtomicBoolean m_auto = new AtomicBoolean(true);
 
     public CoreCursor(final Iterator<T> srciter)
     {

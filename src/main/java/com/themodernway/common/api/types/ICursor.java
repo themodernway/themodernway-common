@@ -17,7 +17,6 @@
 package com.themodernway.common.api.types;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Spliterator;
@@ -28,7 +27,7 @@ import java.util.stream.StreamSupport;
 
 import com.themodernway.common.api.java.util.CommonOps;
 
-public interface ICursor<T> extends Iterator<T>, IFailable, IAutoCloseable, Serializable
+public interface ICursor<T> extends Iterator<T>, IFailable, IAutoCloseable
 {
     default <A extends Collection<? super T>> A into(final A target)
     {
