@@ -207,12 +207,12 @@ public final class CommonOps
     }
 
     @SuppressWarnings("rawtypes")
-    public static final <K, V> Map<K, V> RAWMAP(final Map source)
+    public static final <K, V> Map<K, V> rawmap(final Map source)
     {
         return cast(source);
     }
 
-    public static final Map<String, Object> STRMAP(final Map<String, ?> source)
+    public static final Map<String, Object> strmap(final Map<String, ?> source)
     {
         return cast(source);
     }

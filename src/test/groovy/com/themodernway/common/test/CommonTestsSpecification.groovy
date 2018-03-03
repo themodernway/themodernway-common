@@ -708,7 +708,7 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     def "Test STRMAP(RAWMAP)"()
     {
         setup:
-        Map<String, Object> valu = CommonOps.STRMAP(CommonOps.RAWMAP([:]))
+        Map<String, Object> valu = CommonOps.strmap(CommonOps.rawmap([:]))
 
         expect:
         valu.isEmpty() == true

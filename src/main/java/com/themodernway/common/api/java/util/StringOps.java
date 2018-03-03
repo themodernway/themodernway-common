@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
@@ -67,7 +68,7 @@ public final class StringOps
 
     public static final IntFunction<String[]> BUILD_STRING_ARRAY   = String[]::new;
 
-    public static final Predicate<String>     STRING_NULL_FILTER   = valu -> valu != null;
+    public static final Predicate<String>     STRING_NULL_FILTER   = Objects::nonNull;
 
     private StringOps()
     {
