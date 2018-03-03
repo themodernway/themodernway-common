@@ -56,12 +56,12 @@ public final class CommonOps
     }
 
     @SuppressWarnings("unchecked")
-    public static final <T> T CAST(final Object value)
+    public static final <T> T cast(final Object value)
     {
         return ((T) value);
     }
 
-    public static final <T> T NULL()
+    public static final <T> T nulled()
     {
         return null;
     }
@@ -188,33 +188,33 @@ public final class CommonOps
 
     public static final <K, V> LinkedHashMap<K, V> linkedMap()
     {
-        return new LinkedHashMap<K, V>();
+        return new LinkedHashMap<>();
     }
 
     public static final <T> LinkedHashSet<T> linkedSet()
     {
-        return new LinkedHashSet<T>();
+        return new LinkedHashSet<>();
     }
 
     public static final <T> LinkedHashSet<T> linkedSet(final Collection<? extends T> source)
     {
-        return new LinkedHashSet<T>(requireNonNull(source));
+        return new LinkedHashSet<>(requireNonNull(source));
     }
 
     public static final <K, V> LinkedHashMap<K, V> linkedMap(final Map<? extends K, ? extends V> source)
     {
-        return new LinkedHashMap<K, V>(requireNonNull(source));
+        return new LinkedHashMap<>(requireNonNull(source));
     }
 
     @SuppressWarnings("rawtypes")
     public static final <K, V> Map<K, V> RAWMAP(final Map source)
     {
-        return CAST(source);
+        return cast(source);
     }
 
     public static final Map<String, Object> STRMAP(final Map<String, ?> source)
     {
-        return CAST(source);
+        return cast(source);
     }
 
     public static final <T> List<T> toKeys(final Map<? extends T, ?> source)
@@ -231,7 +231,7 @@ public final class CommonOps
     {
         if (source instanceof List)
         {
-            return Collections.unmodifiableList(CAST(source));
+            return Collections.unmodifiableList(cast(source));
         }
         return Collections.unmodifiableList(toList(source));
     }
@@ -304,28 +304,28 @@ public final class CommonOps
 
     public static final <T> ArrayList<T> arrayList()
     {
-        return new ArrayList<T>();
+        return new ArrayList<>();
     }
 
     @SafeVarargs
     public static final <T> ArrayList<T> arrayList(final T... source)
     {
-        return new ArrayList<T>(toList(source));
+        return new ArrayList<>(toList(source));
     }
 
     public static final <T> ArrayList<T> arrayList(final Stream<T> source)
     {
-        return new ArrayList<T>(toList(source));
+        return new ArrayList<>(toList(source));
     }
 
     public static final <T> ArrayList<T> arrayList(final Stream<T> source, final Predicate<? super T> predicate)
     {
-        return new ArrayList<T>(toList(source, predicate));
+        return new ArrayList<>(toList(source, predicate));
     }
 
     public static final <T> ArrayList<T> arrayList(final Collection<? extends T> source)
     {
-        return new ArrayList<T>(requireNonNull(source));
+        return new ArrayList<>(requireNonNull(source));
     }
 
     public static final <T> ArrayList<T> arrayList(final ICursor<? extends T> source)

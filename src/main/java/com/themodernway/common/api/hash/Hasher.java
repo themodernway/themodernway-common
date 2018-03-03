@@ -61,13 +61,12 @@ public final class Hasher implements IHasher
         {
             if ((i % 2) == 0)
             {
-                text = text + sval;
+                text = sha512(text + sval);
             }
             else
             {
-                text = sval + text;
+                text = sha512(sval + text);
             }
-            text = sha512(text);
         }
         return text;
     }

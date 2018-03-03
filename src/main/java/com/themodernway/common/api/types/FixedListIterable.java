@@ -91,7 +91,7 @@ public class FixedListIterable<T> implements IFixedIterable<T>
         }
         if (other instanceof FixedListIterable)
         {
-            final FixedListIterable<T> fixed = CommonOps.CAST(other);
+            final FixedListIterable<T> fixed = CommonOps.cast(other);
 
             return m_list.equals(fixed.m_list);
         }

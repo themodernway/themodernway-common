@@ -110,7 +110,7 @@ public final class StringOps
                 return;
             }
         }
-        prop.accept(CommonOps.NULL());
+        prop.accept(CommonOps.nulled());
     }
 
     public static final void setConsumerUniqueStringArray(final Collection<String> list, final Consumer<String[]> prop)
@@ -128,7 +128,7 @@ public final class StringOps
                 return;
             }
         }
-        prop.accept(CommonOps.NULL());
+        prop.accept(CommonOps.nulled());
     }
 
     public static final List<String> getSupplierUniqueStringArray(final Supplier<String[]> prop)
@@ -568,7 +568,7 @@ public final class StringOps
         }
         if (null == string)
         {
-            return CommonOps.CAST(appender.append(NULL_AS_STRING));
+            return CommonOps.cast(appender.append(NULL_AS_STRING));
         }
         appender.append(DOUBLE_QUOT_STRING);
 
@@ -643,7 +643,7 @@ public final class StringOps
                 }
             }
         }
-        return CommonOps.CAST(appender.append(DOUBLE_QUOT_STRING));
+        return CommonOps.cast(appender.append(DOUBLE_QUOT_STRING));
     }
 
     public static final String failIfNullBytePresent(final String string)

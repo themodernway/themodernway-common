@@ -673,7 +673,7 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     def "Test CAST()"()
     {
         setup:
-        def valu = CommonOps.CAST(null)
+        def valu = CommonOps.cast(null)
 
         expect:
         valu == null
@@ -683,7 +683,7 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     def "Test CAST(String, String)"()
     {
         setup:
-        String valu = CommonOps.CAST("test")
+        String valu = CommonOps.cast("test")
 
         expect:
         valu == "test"
@@ -696,7 +696,7 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     def "Test CAST(Integer)"()
     {
         setup:
-        Integer valu = CommonOps.CAST(new Integer(50))
+        Integer valu = CommonOps.cast(new Integer(50))
 
         expect:
         valu == 50
