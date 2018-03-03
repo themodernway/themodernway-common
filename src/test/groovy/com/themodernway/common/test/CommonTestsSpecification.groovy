@@ -47,7 +47,7 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     def "Test CommonOps.NULL()"()
     {
         setup:
-        String valu = CommonOps.NULL()
+        String valu = CommonOps.nulled()
 
         expect:
         null == valu
