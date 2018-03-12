@@ -61,11 +61,6 @@ public final class CommonOps
         return ((T) value);
     }
 
-    public static final <T> T nulled()
-    {
-        return null;
-    }
-
     public static final boolean not(final boolean value)
     {
         return (false == value);

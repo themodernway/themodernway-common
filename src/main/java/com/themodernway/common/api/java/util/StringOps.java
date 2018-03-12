@@ -111,7 +111,7 @@ public final class StringOps
                 return;
             }
         }
-        prop.accept(CommonOps.nulled());
+        prop.accept(null);
     }
 
     public static final void setConsumerUniqueStringArray(final Collection<String> list, final Consumer<String[]> prop)
@@ -129,7 +129,7 @@ public final class StringOps
                 return;
             }
         }
-        prop.accept(CommonOps.nulled());
+        prop.accept(null);
     }
 
     public static final List<String> getSupplierUniqueStringArray(final Supplier<String[]> prop)
