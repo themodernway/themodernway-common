@@ -44,15 +44,6 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         CommonOps.test() == true
     }
 
-    def "Test CommonOps.NULL()"()
-    {
-        setup:
-        String valu = CommonOps.nulled()
-
-        expect:
-        null == valu
-    }
-
     def "Test CommonOps.toSupplier(int)"()
     {
         setup:
