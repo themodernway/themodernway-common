@@ -50,7 +50,7 @@ sourceCompatibility = 1.8
 
 targetCompatibility = 1.8
 
-version = '2.0.9-RELEASE'
+version = '2.0.10-RELEASE'
 
 group = 'com.themodernway'
 
@@ -214,7 +214,7 @@ def String getBuildUser() {
 }
 
 def String getBuildServerBuild() {
-    System.getenv('BUILD_DISPLAY_NAME') ?: "Command line gradle version ${gradle.gradleVersion}"
+    System.getenv('BUILD_DISPLAY_NAME') ?: "Gradle version ${gradle.gradleVersion}"
 }
 
 def String getBuildGITHomeURL() {
