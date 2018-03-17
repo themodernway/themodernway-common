@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
@@ -32,7 +31,19 @@ import java.util.stream.Stream;
 
 public final class StringOps
 {
-    public static final String                CHARSET_UTF_8        = CommonOps.CHARSET_UTF_8;
+    public static final char                  ESCAPE_SLASH         = '\\';
+
+    public static final char                  SINGLE_SLASH         = '/';
+
+    public static final char                  SINGLE_QUOTE         = '\'';
+
+    public static final char                  DOUBLE_QUOTE         = '"';
+
+    public static final char                  DECIMAL_CHAR         = '.';
+
+    public static final char                  UNX_SEPARATOR_CHAR   = SINGLE_SLASH;
+
+    public static final char                  WIN_SEPARATOR_CHAR   = ESCAPE_SLASH;
 
     public static final String                NULL_STRING          = null;
 
@@ -54,9 +65,15 @@ public final class StringOps
 
     public static final String                DOUBLE_QUOT_STRING   = "\"";
 
+    public static final String                NEWLINE_STRING       = "\n";
+
+    public static final String                CARRAGE_STRING       = "\r";
+
     public static final String                NULL_AS_STRING       = "null";
 
     public static final String                HEXIDECIMAL_STRING   = "0123456789ABCDEF";
+
+    public static final String                CHARSET_UTF_8        = CommonOps.CHARSET_UTF_8;
 
     public static final String                EMPTY_ARRAY_STRING   = START_ARRAY_STRING + CLOSE_ARRAY_STRING;
 
@@ -483,9 +500,33 @@ public final class StringOps
         return new StringBuilder(string).reverse().toString();
     }
 
-    public static final String toHexString(final char c)
+    public static final String toUnicodeEscape(final char c)
     {
-        return Integer.toHexString(c).toUpperCase(Locale.ENGLISH);
+        final String h = Integer.toHexString(c).toUpperCase();
+
+        final int p = 4 - h.length();
+
+        if (1 == p)
+        {
+            return "\\u0" + h;
+        }
+        else if (2 == p)
+        {
+            return "\\u00" + h;
+        }
+        else if (3 == p)
+        {
+            return "\\u000" + h;
+        }
+        else
+        {
+            return "\\u" + h;
+        }
+    }
+
+    public static final boolean isSimpleAscii(final char c)
+    {
+        return (((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')) || (c == ' ') || ((c >= '0') && (c <= '9')));
     }
 
     public static final String toEscapedStringForJavaScript(final String string)
@@ -521,7 +562,7 @@ public final class StringOps
         }
         if (null == string)
         {
-            return CommonOps.cast(appender.append(NULL_AS_STRING));
+            return CommonOps.CAST(appender.append(NULL_AS_STRING));
         }
         appender.append(DOUBLE_QUOT_STRING);
 
@@ -531,45 +572,37 @@ public final class StringOps
         {
             final char c = string.charAt(i);
 
-            if (((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')) || (c == ' ') || ((c >= '0') && (c <= '9')))
+            if (isSimpleAscii(c))
             {
                 appender.append(c); // ASCII will be most common, this improves write speed about 5%, FWIW.
             }
             else
             {
-                if (c > 0xfff)
+                if (c > 0x7f)
                 {
-                    appender.append("\\u").append(toHexString(c));
-                }
-                else if (c > 0xff)
-                {
-                    appender.append("\\u0").append(toHexString(c));
-                }
-                else if (c > 0x7f)
-                {
-                    appender.append("\\u00").append(toHexString(c));
+                    appender.append(toUnicodeEscape(c));
                 }
                 else if (c < 32)
                 {
                     switch (c)
                     {
                         case '\b':
-                            appender.append('\\').append('b');
+                            appender.append(ESCAPE_SLASH).append('b');
                             break;
                         case '\n':
-                            appender.append('\\').append('n');
+                            appender.append(ESCAPE_SLASH).append('n');
                             break;
                         case '\t':
-                            appender.append('\\').append('t');
+                            appender.append(ESCAPE_SLASH).append('t');
                             break;
                         case '\f':
-                            appender.append('\\').append('f');
+                            appender.append(ESCAPE_SLASH).append('f');
                             break;
                         case '\r':
-                            appender.append('\\').append('r');
+                            appender.append(ESCAPE_SLASH).append('r');
                             break;
                         default:
-                            appender.append((c > 0xf) ? "\\u00" : "\\u000").append(toHexString(c));
+                            appender.append(toUnicodeEscape(c));
                             break;
                     }
                 }
@@ -577,17 +610,17 @@ public final class StringOps
                 {
                     switch (c)
                     {
-                        case '\'':
-                            appender.append('\\').append('\'');
+                        case SINGLE_QUOTE:
+                            appender.append(ESCAPE_SLASH).append(SINGLE_QUOTE);
                             break;
-                        case '"':
-                            appender.append('\\').append('"');
+                        case DOUBLE_QUOTE:
+                            appender.append(ESCAPE_SLASH).append(DOUBLE_QUOTE);
                             break;
-                        case '\\':
-                            appender.append('\\').append('\\');
+                        case ESCAPE_SLASH:
+                            appender.append(ESCAPE_SLASH).append(ESCAPE_SLASH);
                             break;
-                        case '/':
-                            appender.append('\\').append('/');
+                        case SINGLE_SLASH:
+                            appender.append(ESCAPE_SLASH).append(SINGLE_SLASH);
                             break;
                         default:
                             appender.append(c);
@@ -596,7 +629,7 @@ public final class StringOps
                 }
             }
         }
-        return CommonOps.cast(appender.append(DOUBLE_QUOT_STRING));
+        return CommonOps.CAST(appender.append(DOUBLE_QUOT_STRING));
     }
 
     public static final String failIfNullBytePresent(final String string)

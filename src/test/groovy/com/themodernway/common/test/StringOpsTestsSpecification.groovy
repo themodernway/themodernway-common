@@ -874,11 +874,11 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
     def "Test StringOps.toPrintableString(['text','data','text']) s"()
     {
         setup:
-        def list = StringOps.toPrintableString(["text\n", "data\t", "text\r"])
+        def list = StringOps.toPrintableString(["text\n", "data\t", "text\r", 'Maël Hörz\u00A9\n'])
 
         expect:
         list != null
-        list == '["text\\n", "data\\t", "text\\r"]'
+        list == '["text\\n", "data\\t", "text\\r", "Ma\\u00EBl H\\u00F6rz\\u00A9\\n"]'
 
         cleanup:
         echo list

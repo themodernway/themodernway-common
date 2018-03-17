@@ -35,4 +35,6 @@ public interface IMixedListDefinition<L extends IMixedListDefinition<L, O>, O ex
     public O getAsObject(int index);
 
     public String getAsString(int index);
+
+    public INativeFunction<?> getAsNativeFunction(int index);
 }

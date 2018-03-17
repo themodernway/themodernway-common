@@ -35,4 +35,6 @@ public interface IMixedStringHashDefinition<L extends IMixedListDefinition<L, O>
     public O getAsObject(String name);
 
     public String getAsString(String name);
+
+    public INativeFunction<?> getAsNativeFunction(String name);
 }

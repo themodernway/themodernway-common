@@ -56,14 +56,14 @@ public final class CommonOps
     }
 
     @SuppressWarnings("unchecked")
-    public static final <T> T cast(final Object value)
+    public static final <T> T CAST(final Object value)
     {
         return ((T) value);
     }
 
-    public static final boolean not(final boolean value)
+    public static final <T> T NULL()
     {
-        return (false == value);
+        return null;
     }
 
     public static final boolean isNull(final Object value)
@@ -204,12 +204,12 @@ public final class CommonOps
     @SuppressWarnings("rawtypes")
     public static final <K, V> Map<K, V> rawmap(final Map source)
     {
-        return cast(source);
+        return CAST(source);
     }
 
     public static final Map<String, Object> strmap(final Map<String, ?> source)
     {
-        return cast(source);
+        return CAST(source);
     }
 
     public static final <T> List<T> toKeys(final Map<? extends T, ?> source)
@@ -226,7 +226,7 @@ public final class CommonOps
     {
         if (source instanceof List)
         {
-            return Collections.unmodifiableList(cast(source));
+            return Collections.unmodifiableList(CAST(source));
         }
         return Collections.unmodifiableList(toList(source));
     }
@@ -387,7 +387,7 @@ public final class CommonOps
 
     public static final boolean any(final Collection<?> arg0, final Collection<?> arg1)
     {
-        return not(none(arg0, arg1));
+        return (false == none(arg0, arg1));
     }
 
     public static final boolean none(final Collection<?> arg0, final Collection<?> arg1)
