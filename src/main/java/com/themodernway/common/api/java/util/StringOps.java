@@ -486,27 +486,32 @@ public final class StringOps
         return new StringBuilder(string).reverse().toString();
     }
 
+    public static final String toHexString(final int i)
+    {
+        return Integer.toHexString(i).toUpperCase();
+    }
+
     public static final StringBuilder toUnicodeEscapedWithBuilder(final StringBuilder builder, final char c)
     {
-        final String hex = Integer.toHexString(c).toUpperCase();
+        final String s = toHexString(c);
 
-        final int pad = Math.max(Math.min(4 - hex.length(), 3), 0);
+        final int left = CommonOps.box(4 - s.length(), 0, 3);
 
-        if (0 == pad)
+        if (0 == left)
         {
-            return builder.append("\\u").append(hex);
+            return builder.append("\\u").append(s);
         }
-        else if (1 == pad)
+        else if (1 == left)
         {
-            return builder.append("\\u0").append(hex);
+            return builder.append("\\u0").append(s);
         }
-        else if (2 == pad)
+        else if (2 == left)
         {
-            return builder.append("\\u00").append(hex);
+            return builder.append("\\u00").append(s);
         }
         else
         {
-            return builder.append("\\u000").append(hex);
+            return builder.append("\\u000").append(s);
         }
     }
 

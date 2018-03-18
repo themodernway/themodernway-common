@@ -18,25 +18,22 @@ package com.themodernway.common.api.types;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 import com.themodernway.common.api.java.util.CommonOps;
+import com.themodernway.common.api.java.util.StringOps;
 
-public class Module implements IModule
+public abstract class AbstractModule<T extends AbstractModule<T>> implements IModule
 {
     private final String        m_name;
 
     private final String        m_vers;
 
-    private final Runnable      m_exec;
+    private final Consumer<T>   m_exec;
 
     private final AtomicBoolean m_open = new AtomicBoolean(true);
 
-    public Module(final String name, final String vers)
-    {
-        this(name, vers, NO_RUNNABLE);
-    }
-
-    public Module(final String name, final String vers, final Runnable exec)
+    protected AbstractModule(final String name, final String vers, final Consumer<T> exec)
     {
         m_name = CommonOps.requireNonNull(name, () -> "module name is null.");
 
@@ -48,9 +45,9 @@ public class Module implements IModule
     @Override
     public void refresh()
     {
-        if (null != m_exec)
+        if ((null != m_exec) && (isOpen()))
         {
-            m_exec.run();
+            m_exec.accept(CommonOps.CAST(this));
         }
     }
 
@@ -76,5 +73,11 @@ public class Module implements IModule
     public void close() throws IOException
     {
         m_open.set(false);
+    }
+
+    @Override
+    public String toString()
+    {
+        return StringOps.toPrintableString(getName(), getVersion(), Boolean.toString(isOpen()));
     }
 }

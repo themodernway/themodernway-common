@@ -16,6 +16,10 @@
 
 package com.themodernway.common.api.types;
 
-public interface IModule extends INamed, IVersioned, IRefreshable, ICloseable
+public class CommonModule extends AbstractModule<CommonModule>
 {
+    public CommonModule(final String name, final String vers)
+    {
+        super(name, vers, null);
+    }
 }

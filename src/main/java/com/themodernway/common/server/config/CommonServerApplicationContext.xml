@@ -39,7 +39,7 @@
 		<property name="buildModuleVersion" value="@GRADLE_BUILD_ARTIFACT_ID@-@GRADLE_BUILD_MODULE_VERSION@.jar" />
 	</bean>
 	
-	<bean id="CommonModuleBean" class="com.themodernway.common.api.types.Module">
+	<bean id="CommonModuleBean" class="com.themodernway.common.api.types.CommonModule" destroy-method="close">
 		<constructor-arg value="@GRADLE_BUILD_PROJECT_TITLE@" />
 		<constructor-arg value="@GRADLE_BUILD_MODULE_VERSION@" />
 	</bean>

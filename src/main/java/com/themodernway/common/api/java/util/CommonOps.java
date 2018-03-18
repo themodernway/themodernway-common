@@ -395,40 +395,16 @@ public final class CommonOps
 
     public static final int box(final int val, final int min, final int max)
     {
-        if (min > max)
-        {
-            throw new IllegalArgumentException("min > max");
-        }
-        else if (max < min)
-        {
-            throw new IllegalArgumentException("max < min");
-        }
         return Math.min(Math.max(val, min), max);
     }
 
     public static final long box(final long val, final long min, final long max)
     {
-        if (min > max)
-        {
-            throw new IllegalArgumentException("min > max");
-        }
-        else if (max < min)
-        {
-            throw new IllegalArgumentException("max < min");
-        }
         return Math.min(Math.max(val, min), max);
     }
 
     public static final double box(final double val, final double min, final double max)
     {
-        if (min > max)
-        {
-            throw new IllegalArgumentException("min > max");
-        }
-        else if (max < min)
-        {
-            throw new IllegalArgumentException("max < min");
-        }
         return Math.min(Math.max(val, min), max);
     }
 }

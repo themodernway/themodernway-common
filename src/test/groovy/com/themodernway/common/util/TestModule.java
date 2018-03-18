@@ -14,8 +14,23 @@
  * limitations under the License.
  */
 
-package com.themodernway.common.api.types;
+package com.themodernway.common.util;
 
-public interface IModule extends INamed, IVersioned, IRefreshable, ICloseable
+import java.util.concurrent.atomic.AtomicInteger;
+
+import com.themodernway.common.api.types.AbstractModule;
+
+public class TestModule extends AbstractModule<TestModule>
 {
+    private final AtomicInteger m_valu = new AtomicInteger(0);
+
+    public TestModule()
+    {
+        super("TestModule", "2.0.14-RELEASE", module -> module.m_valu.incrementAndGet());
+    }
+
+    public int getValue()
+    {
+        return m_valu.get();
+    }
 }
