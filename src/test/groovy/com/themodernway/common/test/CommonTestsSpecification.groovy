@@ -851,4 +851,112 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         cleanup:
         echo valu
     }
+
+    def "Test box(1, 5, 10)"()
+    {
+        setup:
+        def valu = CommonOps.box(1, 5, 10)
+
+        expect:
+        valu == 5
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test box(7, 5, 10)"()
+    {
+        setup:
+        def valu = CommonOps.box(7, 5, 10)
+
+        expect:
+        valu == 7
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test box(20, 5, 10)"()
+    {
+        setup:
+        def valu = CommonOps.box(20, 5, 10)
+
+        expect:
+        valu == 10
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test box(1L, 5L, 10L)"()
+    {
+        setup:
+        def valu = CommonOps.box(1L, 5L, 10L)
+
+        expect:
+        valu == 5L
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test box(7L, 5L, 10L)"()
+    {
+        setup:
+        def valu = CommonOps.box(7L, 5L, 10L)
+
+        expect:
+        valu == 7L
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test box(20L, 5L, 10L)"()
+    {
+        setup:
+        def valu = CommonOps.box(20L, 5L, 10L)
+
+        expect:
+        valu == 10L
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test box(1.0d, 5.0d, 10.0d)"()
+    {
+        setup:
+        def valu = CommonOps.box(1.0d, 5.0d, 10.0d)
+
+        expect:
+        valu == 5.0d
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test box(7.0d, 5.0d, 10.0d)"()
+    {
+        setup:
+        def valu = CommonOps.box(7.0d, 5.0d, 10.0d)
+
+        expect:
+        valu == 7.0d
+
+        cleanup:
+        echo valu
+    }
+
+    def "Test box(20.0d, 5.0d, 10.0d)"()
+    {
+        setup:
+        def valu = CommonOps.box(20.0d, 5.0d, 10.0d)
+
+        expect:
+        valu == 10.0d
+
+        cleanup:
+        echo valu
+    }
 }
