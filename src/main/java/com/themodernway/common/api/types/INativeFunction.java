@@ -16,8 +16,9 @@
 
 package com.themodernway.common.api.types;
 
-@FunctionalInterface
 public interface INativeFunction<T>
 {
-    public T execute(Object target, Object... args);
+    public T invoke(String name, Object... args) throws NoSuchMethodException;
+
+    public T method(Object target, String name, Object... args) throws NoSuchMethodException;
 }

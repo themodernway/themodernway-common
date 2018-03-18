@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import com.themodernway.common.api.hash.Hasher;
 import com.themodernway.common.api.hash.IHasher;
 import com.themodernway.common.api.java.util.CommonOps;
+import com.themodernway.common.api.java.util.StringOps;
 
 public final class SHA512Helper implements IHasher
 {
@@ -57,11 +58,11 @@ public final class SHA512Helper implements IHasher
 
         try
         {
-            bytes = text.getBytes(CommonOps.CHARSET_UTF_8);
+            bytes = text.getBytes(StringOps.CHARSET_UTF_8);
         }
         catch (final Exception e)
         {
-            logger.error("No " + CommonOps.CHARSET_UTF_8 + " encoding ", e);
+            logger.error("No " + StringOps.CHARSET_UTF_8 + " encoding ", e);
 
             throw new IllegalArgumentException(e);
         }

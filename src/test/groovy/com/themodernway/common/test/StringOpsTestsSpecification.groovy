@@ -730,19 +730,19 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         echo list
     }
 
-    def "Test StringOps.toEscapedForJavaScript()"()
+    def "Test StringOps.toEscapedStringWithBuilder()"()
     {
         when:
-        StringOps.toEscapedForJavaScript("dean", null as StringBuilder)
+        StringOps.toEscapedStringWithBuilder("dean", null as StringBuilder)
 
         then:
-        thrown IllegalArgumentException
+        thrown NullPointerException
     }
 
-    def "Test StringOps.toEscapedStringForJavaScript(dean)"()
+    def "Test StringOps.toEscapedString(dean)"()
     {
         setup:
-        def text = StringOps.toEscapedStringForJavaScript("dean")
+        def text = StringOps.toEscapedString("dean")
 
         expect:
         text != null
@@ -752,10 +752,10 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         echo text
     }
 
-    def "Test StringOps.toEscapedStringForJavaScript(null)"()
+    def "Test StringOps.toEscapedString(null)"()
     {
         setup:
-        def text = StringOps.toEscapedStringForJavaScript(null)
+        def text = StringOps.toEscapedString(null)
 
         expect:
         text != null
@@ -765,10 +765,10 @@ public class StringOpsTestsSpecification extends AbstractCommonSpecification
         echo text
     }
 
-    def "Test StringOps.toEscapedForJavaScriptAppendable(null)"()
+    def "Test StringOps.toEscapedStringWithBuilder(null)"()
     {
         setup:
-        def text = StringOps.toEscapedForJavaScriptAppendable(null, new StringBuilder()).toString()
+        def text = StringOps.toEscapedStringWithBuilder(null, new StringBuilder()).toString()
 
         expect:
         text != null

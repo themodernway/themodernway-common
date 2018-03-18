@@ -42,9 +42,7 @@ import com.themodernway.common.api.types.IFixedIterable;
 
 public final class CommonOps
 {
-    public static final int    IS_NOT_FOUND  = (0 - 1);
-
-    public static final String CHARSET_UTF_8 = "UTF-8";
+    public static final int IS_NOT_FOUND = (0 - 1);
 
     private CommonOps()
     {
@@ -393,5 +391,44 @@ public final class CommonOps
     public static final boolean none(final Collection<?> arg0, final Collection<?> arg1)
     {
         return Collections.disjoint(requireNonNull(arg0), requireNonNull(arg1));
+    }
+
+    public static final int box(final int val, final int min, final int max)
+    {
+        if (min > max)
+        {
+            throw new IllegalArgumentException("min > max");
+        }
+        else if (max < min)
+        {
+            throw new IllegalArgumentException("max < min");
+        }
+        return Math.min(Math.max(val, min), max);
+    }
+
+    public static final long box(final long val, final long min, final long max)
+    {
+        if (min > max)
+        {
+            throw new IllegalArgumentException("min > max");
+        }
+        else if (max < min)
+        {
+            throw new IllegalArgumentException("max < min");
+        }
+        return Math.min(Math.max(val, min), max);
+    }
+
+    public static final double box(final double val, final double min, final double max)
+    {
+        if (min > max)
+        {
+            throw new IllegalArgumentException("min > max");
+        }
+        else if (max < min)
+        {
+            throw new IllegalArgumentException("max < min");
+        }
+        return Math.min(Math.max(val, min), max);
     }
 }

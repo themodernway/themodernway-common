@@ -16,12 +16,10 @@
 
 package com.themodernway.common.api.java.util;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.StringJoiner;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
@@ -73,7 +71,7 @@ public final class StringOps
 
     public static final String                HEXIDECIMAL_STRING   = "0123456789ABCDEF";
 
-    public static final String                CHARSET_UTF_8        = CommonOps.CHARSET_UTF_8;
+    public static final String                CHARSET_UTF_8        = "UTF-8";
 
     public static final String                EMPTY_ARRAY_STRING   = START_ARRAY_STRING + CLOSE_ARRAY_STRING;
 
@@ -315,13 +313,7 @@ public final class StringOps
         {
             return EMPTY_ARRAY_STRING;
         }
-        final StringJoiner joiner = new StringJoiner(COMMA_LIST_SEPARATOR, START_ARRAY_STRING, CLOSE_ARRAY_STRING);
-
-        for (final String item : collection)
-        {
-            joiner.add(toEscapedStringForJavaScript(item));
-        }
-        return joiner.toString();
+        return collection.stream().map(s -> toEscapedString(s)).collect(Collectors.joining(COMMA_LIST_SEPARATOR, START_ARRAY_STRING, CLOSE_ARRAY_STRING));
     }
 
     public static final String toPrintableString(final String... list)
@@ -334,13 +326,7 @@ public final class StringOps
         {
             return EMPTY_ARRAY_STRING;
         }
-        final StringJoiner joiner = new StringJoiner(COMMA_LIST_SEPARATOR, START_ARRAY_STRING, CLOSE_ARRAY_STRING);
-
-        for (final String item : list)
-        {
-            joiner.add(toEscapedStringForJavaScript(item));
-        }
-        return joiner.toString();
+        return CommonOps.toStream(list).map(s -> toEscapedString(s)).collect(Collectors.joining(COMMA_LIST_SEPARATOR, START_ARRAY_STRING, CLOSE_ARRAY_STRING));
     }
 
     public static final String toTrimOrNull(String string)
@@ -500,72 +486,66 @@ public final class StringOps
         return new StringBuilder(string).reverse().toString();
     }
 
-    public static final String toUnicodeEscape(final char c)
+    public static final StringBuilder toUnicodeEscapedWithBuilder(final StringBuilder builder, final char c)
     {
-        final String h = Integer.toHexString(c).toUpperCase();
+        final String hex = Integer.toHexString(c).toUpperCase();
 
-        final int p = 4 - h.length();
+        final int pad = Math.max(Math.min(4 - hex.length(), 3), 0);
 
-        if (1 == p)
+        if (0 == pad)
         {
-            return "\\u0" + h;
+            return builder.append("\\u").append(hex);
         }
-        else if (2 == p)
+        else if (1 == pad)
         {
-            return "\\u00" + h;
+            return builder.append("\\u0").append(hex);
         }
-        else if (3 == p)
+        else if (2 == pad)
         {
-            return "\\u000" + h;
+            return builder.append("\\u00").append(hex);
         }
         else
         {
-            return "\\u" + h;
+            return builder.append("\\u000").append(hex);
         }
     }
 
     public static final boolean isSimpleAscii(final char c)
     {
-        return (((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')) || (c == ' ') || ((c >= '0') && (c <= '9')));
+        return (((c <= 'z') && (c >= ' ')) && ((c >= 'a') || ((c >= 'A') && (c <= 'Z')) || (c == ' ') || ((c >= '0') && (c <= '9'))));
     }
 
-    public static final String toEscapedStringForJavaScript(final String string)
+    public static final String toEscapedString(final String string)
+    {
+        return toEscapedString(string, true);
+    }
+
+    public static final String toEscapedString(final String string, final boolean quote)
     {
         if (null == string)
         {
             return NULL_AS_STRING;
         }
-        return toEscapedForJavaScript(string, new StringBuilder()).toString();
+        return toEscapedStringWithBuilder(string, new StringBuilder(), quote).toString();
     }
 
-    public static final StringBuilder toEscapedForJavaScript(final String string, final StringBuilder builder)
+    public static final StringBuilder toEscapedStringWithBuilder(final String string, final StringBuilder builder)
     {
-        try
-        {
-            return toEscapedForJavaScriptAppendable(string, builder);
-        }
-        catch (final IOException e)
-        {
-            throw new IllegalArgumentException(e.getCause());
-        }
+        return toEscapedStringWithBuilder(string, builder, true);
     }
 
-    public static final <T extends Appendable> T toEscapedForJavaScriptAppendable(final String string, final T appender) throws IOException
+    public static final StringBuilder toEscapedStringWithBuilder(final String string, final StringBuilder builder, final boolean quote)
     {
-        try
-        {
-            CommonOps.requireNonNull(appender, "null appender");
-        }
-        catch (final NullPointerException e)
-        {
-            throw new IOException(e);
-        }
+        Objects.requireNonNull(builder, "null builder");
+
         if (null == string)
         {
-            return CommonOps.CAST(appender.append(NULL_AS_STRING));
+            return builder.append(NULL_AS_STRING);
         }
-        appender.append(DOUBLE_QUOT_STRING);
-
+        if (quote)
+        {
+            builder.append(DOUBLE_QUOT_STRING);
+        }
         final int leng = string.length();
 
         for (int i = 0; i < leng; i++)
@@ -574,35 +554,35 @@ public final class StringOps
 
             if (isSimpleAscii(c))
             {
-                appender.append(c); // ASCII will be most common, this improves write speed about 5%, FWIW.
+                builder.append(c); // ASCII will be most common, this improves write speed about 5%, FWIW.
             }
             else
             {
                 if (c > 0x7f)
                 {
-                    appender.append(toUnicodeEscape(c));
+                    toUnicodeEscapedWithBuilder(builder, c);
                 }
                 else if (c < 32)
                 {
                     switch (c)
                     {
                         case '\b':
-                            appender.append(ESCAPE_SLASH).append('b');
+                            builder.append(ESCAPE_SLASH).append('b');
                             break;
                         case '\n':
-                            appender.append(ESCAPE_SLASH).append('n');
+                            builder.append(ESCAPE_SLASH).append('n');
                             break;
                         case '\t':
-                            appender.append(ESCAPE_SLASH).append('t');
+                            builder.append(ESCAPE_SLASH).append('t');
                             break;
                         case '\f':
-                            appender.append(ESCAPE_SLASH).append('f');
+                            builder.append(ESCAPE_SLASH).append('f');
                             break;
                         case '\r':
-                            appender.append(ESCAPE_SLASH).append('r');
+                            builder.append(ESCAPE_SLASH).append('r');
                             break;
                         default:
-                            appender.append(toUnicodeEscape(c));
+                            toUnicodeEscapedWithBuilder(builder, c);
                             break;
                     }
                 }
@@ -611,25 +591,29 @@ public final class StringOps
                     switch (c)
                     {
                         case SINGLE_QUOTE:
-                            appender.append(ESCAPE_SLASH).append(SINGLE_QUOTE);
+                            builder.append(ESCAPE_SLASH).append(SINGLE_QUOTE);
                             break;
                         case DOUBLE_QUOTE:
-                            appender.append(ESCAPE_SLASH).append(DOUBLE_QUOTE);
+                            builder.append(ESCAPE_SLASH).append(DOUBLE_QUOTE);
                             break;
                         case ESCAPE_SLASH:
-                            appender.append(ESCAPE_SLASH).append(ESCAPE_SLASH);
+                            builder.append(ESCAPE_SLASH).append(ESCAPE_SLASH);
                             break;
                         case SINGLE_SLASH:
-                            appender.append(ESCAPE_SLASH).append(SINGLE_SLASH);
+                            builder.append(ESCAPE_SLASH).append(SINGLE_SLASH);
                             break;
                         default:
-                            appender.append(c);
+                            builder.append(c);
                             break;
                     }
                 }
             }
         }
-        return CommonOps.CAST(appender.append(DOUBLE_QUOT_STRING));
+        if (quote)
+        {
+            builder.append(DOUBLE_QUOT_STRING);
+        }
+        return builder;
     }
 
     public static final String failIfNullBytePresent(final String string)
