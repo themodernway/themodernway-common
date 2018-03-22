@@ -53,9 +53,9 @@ http://docs.themodernway.com/documents/reports/themodernway-common-v2/cve/depend
 
 SonarQube URL:
 
-https://sonarcloud.io/dashboard?id=com.themodernway%3Athemodernway-common
+https://sonarcloud.io/dashboard?id=com.themodernway%3Athemodernway-common-v2
 
-![alt SonarQube](https://sonarcloud.io/api/project_badges/quality_gate?project=com.themodernway%3Athemodernway-common "SonarQube")
+![alt SonarQube](https://sonarcloud.io/api/project_badges/quality_gate?project=com.themodernway%3Athemodernway-common-v2 "SonarQube")
 
 License:
 
