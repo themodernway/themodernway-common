@@ -38,7 +38,7 @@ public class ModuleTestsSpecification extends AbstractCommonSpecification
     def "Test TestModule.open 0()"()
     {
         expect:
-        test.isOpen() == true
+        test.isActive() == true
         test.getValue() == 0
 
         cleanup:
@@ -52,7 +52,7 @@ public class ModuleTestsSpecification extends AbstractCommonSpecification
         test.refresh()
 
         expect:
-        test.isOpen() == true
+        test.isActive() == true
         test.getValue() == 1
 
         cleanup:
@@ -68,7 +68,7 @@ public class ModuleTestsSpecification extends AbstractCommonSpecification
         test.refresh()
 
         expect:
-        test.isOpen() == false
+        test.isActive() == false
         test.getValue() == 2
 
         cleanup:

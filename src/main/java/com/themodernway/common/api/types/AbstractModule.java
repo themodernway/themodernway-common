@@ -31,13 +31,15 @@ public abstract class AbstractModule<T extends AbstractModule<T>> implements IMo
 
     private final Consumer<T>   m_exec;
 
-    private final AtomicBoolean m_open = new AtomicBoolean(true);
+    private final AtomicBoolean m_open;
 
-    protected AbstractModule(final String name, final String vers, final Consumer<T> exec)
+    protected AbstractModule(final String name, final String vers, final boolean open, final Consumer<T> exec)
     {
         m_name = CommonOps.requireNonNull(name, () -> "module name is null.");
 
         m_vers = CommonOps.requireNonNull(vers, () -> "module vers is null.");
+
+        m_open = new AtomicBoolean(open);
 
         m_exec = exec;
     }
@@ -45,7 +47,7 @@ public abstract class AbstractModule<T extends AbstractModule<T>> implements IMo
     @Override
     public void refresh()
     {
-        if ((null != m_exec) && (isOpen()))
+        if ((null != m_exec) && (isActive()))
         {
             m_exec.accept(CommonOps.CAST(this));
         }
@@ -64,20 +66,26 @@ public abstract class AbstractModule<T extends AbstractModule<T>> implements IMo
     }
 
     @Override
-    public boolean isOpen()
+    public boolean isActive()
     {
         return m_open.get();
     }
 
     @Override
+    public boolean setActive(final boolean active)
+    {
+        return (m_open.getAndSet(active) != active);
+    }
+
+    @Override
     public void close() throws IOException
     {
-        m_open.set(false);
+        setActive(false);
     }
 
     @Override
     public String toString()
     {
-        return StringOps.toPrintableString(getName(), getVersion(), Boolean.toString(isOpen()));
+        return StringOps.toPrintableString(getName(), getVersion(), Boolean.toString(isActive()));
     }
 }

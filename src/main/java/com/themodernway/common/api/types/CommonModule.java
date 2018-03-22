@@ -20,6 +20,6 @@ public class CommonModule extends AbstractModule<CommonModule>
 {
     public CommonModule(final String name, final String vers)
     {
-        super(name, vers, null);
+        super(name, vers, false, null);
     }
 }

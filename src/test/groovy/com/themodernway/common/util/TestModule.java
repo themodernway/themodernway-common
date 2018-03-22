@@ -26,7 +26,7 @@ public class TestModule extends AbstractModule<TestModule>
 
     public TestModule()
     {
-        super("TestModule", "2.0.14-RELEASE", module -> module.m_valu.incrementAndGet());
+        super("TestModule", "2.1.0-RELEASE", true, module -> module.m_valu.incrementAndGet());
     }
 
     public int getValue()

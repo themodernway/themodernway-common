@@ -16,6 +16,8 @@
 
 package com.themodernway.common.api.types;
 
-public interface IModule extends INamed, IVersioned, IRefreshable, ICloseable
+import java.io.Closeable;
+
+public interface IModule extends INamed, IVersioned, IRefreshable, IActivatable, Closeable
 {
 }
