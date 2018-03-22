@@ -31,15 +31,32 @@ public abstract class AbstractModule<T extends AbstractModule<T>> implements IMo
 
     private final Consumer<T>   m_exec;
 
-    private final AtomicBoolean m_open;
+    private final AtomicBoolean m_actv;
 
-    protected AbstractModule(final String name, final String vers, final boolean open, final Consumer<T> exec)
+    private final AtomicBoolean m_open = new AtomicBoolean(true);
+
+    protected AbstractModule(final String name, final String vers)
+    {
+        this(name, vers, true, null);
+    }
+
+    protected AbstractModule(final String name, final String vers, final boolean active)
+    {
+        this(name, vers, active, null);
+    }
+
+    protected AbstractModule(final String name, final String vers, final Consumer<T> exec)
+    {
+        this(name, vers, true, exec);
+    }
+
+    protected AbstractModule(final String name, final String vers, final boolean active, final Consumer<T> exec)
     {
         m_name = CommonOps.requireNonNull(name, () -> "module name is null.");
 
         m_vers = CommonOps.requireNonNull(vers, () -> "module vers is null.");
 
-        m_open = new AtomicBoolean(open);
+        m_actv = new AtomicBoolean(active);
 
         m_exec = exec;
     }
@@ -47,7 +64,7 @@ public abstract class AbstractModule<T extends AbstractModule<T>> implements IMo
     @Override
     public void refresh()
     {
-        if ((null != m_exec) && (isActive()))
+        if ((null != m_exec) && isOpen() && isActive())
         {
             m_exec.accept(CommonOps.CAST(this));
         }
@@ -68,24 +85,33 @@ public abstract class AbstractModule<T extends AbstractModule<T>> implements IMo
     @Override
     public boolean isActive()
     {
-        return m_open.get();
+        return m_actv.get();
     }
 
     @Override
     public boolean setActive(final boolean active)
     {
-        return (m_open.getAndSet(active) != active);
+        return (m_actv.getAndSet(active) != active);
+    }
+
+    @Override
+    public boolean isOpen()
+    {
+        return m_open.get();
     }
 
     @Override
     public void close() throws IOException
     {
-        setActive(false);
+        if (m_open.getAndSet(false) && isActive())
+        {
+            setActive(false);
+        }
     }
 
     @Override
     public String toString()
     {
-        return StringOps.toPrintableString(getName(), getVersion(), Boolean.toString(isActive()));
+        return StringOps.toPrintableString(getName(), getVersion(), Boolean.toString(isActive()), Boolean.toString(isOpen()));
     }
 }
