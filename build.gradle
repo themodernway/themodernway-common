@@ -15,7 +15,12 @@
  */
 
 buildscript {
-    repositories { mavenCentral() }
+    repositories {
+    	mavenCentral()
+    	maven {
+      		url 'https://plugins.gradle.org/m2/'
+    	}
+    }
     dependencies {
         classpath(group: 'org.ajoberstar', name: 'grgit', version: '1.7.2')
         classpath(group: 'commons-codec', name: 'commons-codec', version: '1.11')
@@ -25,6 +30,7 @@ buildscript {
         classpath(group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.14', classifier: 'indy')
         classpath(group: 'org.owasp', name: 'dependency-check-gradle', version: '3.1.1')
         classpath(group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.6.2')
+        classpath(group: 'gradle.plugin.com.github.spotbugs', name: 'spotbugs-gradle-plugin', version: '1.6.1')
     }
 }
 
@@ -39,9 +45,9 @@ apply plugin: 'groovy'
 apply plugin: 'jacoco'
 apply plugin: 'signing'
 apply plugin: 'eclipse'
-apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
 apply plugin: 'org.sonarqube'
+apply plugin: 'com.github.spotbugs'
 apply plugin: 'org.owasp.dependencycheck'
 
 compileJava.options.encoding = 'UTF-8'
@@ -50,12 +56,12 @@ sourceCompatibility = 1.8
 
 targetCompatibility = 1.8
 
-version = '2.0.14-RELEASE'
+version = '2.1.0-RELEASE'
 
 group = 'com.themodernway'
 
 task deleteConfigs(type: Delete) {
-    FileTree tree = fileTree(dir: "${buildDir}/resources/main")
+    FileTree tree = project.fileTree(dir: "${buildDir}/resources/main")
     tree.each { File file ->
         delete(file)
     }
@@ -68,15 +74,15 @@ task filterConfigs(dependsOn: deleteConfigs, type: Copy) {
     filter(ReplaceTokens, tokens: getFilterTokens())
 }
 
-task doJavaDocs(type: Groovydoc) {
-    source = sourceSets.main.allSource
+task doJavaDocs(type: Javadoc) {
+    source = sourceSets.main.allJava
     classpath = sourceSets.main.runtimeClasspath + buildscript.configurations.classpath
-    destinationDir = file("${buildDir}/docs/javadoc")
-    includes = ['com/themodernway/common/**']
-    docTitle = "${getProjectCommonName()}"
-    footer = "<small><a href=\"${getBuildGITHomeURL()}\" target=\"_blank\">${getProjectCommonName()} - &copy; 2018</a> - <a href=\"${getBuildGITCommitHash()}\" target=\"_blank\">${getBuildModuleVersion()}</a> - <a href=\"mailto:deansjones@gmail.com\">Author: Dean S. Jones</a></small>"
-    getGroovydocLinks().each { name, list ->
-        link(name, *list)
+    destinationDir = project.file("${buildDir}/docs/javadoc")
+	includes = ['com/themodernway/common/**']
+    title = "${getProjectCommonName()}"
+    (options as StandardJavadocDocletOptions).with {
+        links = getJavaDocLinks()
+        bottom = "<div><h4 class=\"footer\"><a href=\"${getBuildGITHomeURL()}\" target=\"_blank\">${getProjectCommonName()} - Copyright &copy; 2018, The Modern Way</a> - <a href=\"${getBuildGITCommitHash()}\" target=\"_blank\">${getBuildModuleVersion()}</a> - <a href=\"mailto:deansjones@gmail.com\">Author: Dean S. Jones</a></h4></div>"
     }
 }
 
@@ -109,10 +115,10 @@ jacocoTestReport {
     reports {
         csv {
             enabled true
-            destination file("${buildDir}/reports/jacoco/coverage-${version}.csv")
+            destination project.file("${buildDir}/reports/jacoco/coverage-${version}.csv")
         }
         xml.enabled false
-        html.destination file("${buildDir}/reports/coverage")
+        html.destination project.file("${buildDir}/reports/coverage")
     }
 }
 
@@ -124,7 +130,7 @@ test {
     testLogging.showStandardStreams = true
     jacoco {
         append = false
-        destinationFile = file("${buildDir}/jacoco/testing.exec")
+        destinationFile = project.file("${buildDir}/jacoco/testing.exec")
     }
 }
 
@@ -142,14 +148,14 @@ pmd {
     ]
 }
 
-findbugs {
+spotbugs {
     ignoreFailures = true
-    toolVersion = '3.0.1'
+    toolVersion = '3.1.1'
     effort = 'max'
-    excludeFilter = file('config/findbugs/filter.xml')
+    excludeFilter = project.file('config/spotbugs/filter.xml')
 }
 
-tasks.withType(FindBugs) {
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
     reports {
         xml.enabled false
         html.enabled true
@@ -159,12 +165,12 @@ tasks.withType(FindBugs) {
 dependencyCheck {
     failOnError = false
     outputDirectory = "${buildDir}/reports/cve"
-    suppressionFile = file('config/cve/suppress.xml')
+    suppressionFile = project.file('config/cve/suppress.xml')
 }
 
 task checkCodeQuality { doLast { println ':checkCodeQuality-done' } }
 
-checkCodeQuality.dependsOn codeCoverage,checkstyleMain,pmdMain,findbugsMain,dependencyCheckAnalyze
+checkCodeQuality.dependsOn codeCoverage,checkstyleMain,pmdMain,spotbugsMain,dependencyCheckAnalyze
 
 jar {
     manifest {
@@ -240,7 +246,7 @@ sourceSets {
 }
 
 dependencies {
-    compile(group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2')
+	compileOnly(group: 'com.github.spotbugs', name: 'spotbugs-annotations', version: '3.1.1')
     testCompile(group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.14', classifier: 'indy')
     testCompile(group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4') {
         exclude(group: 'org.codehaus.groovy', module: 'groovy-all')
@@ -299,39 +305,13 @@ uploadArchives {
     }
 }
 
-def Map<String, List<String>> getGroovydocLinks() {
-    def lmap = [:]
-    File data = file('groovydoc/GROOVYDOC_LINK_LISTS.txt')
+def List<String> getJavaDocLinks() {
+    List list = []
+    File data = project.file('config/javadoc/JAVADOC_LINK_SITES.txt')
     if (data.exists()) {
         data.eachLine { line ->
-            def vals = ((CharSequence) line).tokenize(',')
-            lmap[vals.head()] = vals.tail()
+            list << line
         }
     }
-    lmap
-}
-
-task buildGroovydocLinks {
-    doLast {
-        def site = [:]
-        File data = file('groovydoc/GROOVYDOC_LINK_SITES.txt')
-        if (data.exists()) {
-            data.eachLine { line ->
-                site[line] = ((CharSequence) new URL("${line}/package-list").text).tokenize('\n')
-            }
-        }
-        File make = file('groovydoc/GROOVYDOC_LINK_LISTS.txt')
-        if(make.exists()) {
-            make.delete()
-        }
-        make.createNewFile()
-        def save = make.newPrintWriter()
-        site.each { link, list ->
-            def show = "${link}"
-            list.each { line -> show = "${show},${line}" }
-            save.println("${show}")
-        }
-        save.flush()
-        save.close()
-    }
+    list
 }
