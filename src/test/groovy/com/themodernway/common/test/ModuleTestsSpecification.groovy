@@ -68,7 +68,7 @@ public class ModuleTestsSpecification extends AbstractCommonSpecification
         test.refresh()
 
         expect:
-        test.isActive() == false
+        test.isActive() == test.isOpen()
         test.getValue() == 2
 
         cleanup:
