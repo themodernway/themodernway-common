@@ -27,31 +27,31 @@ dependencies {
 ```
 Javadoc URL:
 
-http://docs.themodernway.com/documents/javadoc/themodernway-common-v2/
+http://docs.themodernway.com/docs/javadoc/themodernway-common-v2/
 
 Tests URL:
 
-http://docs.themodernway.com/documents/reports/themodernway-common-v2/tests/test/
+http://docs.themodernway.com/docs/reports/themodernway-common-v2/tests/test/
 
 Code Coverage URL:
 
-http://docs.themodernway.com/documents/reports/themodernway-common-v2/coverage/
+http://docs.themodernway.com/docs/reports/themodernway-common-v2/coverage/
 
 Check Style URL:
 
-http://docs.themodernway.com/documents/reports/themodernway-common-v2/checkstyle/main.html
+http://docs.themodernway.com/docs/reports/themodernway-common-v2/checkstyle/main.html
 
 PMD URL:
 
-http://docs.themodernway.com/documents/reports/themodernway-common-v2/pmd/main.html
+http://docs.themodernway.com/docs/reports/themodernway-common-v2/pmd/main.html
 
 FindBugs URL:
 
-http://docs.themodernway.com/documents/reports/themodernway-common-v2/findbugs/main.html
+http://docs.themodernway.com/docs/reports/themodernway-common-v2/findbugs/main.html
 
 CVE Dependency Check URL:
 
-http://docs.themodernway.com/documents/reports/themodernway-common-v2/cve/dependency-check-report.html
+http://docs.themodernway.com/docs/reports/themodernway-common-v2/cve/dependency-check-report.html
 
 SonarQube URL:
 
