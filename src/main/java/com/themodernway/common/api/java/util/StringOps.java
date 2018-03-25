@@ -83,7 +83,7 @@ public final class StringOps
 
     public static final IntFunction<String[]> BUILD_STRING_ARRAY   = String[]::new;
 
-    public static final Predicate<String>     STRING_NULL_FILTER   = Objects::nonNull;
+    public static final Predicate<String>     STRING_NULL_FILTER   = CommonOps::isNonNull;
 
     private StringOps()
     {

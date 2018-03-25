@@ -19,5 +19,5 @@
 -->
 <module>
 	<inherits name='com.google.gwt.user.User' />
-	<source path='api'/>
+	<source path='api' />
 </module>

@@ -30,12 +30,12 @@ public class StringOpsHelper
         m_names = names;
     }
 
-    String[] getNamesArray()
+    private String[] getNamesArray()
     {
         return m_names;
     }
 
-    void setNamesArray(final String[] names)
+    private void setNamesArray(final String[] names)
     {
         m_names = names;
     }

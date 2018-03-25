@@ -70,4 +70,10 @@ public class SHA512TestsSpecification extends AbstractCommonSpecification
         expect:
         helper.sha512("dean", "test", 30)  == helper.sha512("dean", "test", 30)
     }
+
+    def "Test SHA512Helper.test 6()"()
+    {
+        expect:
+        helper.sha512("dean", 30)  == helper.sha512("dean", 30)
+    }
 }

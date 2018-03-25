@@ -35,6 +35,9 @@ import java.util.function.LongSupplier;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import com.themodernway.common.api.types.ICursor;
@@ -366,16 +369,103 @@ public final class CommonOps
         return toArray(source.filter(predicate), generator);
     }
 
+    public static final <T> Stream<T> emptyStream()
+    {
+        return Stream.empty();
+    }
+
+    public static final <T> Stream<T> toStream(final T source)
+    {
+        return Stream.of(source);
+    }
+
     @SafeVarargs
     public static final <T> Stream<T> toStream(final T... source)
     {
-        return Arrays.stream(source);
+        if ((null == source) || (source.length == 0))
+        {
+            return Stream.empty();
+        }
+        if (source.length == 1)
+        {
+            return Stream.of(source[0]);
+        }
+        return Stream.of(source);
     }
 
     @SafeVarargs
     public static final <T> T[] toArray(final T... source)
     {
         return Arrays.copyOf(source, source.length);
+    }
+
+    public static final int[] toArray(final int... source)
+    {
+        return Arrays.copyOf(source, source.length);
+    }
+
+    public static final long[] toArray(final long... source)
+    {
+        return Arrays.copyOf(source, source.length);
+    }
+
+    public static final double[] toArray(final double... source)
+    {
+        return Arrays.copyOf(source, source.length);
+    }
+
+    public static final IntStream toStream(final int source)
+    {
+        return IntStream.of(source);
+    }
+
+    public static final IntStream toStream(final int... source)
+    {
+        if ((null == source) || (source.length == 0))
+        {
+            return IntStream.empty();
+        }
+        if (source.length == 1)
+        {
+            return IntStream.of(source[0]);
+        }
+        return IntStream.of(source);
+    }
+
+    public static final LongStream toStream(final long source)
+    {
+        return LongStream.of(source);
+    }
+
+    public static final LongStream toStream(final long... source)
+    {
+        if ((null == source) || (source.length == 0))
+        {
+            return LongStream.empty();
+        }
+        if (source.length == 1)
+        {
+            return LongStream.of(source[0]);
+        }
+        return LongStream.of(source);
+    }
+
+    public static final DoubleStream toStream(final double source)
+    {
+        return DoubleStream.of(source);
+    }
+
+    public static final DoubleStream toStream(final double... source)
+    {
+        if ((null == source) || (source.length == 0))
+        {
+            return DoubleStream.empty();
+        }
+        if (source.length == 1)
+        {
+            return DoubleStream.of(source[0]);
+        }
+        return DoubleStream.of(source);
     }
 
     public static final boolean all(final Collection<?> arg0, final Collection<?> arg1)

@@ -19,6 +19,7 @@ package com.themodernway.common.util;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.themodernway.common.api.types.AbstractModule;
+import com.themodernway.common.api.types.ICallable;
 
 public class TestModule extends AbstractModule<TestModule>
 {
@@ -26,11 +27,22 @@ public class TestModule extends AbstractModule<TestModule>
 
     public TestModule()
     {
-        super("TestModule", "2.1.0-RELEASE", true, module -> module.m_valu.incrementAndGet());
+        super("TestModule", "2.1.1-RELEASE", true, new TestModuleAction());
     }
 
     public int getValue()
     {
         return m_valu.get();
+    }
+
+    private static final class TestModuleAction implements ICallable<TestModule, TestModule>
+    {
+        @Override
+        public TestModule call(final TestModule self, final Object... args)
+        {
+            self.m_valu.incrementAndGet();
+
+            return self;
+        }
     }
 }

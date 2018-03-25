@@ -14,32 +14,26 @@
  * limitations under the License.
  */
 
-package com.themodernway.common.util;
+package com.themodernway.common.api.types;
 
-public interface ICommonTesting
+import java.util.concurrent.Callable;
+
+import com.themodernway.common.api.java.util.CommonOps;
+
+@FunctionalInterface
+public interface ICallable<T, R> extends Callable<R>, Runnable
 {
-    public static class TestingOps
+    public R call(T self, Object... args);
+
+    @Override
+    default R call()
     {
-        public static final void setupCommonLogging() throws Exception
-        {
-        }
+        return call(CommonOps.CAST(this));
+    }
 
-        public static final void setupCommonDefault() throws Exception
-        {
-            setupCommonLogging();
-        }
-
-        public static final void closeCommonLogging()
-        {
-        }
-
-        public static final void closeCommonDefault()
-        {
-            closeCommonLogging();
-        }
-
-        protected TestingOps()
-        {
-        }
+    @Override
+    default void run()
+    {
+        call();
     }
 }

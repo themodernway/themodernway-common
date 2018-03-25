@@ -140,10 +140,37 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
         thrown NoSuchElementException
     }
 
-    def "Test CommonOps.toOptional(null String) JSONParserException"()
+    def "Test CommonOps.toOptional(null String) JSONParserException()"()
+    {
+        when:
+        CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new JSONParserException()))
+
+        then:
+        thrown JSONParserException
+    }
+
+    def "Test CommonOps.toOptional(null String) JSONParserException(null)"()
     {
         when:
         CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new JSONParserException('null')))
+
+        then:
+        thrown JSONParserException
+    }
+
+    def "Test CommonOps.toOptional(null String) JSONParserException(NullPointerException)"()
+    {
+        when:
+        CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new JSONParserException(new NullPointerException())))
+
+        then:
+        thrown JSONParserException
+    }
+
+    def "Test CommonOps.toOptional(null String) JSONParserException(null, NullPointerException)"()
+    {
+        when:
+        CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new JSONParserException('null', new NullPointerException())))
 
         then:
         thrown JSONParserException

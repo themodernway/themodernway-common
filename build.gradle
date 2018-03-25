@@ -17,20 +17,14 @@
 buildscript {
     repositories {
     	mavenCentral()
-    	maven {
-      		url 'https://plugins.gradle.org/m2/'
-    	}
     }
     dependencies {
         classpath(group: 'org.ajoberstar', name: 'grgit', version: '1.7.2')
         classpath(group: 'commons-codec', name: 'commons-codec', version: '1.11')
         classpath(group: 'commons-logging', name: 'commons-logging', version: '1.2')
         classpath(group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.5')
-        classpath(group: 'org.fusesource.jansi', name: 'jansi', version: '1.17')
-        classpath(group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.14', classifier: 'indy')
         classpath(group: 'org.owasp', name: 'dependency-check-gradle', version: '3.1.1')
         classpath(group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.6.2')
-        classpath(group: 'gradle.plugin.com.github.spotbugs', name: 'spotbugs-gradle-plugin', version: '1.6.1')
     }
 }
 
@@ -45,9 +39,9 @@ apply plugin: 'groovy'
 apply plugin: 'jacoco'
 apply plugin: 'signing'
 apply plugin: 'eclipse'
+apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
 apply plugin: 'org.sonarqube'
-apply plugin: 'com.github.spotbugs'
 apply plugin: 'org.owasp.dependencycheck'
 
 compileJava.options.encoding = 'UTF-8'
@@ -56,7 +50,7 @@ sourceCompatibility = 1.8
 
 targetCompatibility = 1.8
 
-version = '2.1.0-RELEASE'
+version = '2.1.1-RELEASE'
 
 group = 'com.themodernway'
 
@@ -148,14 +142,14 @@ pmd {
     ]
 }
 
-spotbugs {
+findbugs {
     ignoreFailures = true
-    toolVersion = '3.1.1'
+    toolVersion = '3.0.1'
     effort = 'max'
-    excludeFilter = project.file('config/spotbugs/filter.xml')
+    excludeFilter = project.file('config/findbugs/filter.xml')
 }
 
-tasks.withType(com.github.spotbugs.SpotBugsTask) {
+tasks.withType(FindBugs) {
     reports {
         xml.enabled false
         html.enabled true
@@ -170,7 +164,7 @@ dependencyCheck {
 
 task checkCodeQuality { doLast { println ':checkCodeQuality-done' } }
 
-checkCodeQuality.dependsOn codeCoverage,checkstyleMain,pmdMain,spotbugsMain,dependencyCheckAnalyze
+checkCodeQuality.dependsOn codeCoverage,checkstyleMain,pmdMain,findbugsMain,dependencyCheckAnalyze
 
 jar {
     manifest {
@@ -178,7 +172,7 @@ jar {
     }
 }
 
-def getFilterTokens() {
+def Map getFilterTokens() {
     [GRADLE_BUILD_ARTIFACT_ID: getProjectArtifactID(), GRADLE_BUILD_PROJECT_TITLE: getProjectTitle(), GRADLE_BUILD_USER: getBuildUser(), GRADLE_BUILD_DATE: getBuildDate(), GRADLE_JAVA_VERSION: getJavaVersion(), GRADLE_GIT_COMMIT_HASH: getBuildGITCommitHash(), GRADLE_GIT_COMMIT_USER: getBuildGITCommitUser(), GRADLE_GIT_COMMIT_MESSAGE: getBuildGITCommitMessage(), GRADLE_BUILD_SERVER_HOST: getBuildServerHost(), GRADLE_BUILD_SERVER_BUILD: getBuildServerBuild(), GRADLE_BUILD_MODULE_VERSION: getBuildModuleVersion()]
 }
 
@@ -239,7 +233,9 @@ def String getBuildGITCommitMessage() {
     Grgit.open(project.file('.')).head().shortMessage
 }
 
-repositories { mavenCentral() }
+repositories {
+	mavenCentral()
+}
 
 sourceSets {
     main { resources { source java } }
@@ -267,13 +263,24 @@ artifacts {
 
 signing { sign configurations.archives }
 
+def String getRepoUploadArchives() {
+	getBuildModuleVersion().endsWith('SNAPSHOT') ? 'https://oss.sonatype.org/content/repositories/snapshots/' : 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+}
+
+def String getUserNameUploadArchives() {
+	project.findProperty('sonatype_username') ?: ''
+}
+
+def String getPassWordUploadArchives() {
+	project.findProperty('sonatype_password') ?: ''
+}
+
 uploadArchives {
     repositories {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-            repository(url: "${sonatype_stageingURL}") {
-                //repository(url: "${sonatype_snapshotURL}") {
-                authentication(userName: "${sonatype_user_tmw}", password: "${sonatype_password_tmw}")
+            repository(url: getRepoUploadArchives()) {
+                authentication(userName: getUserNameUploadArchives(), password: getPassWordUploadArchives())
             }
             pom.project {
                 name 'TheModernWay-Common'
@@ -306,8 +313,8 @@ uploadArchives {
 }
 
 def List<String> getJavaDocLinks() {
-    List list = []
-    File data = project.file('config/javadoc/JAVADOC_LINK_SITES.txt')
+    def list = []
+    def data = project.file('config/javadoc/JAVADOC_LINK_SITES.txt')
     if (data.exists()) {
         data.eachLine { line ->
             list << line

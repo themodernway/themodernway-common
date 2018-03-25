@@ -25,7 +25,7 @@ import com.themodernway.common.api.json.JSONStringify
 
 import spock.lang.Specification
 
-public abstract class AbstractCommonSpecification extends Specification implements ICommonTesting
+public abstract class AbstractCommonSpecification extends Specification
 {
     private Logger      m_logger
 
@@ -33,12 +33,10 @@ public abstract class AbstractCommonSpecification extends Specification implemen
 
     public static final void setupCommonDefault()
     {
-        ICommonTesting.TestingOps.setupCommonDefault()
     }
 
     public static final void closeCommonDefault()
     {
-        ICommonTesting.TestingOps.closeCommonDefault()
     }
 
     def setup()

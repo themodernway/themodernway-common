@@ -19,5 +19,5 @@ package com.themodernway.common.api.types;
 @FunctionalInterface
 public interface IRefreshable
 {
-    public void refresh();
+    public void refresh(Object... args);
 }

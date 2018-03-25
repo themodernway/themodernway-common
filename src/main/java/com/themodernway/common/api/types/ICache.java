@@ -38,7 +38,7 @@ public interface ICache<T> extends INamed, IRefreshable, Closeable
     }
 
     @Override
-    default void refresh()
+    default void refresh(final Object... args)
     {
         clear();
     }
