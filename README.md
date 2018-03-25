@@ -1,7 +1,7 @@
 The Modern Way Common
 ======
 
-![<TMW>](http://docs.themodernway.com/tmw3.jpg)
+![<TMW>](http://docs.themodernway.com/tmw4.jpg)
 
 The Modern Way Common is a package containing often used interfaces and utility classes that can work both on the server side and with GWT. All classes in the com.themodernway.common.api.* must be GWT compatible, although this project does NOT depend on GWT in any way.
 
