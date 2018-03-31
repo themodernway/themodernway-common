@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-package com.themodernway.common.api.json;
+package com.themodernway.common.api.types.json;
 
-import com.themodernway.common.api.types.IMixedStringHashDefinition;
-
-public interface JSONObjectDefinition<L extends JSONArrayDefinition<L, O>, O extends JSONObjectDefinition<L, O>> extends IMixedStringHashDefinition<L, O>, JSONStringifyStrict
+@FunctionalInterface
+public interface JSONStringify
 {
-    public JSONType getJSONType(String name);
-
-    public boolean isJSONType(String name, JSONType type);
+    public String toJSONString();
 }

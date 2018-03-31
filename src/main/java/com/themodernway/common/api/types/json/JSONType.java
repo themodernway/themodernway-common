@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.themodernway.common.api.json;
+package com.themodernway.common.api.types.json;
 
 import com.themodernway.common.api.types.IStringValued;
 

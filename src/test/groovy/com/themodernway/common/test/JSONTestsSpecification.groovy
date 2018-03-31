@@ -16,7 +16,7 @@
 
 package com.themodernway.common.test
 
-import com.themodernway.common.api.json.JSONType
+import com.themodernway.common.api.types.json.JSONType
 import com.themodernway.common.util.AbstractCommonSpecification
 
 public class JSONTestsSpecification extends AbstractCommonSpecification

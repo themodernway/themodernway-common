@@ -18,7 +18,7 @@ package com.themodernway.common.api.types;
 
 import java.util.Date;
 
-public interface IMixedListDefinition<L extends IMixedListDefinition<L, O>, O extends IMixedStringHashDefinition<L, O>> extends IMixedList
+public interface IMixedListDefinition<L extends IMixedListDefinition<L, O>, O extends IMixedStringHashDefinition<L, O>> extends IDeepCopied<L>, IMixedList
 {
     public L getAsArray(int index);
 
@@ -37,4 +37,26 @@ public interface IMixedListDefinition<L extends IMixedListDefinition<L, O>, O ex
     public String getAsString(int index);
 
     public INativeFunction<?> getAsNativeFunction(int index);
+
+    public L reverse();
+
+    public <T> T pop();
+
+    public <T> T shift();
+
+    public L push(Object value);
+
+    public L push(Object... objects);
+
+    public L put(int index, Object value);
+
+    public L fill(Object value);
+
+    public L fill(Object value, int beg);
+
+    public L fill(Object value, int beg, int end);
+
+    public L unshift(Object value);
+
+    public L unshift(Object... objects);
 }

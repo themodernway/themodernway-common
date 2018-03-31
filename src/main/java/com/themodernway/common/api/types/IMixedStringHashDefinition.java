@@ -17,8 +17,9 @@
 package com.themodernway.common.api.types;
 
 import java.util.Date;
+import java.util.List;
 
-public interface IMixedStringHashDefinition<L extends IMixedListDefinition<L, O>, O extends IMixedStringHashDefinition<L, O>> extends IMixedStringHash
+public interface IMixedStringHashDefinition<L extends IMixedListDefinition<L, O>, O extends IMixedStringHashDefinition<L, O>> extends IDeepCopied<O>, IMixedStringHash
 {
     public L getAsArray(String name);
 
@@ -37,4 +38,10 @@ public interface IMixedStringHashDefinition<L extends IMixedListDefinition<L, O>
     public String getAsString(String name);
 
     public INativeFunction<?> getAsNativeFunction(String name);
+
+    public O set(String name, Object valu);
+
+    public O minus(final String... keys);
+
+    public O minus(final List<String> keys);
 }

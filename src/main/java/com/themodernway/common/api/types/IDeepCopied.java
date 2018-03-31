@@ -11,12 +11,13 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License.
+ * limitations under the License. ThreadLocal.withInitial(supplier);
  */
 
-package com.themodernway.common.api.json;
+package com.themodernway.common.api.types;
 
-public interface JSONStringifyStrict extends JSONStringify
+@FunctionalInterface
+public interface IDeepCopied<T extends IDeepCopied<T>>
 {
-    public String toJSONString(boolean strict);
+    public T deep();
 }

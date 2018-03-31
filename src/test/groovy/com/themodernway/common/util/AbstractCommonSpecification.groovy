@@ -21,7 +21,7 @@ import static java.lang.System.err
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import com.themodernway.common.api.json.JSONStringify
+import com.themodernway.common.api.types.json.JSONStringify
 
 import spock.lang.Specification
 

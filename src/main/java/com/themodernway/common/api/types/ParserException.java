@@ -14,27 +14,28 @@
  * limitations under the License.
  */
 
-package com.themodernway.common.api.json;
+package com.themodernway.common.api.types;
 
-public class JSONParserException extends Exception
+public class ParserException extends Exception
 {
-    private static final long serialVersionUID = 2113014474531442350L;
+    private static final long serialVersionUID = 1L;
 
-    public JSONParserException()
+    public ParserException()
     {
+        super();
     }
 
-    public JSONParserException(final String message)
-    {
-        super(message);
-    }
-
-    public JSONParserException(final Throwable cause)
+    public ParserException(final Throwable cause)
     {
         super(cause);
     }
 
-    public JSONParserException(final String message, final Throwable cause)
+    public ParserException(final String message)
+    {
+        super(message);
+    }
+
+    public ParserException(final String message, final Throwable cause)
     {
         super(message, cause);
     }

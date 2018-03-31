@@ -18,10 +18,10 @@ package com.themodernway.common.test
 
 import com.themodernway.common.api.java.util.CommonOps
 import com.themodernway.common.api.java.util.StringOps
-import com.themodernway.common.api.json.JSONParserException
 import com.themodernway.common.api.types.Activatable
 import com.themodernway.common.api.types.CoreCursor
 import com.themodernway.common.api.types.FixedListIterable
+import com.themodernway.common.api.types.ParserException
 import com.themodernway.common.util.AbstractCommonSpecification
 
 import groovy.transform.CompileStatic
@@ -143,37 +143,37 @@ public class CommonTestsSpecification extends AbstractCommonSpecification
     def "Test CommonOps.toOptional(null String) JSONParserException()"()
     {
         when:
-        CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new JSONParserException()))
+        CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new ParserException()))
 
         then:
-        thrown JSONParserException
+        thrown ParserException
     }
 
     def "Test CommonOps.toOptional(null String) JSONParserException(null)"()
     {
         when:
-        CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new JSONParserException('null')))
+        CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new ParserException('null')))
 
         then:
-        thrown JSONParserException
+        thrown ParserException
     }
 
     def "Test CommonOps.toOptional(null String) JSONParserException(NullPointerException)"()
     {
         when:
-        CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new JSONParserException(new NullPointerException())))
+        CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new ParserException(new NullPointerException())))
 
         then:
-        thrown JSONParserException
+        thrown ParserException
     }
 
     def "Test CommonOps.toOptional(null String) JSONParserException(null, NullPointerException)"()
     {
         when:
-        CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new JSONParserException('null', new NullPointerException())))
+        CommonOps.toOptional(StringOps.NULL_STRING).orElseThrow(CommonOps.toSupplier(new ParserException('null', new NullPointerException())))
 
         then:
-        thrown JSONParserException
+        thrown ParserException
     }
 
     def "Test CommonOps.toList()"()
