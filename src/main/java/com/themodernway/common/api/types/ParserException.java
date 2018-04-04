@@ -18,7 +18,7 @@ package com.themodernway.common.api.types;
 
 public class ParserException extends Exception
 {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 7906121585169201370L;
 
     public ParserException()
     {
@@ -38,5 +38,10 @@ public class ParserException extends Exception
     public ParserException(final String message, final Throwable cause)
     {
         super(message, cause);
+    }
+
+    protected ParserException(final String message, final Throwable cause, final boolean suppress, final boolean trace)
+    {
+        super(message, cause, suppress, trace);
     }
 }

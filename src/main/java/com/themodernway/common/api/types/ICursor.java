@@ -40,11 +40,6 @@ public interface ICursor<T> extends Iterator<T>, IFailable, IAutoCloseable
         return target;
     }
 
-    default Iterator<T> self()
-    {
-        return this;
-    }
-
     @Override
     default void forEachRemaining(final Consumer<? super T> action)
     {

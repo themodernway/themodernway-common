@@ -16,31 +16,14 @@
 
 package com.themodernway.common.api.types;
 
-import java.util.concurrent.Callable;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import com.themodernway.common.api.java.util.CommonOps;
-
-@FunctionalInterface
-public interface ICallable<T, R> extends Callable<R>, Runnable
+@Target({ ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface TaggingValues
 {
-    public R call(T self, Object... args) throws Exception;
-
-    @Override
-    default R call() throws Exception
-    {
-        return call(CommonOps.CAST(this));
-    }
-
-    @Override
-    default void run()
-    {
-        try
-        {
-            call();
-        }
-        catch (final Exception e)
-        {
-           throw new CommonRuntimeException(e);
-        }
-    }
+    public String[] value() default {};
 }

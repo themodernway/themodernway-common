@@ -14,33 +14,10 @@
  * limitations under the License.
  */
 
-package com.themodernway.common.api.types;
-
-import java.util.concurrent.Callable;
-
-import com.themodernway.common.api.java.util.CommonOps;
+package com.themodernway.common.api.types.json;
 
 @FunctionalInterface
-public interface ICallable<T, R> extends Callable<R>, Runnable
+public interface IJSONObjectSupplier<L extends JSONArrayDefinition<L, O>, O extends JSONObjectDefinition<L, O>>
 {
-    public R call(T self, Object... args) throws Exception;
-
-    @Override
-    default R call() throws Exception
-    {
-        return call(CommonOps.CAST(this));
-    }
-
-    @Override
-    default void run()
-    {
-        try
-        {
-            call();
-        }
-        catch (final Exception e)
-        {
-           throw new CommonRuntimeException(e);
-        }
-    }
+    public O toJSONObject();
 }

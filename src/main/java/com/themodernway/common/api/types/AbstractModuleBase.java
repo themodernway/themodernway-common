@@ -22,15 +22,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.themodernway.common.api.java.util.CommonOps;
 import com.themodernway.common.api.java.util.StringOps;
 
-public abstract class AbstractModuleBase<R, T extends AbstractModuleBase<R, T>> implements IModule
+public abstract class AbstractModuleBase<R, T extends AbstractModuleBase<R, T>> extends Activatable implements IModule
 {
     private final String          m_name;
 
     private final String          m_vers;
 
     private final ICallable<R, T> m_exec;
-
-    private final AtomicBoolean   m_actv;
 
     private final AtomicBoolean   m_open = new AtomicBoolean(true);
 
@@ -51,21 +49,35 @@ public abstract class AbstractModuleBase<R, T extends AbstractModuleBase<R, T>> 
 
     protected AbstractModuleBase(final String name, final String vers, final boolean active, final ICallable<R, T> exec)
     {
-        m_name = CommonOps.requireNonNull(name, () -> "module name is null.");
+        super(active);
 
-        m_vers = CommonOps.requireNonNull(vers, () -> "module vers is null.");
+        m_name = CommonOps.requireNonNull(name, "module name is null.");
 
-        m_actv = new AtomicBoolean(active);
+        m_vers = CommonOps.requireNonNull(vers, "module vers is null.");
 
         m_exec = exec;
+    }
+
+    protected ICallable<R, T> getCallable()
+    {
+        return m_exec;
     }
 
     @Override
     public void refresh(final Object... args)
     {
-        if ((null != m_exec) && isOpen() && isActive())
+        final ICallable<R, T> exec = getCallable();
+
+        if ((null != exec) && isOpen() && isActive())
         {
-            m_exec.call(CommonOps.CAST(this), args);
+            try
+            {
+                exec.call(CommonOps.CAST(this), args);
+            }
+            catch (final Exception e)
+            {
+                throw new CommonRuntimeException(e);
+            }
         }
     }
 
@@ -79,18 +91,6 @@ public abstract class AbstractModuleBase<R, T extends AbstractModuleBase<R, T>> 
     public String getVersion()
     {
         return m_vers;
-    }
-
-    @Override
-    public boolean isActive()
-    {
-        return m_actv.get();
-    }
-
-    @Override
-    public boolean setActive(final boolean active)
-    {
-        return (m_actv.getAndSet(active) != active);
     }
 
     @Override

@@ -65,12 +65,6 @@ public class CoreCursor<T> implements ICursor<T>
     }
 
     @Override
-    public Iterator<T> self()
-    {
-        return m_iter;
-    }
-
-    @Override
     public void close() throws IOException
     {
         m_open.set(false);
@@ -79,7 +73,7 @@ public class CoreCursor<T> implements ICursor<T>
     @Override
     public boolean hasNext()
     {
-        final boolean next = (isOpen() && self().hasNext());
+        final boolean next = (isOpen() && m_iter.hasNext());
 
         if ((false == next) && (isAutoClosed() && isOpen()))
         {
@@ -98,7 +92,7 @@ public class CoreCursor<T> implements ICursor<T>
     @Override
     public T next()
     {
-        return self().next();
+        return m_iter.next();
     }
 
     @Override

@@ -16,6 +16,14 @@
 
 package com.themodernway.common.api.types;
 
-public interface IListValued<T extends IListValued<T>> extends IValued<T>
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target({ ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Versioned
 {
+    public String value() default IVersioned.DEFAULT_VERSION;
 }

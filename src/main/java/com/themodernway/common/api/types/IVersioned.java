@@ -19,5 +19,7 @@ package com.themodernway.common.api.types;
 @FunctionalInterface
 public interface IVersioned
 {
+    public static final String DEFAULT_VERSION = "v1.0";
+
     public String getVersion();
 }

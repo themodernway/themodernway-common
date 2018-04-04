@@ -50,13 +50,13 @@ sourceCompatibility = 1.8
 
 targetCompatibility = 1.8
 
-version = '2.1.4-RELEASE'
+version = '2.1.5-RELEASE'
 
 group = 'com.themodernway'
 
 task deleteConfigs(type: Delete) {
     def tree = project.fileTree(dir: "${buildDir}/resources/main")
-    tree.each { File file ->
+    tree.each { file ->
         delete(file)
     }
 }

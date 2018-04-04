@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package com.themodernway.common.api.types;
+package com.themodernway.common.api.types.json;
 
-public interface IListValuedList<T extends IListValued<T>> extends ITypedList<T>
+public interface IJSONEnabled<L extends JSONArrayDefinition<L, O>, O extends JSONObjectDefinition<L, O>> extends IJSONObjectSupplier<L, O>, JSONStringifyStrict
 {
 }

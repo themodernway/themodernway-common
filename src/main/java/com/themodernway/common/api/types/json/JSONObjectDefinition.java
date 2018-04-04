@@ -18,7 +18,7 @@ package com.themodernway.common.api.types.json;
 
 import com.themodernway.common.api.types.IMixedStringHashDefinition;
 
-public interface JSONObjectDefinition<L extends JSONArrayDefinition<L, O>, O extends JSONObjectDefinition<L, O>> extends IMixedStringHashDefinition<L, O>, JSONStringifyStrict
+public interface JSONObjectDefinition<L extends JSONArrayDefinition<L, O>, O extends JSONObjectDefinition<L, O>> extends IMixedStringHashDefinition<L, O>, IJSONEnabled<L, O>
 {
     public JSONType getJSONType(String name);
 

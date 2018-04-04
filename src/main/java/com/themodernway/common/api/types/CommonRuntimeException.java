@@ -16,31 +16,32 @@
 
 package com.themodernway.common.api.types;
 
-import java.util.concurrent.Callable;
-
-import com.themodernway.common.api.java.util.CommonOps;
-
-@FunctionalInterface
-public interface ICallable<T, R> extends Callable<R>, Runnable
+public class CommonRuntimeException extends RuntimeException
 {
-    public R call(T self, Object... args) throws Exception;
+    private static final long serialVersionUID = 8390310509855255473L;
 
-    @Override
-    default R call() throws Exception
+    public CommonRuntimeException()
     {
-        return call(CommonOps.CAST(this));
+        super();
     }
 
-    @Override
-    default void run()
+    public CommonRuntimeException(final Throwable cause)
     {
-        try
-        {
-            call();
-        }
-        catch (final Exception e)
-        {
-           throw new CommonRuntimeException(e);
-        }
+        super(cause);
+    }
+
+    public CommonRuntimeException(final String message)
+    {
+        super(message);
+    }
+
+    public CommonRuntimeException(final String message, final Throwable cause)
+    {
+        super(message, cause);
+    }
+
+    protected CommonRuntimeException(final String message, final Throwable cause, final boolean suppress, final boolean trace)
+    {
+        super(message, cause, suppress, trace);
     }
 }
