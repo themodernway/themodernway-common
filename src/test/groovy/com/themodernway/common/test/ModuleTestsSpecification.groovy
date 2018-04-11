@@ -25,16 +25,6 @@ public class ModuleTestsSpecification extends AbstractCommonSpecification
 {
     @Shared test = new TestModule()
 
-    def setupSpec()
-    {
-        setupCommonDefault()
-    }
-
-    def cleanupSpec()
-    {
-        closeCommonDefault()
-    }
-
     def "Test TestModule.open 0()"()
     {
         expect:

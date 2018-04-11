@@ -16,7 +16,14 @@
 
 package com.themodernway.common.api.types.json;
 
+@FunctionalInterface
 public interface JSONStringifyStrict extends JSONStringify
 {
     public String toJSONString(boolean strict);
+
+    @Override
+    default String toJSONString()
+    {
+        return toJSONString(false);
+    }
 }

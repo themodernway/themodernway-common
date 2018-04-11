@@ -23,16 +23,6 @@ import com.themodernway.common.util.StringOpsHelper
 
 public class StringOpsTestsSpecification extends AbstractCommonSpecification
 {
-    def setupSpec()
-    {
-        setupCommonDefault()
-    }
-
-    def cleanupSpec()
-    {
-        closeCommonDefault()
-    }
-
     def "Test StringOps.test()'"()
     {
         expect:

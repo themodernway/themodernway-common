@@ -28,16 +28,6 @@ import groovy.transform.CompileStatic
 
 public class CommonTestsSpecification extends AbstractCommonSpecification
 {
-    def setupSpec()
-    {
-        setupCommonDefault()
-    }
-
-    def cleanupSpec()
-    {
-        closeCommonDefault()
-    }
-
     def "Test CommonOps.test()"()
     {
         expect:

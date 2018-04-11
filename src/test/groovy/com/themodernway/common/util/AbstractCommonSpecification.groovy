@@ -16,61 +16,35 @@
 
 package com.themodernway.common.util
 
-import static java.lang.System.err
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import com.themodernway.common.api.types.json.JSONStringify
-
+import groovy.transform.CompileStatic
 import spock.lang.Specification
 
+@CompileStatic
 public abstract class AbstractCommonSpecification extends Specification
 {
-    private Logger      m_logger
+    private Logger      m_logger = LoggerFactory.getLogger(getClass())
 
     private boolean     m_logging = true
-
-    public static final void setupCommonDefault()
-    {
-    }
-
-    public static final void closeCommonDefault()
-    {
-    }
 
     def setup()
     {
         m_logging = true
     }
 
-    public Logger logger()
+    def Logger logger()
     {
-        if (null == m_logger)
-        {
-            m_logger = LoggerFactory.getLogger(getClass())
-        }
         m_logger
     }
 
-    public void logging(boolean on = true)
+    def logging(boolean on = true)
     {
         m_logging = on
     }
 
-    public void echo(JSONStringify o)
-    {
-        if (m_logging)
-        {
-            logger().info("" + o?.toJSONString())
-        }
-        else
-        {
-            println "" + o?.toJSONString()
-        }
-    }
-
-    public void echo(def o)
+    def echo(def o)
     {
         if (m_logging)
         {
@@ -78,23 +52,11 @@ public abstract class AbstractCommonSpecification extends Specification
         }
         else
         {
-            println "" + o?.toString()
+            println("" + o?.toString())
         }
     }
 
-    public void oops(JSONStringify o)
-    {
-        if (m_logging)
-        {
-            logger().error("" + o?.toJSONString())
-        }
-        else
-        {
-            err.println "" + o?.toJSONString()
-        }
-    }
-
-    public void oops(def o)
+    def oops(def o)
     {
         if (m_logging)
         {
@@ -102,7 +64,7 @@ public abstract class AbstractCommonSpecification extends Specification
         }
         else
         {
-            err.println "" + o?.toString()
+            System.err.println("" + o?.toString())
         }
     }
 }

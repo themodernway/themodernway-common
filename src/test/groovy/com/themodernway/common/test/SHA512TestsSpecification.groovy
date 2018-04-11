@@ -25,16 +25,6 @@ public class SHA512TestsSpecification extends AbstractCommonSpecification
 {
     @Shared helper = new SHA512Helper()
 
-    def setupSpec()
-    {
-        setupCommonDefault()
-    }
-
-    def cleanupSpec()
-    {
-        closeCommonDefault()
-    }
-
     def "Test SHA512Helper.test 0()"()
     {
         expect:

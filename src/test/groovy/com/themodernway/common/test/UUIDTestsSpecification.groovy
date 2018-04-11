@@ -23,16 +23,6 @@ import spock.lang.Unroll
 
 public class UUIDTestsSpecification extends AbstractCommonSpecification
 {
-    def setupSpec()
-    {
-        setupCommonDefault()
-    }
-
-    def cleanupSpec()
-    {
-        closeCommonDefault()
-    }
-
     def "Test UUID.test()"()
     {
         expect:

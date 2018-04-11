@@ -77,6 +77,11 @@ public final class CommonOps
         return (null != value);
     }
 
+    public static final boolean equals(final Object a, final Object b)
+    {
+        return Objects.equals(a, b);
+    }
+
     public static final <T> T requireNonNullOrElse(final T value, final T otherwise)
     {
         return (null != value) ? value : otherwise;
@@ -132,10 +137,17 @@ public final class CommonOps
         return Optional.ofNullable(value);
     }
 
+    public static final <T, A extends List<? super T>> A reverse(final A source)
+    {
+        Collections.reverse(requireNonNull(source));
+
+        return source;
+    }
+
     @SafeVarargs
     public static final <T> List<T> toList(final T... source)
     {
-        return Arrays.asList(source);
+        return Arrays.asList(requireNonNull(source));
     }
 
     public static final <T> List<T> toList(final Stream<T> source)

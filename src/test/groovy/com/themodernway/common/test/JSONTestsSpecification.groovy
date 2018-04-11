@@ -21,16 +21,6 @@ import com.themodernway.common.util.AbstractCommonSpecification
 
 public class JSONTestsSpecification extends AbstractCommonSpecification
 {
-    def setupSpec()
-    {
-        setupCommonDefault()
-    }
-
-    def cleanupSpec()
-    {
-        closeCommonDefault()
-    }
-
     def "Test JSONType.test()"()
     {
         expect:
