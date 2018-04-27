@@ -19,7 +19,7 @@ Maven:
   <version>2.2.1-RELEASE</version>
 </dependency>
 ```
-Gradle:
+Gradle: 
 ```
 dependencies {
     compile(group: 'com.themodernway', name: 'themodernway-common', version: '2.2.1-RELEASE')
