@@ -19,7 +19,7 @@ Maven:
   <version>2.2.1-RELEASE</version>
 </dependency>
 ```
-Gradle: 
+Gradle:
 ```
 dependencies {
     compile(group: 'com.themodernway', name: 'themodernway-common', version: '2.2.1-RELEASE')
@@ -57,7 +57,7 @@ SonarQube URL:
 
 https://sonarcloud.io/dashboard?id=com.themodernway%3Athemodernway-common-v2
 
-![alt SonarQube](https://sonarcloud.io/api/project_badges/quality_gate?project=com.themodernway%3Athemodernway-common-v2 "SonarQube")
+![alt SonarQube](https://sonarcloud.io/api/project_badges/quality_gate?project=com.themodernway%3Athemodernway-common-v2 "SonarQube") 
 
 License:
 
