@@ -27,7 +27,7 @@ public class TestModule extends AbstractModule<TestModule>
 
     public TestModule()
     {
-        super("TestModule", "2.2.0-RELEASE", true, new TestModuleAction());
+        super("TestModule", "2.2.1-RELEASE", true, new TestModuleAction());
     }
 
     public int getValue()

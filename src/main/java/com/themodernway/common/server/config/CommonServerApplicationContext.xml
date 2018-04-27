@@ -16,11 +16,13 @@
  * limitations under the License.
  */
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="CommonServerBuildDescriptor" class="com.themodernway.server.core.support.spring.BuildDescriptor">
+	<bean id="CommonServerBuildDescriptor" class="com.themodernway.server.core.support.spring.BuildDescriptor" lazy-init="true">
 		<constructor-arg value="@GRADLE_BUILD_PROJECT_TITLE@" />
 		<property name="buildUser">
 			<value><![CDATA[@GRADLE_BUILD_USER@]]></value>
@@ -39,7 +41,7 @@
 		<property name="buildModuleVersion" value="@GRADLE_BUILD_ARTIFACT_ID@-@GRADLE_BUILD_MODULE_VERSION@.jar" />
 	</bean>
 	
-	<bean id="CommonModuleBean" class="com.themodernway.common.api.types.CommonModule" destroy-method="close">
+	<bean id="CommonModuleBean" class="com.themodernway.common.api.types.CommonModule" destroy-method="close" lazy-init="true">
 		<constructor-arg value="@GRADLE_BUILD_PROJECT_TITLE@" />
 		<constructor-arg value="@GRADLE_BUILD_MODULE_VERSION@" />
 	</bean>

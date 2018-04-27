@@ -76,7 +76,7 @@ public abstract class AbstractModuleBase<R, T extends AbstractModuleBase<R, T>> 
             }
             catch (final Exception e)
             {
-                throw new CommonRuntimeException(e);
+                throw new FrameworkException(e);
             }
         }
     }

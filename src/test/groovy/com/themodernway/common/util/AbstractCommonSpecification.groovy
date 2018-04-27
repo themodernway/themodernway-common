@@ -32,6 +32,13 @@ public abstract class AbstractCommonSpecification extends Specification
     def setup()
     {
         m_logging = true
+
+        echo "RUNNING TEST ${testname()}"
+    }
+
+    def String testname()
+    {
+        specificationContext.currentIteration.name
     }
 
     def Logger logger()

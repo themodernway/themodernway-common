@@ -86,6 +86,12 @@ public interface IHTTPConstants
 
     public static final String CONTENT_TYPE_CHARSET_UTF8_SUFFIX       = ";charset=" + StringOps.CHARSET_UTF_8;
 
+    public static final String AUTHORIZATION_BASIC                    = "Basic";
+
+    public static final String AUTHORIZATION_BEARER                   = "Bearer";
+
+    public static final String AUTHORIZATION_DIGEST                   = "Digest";
+
     public static final String ACCEPT                                 = "Accept";
 
     public static final String ACCEPT_CHARSET                         = "Accept-Charset";

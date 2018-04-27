@@ -16,32 +16,22 @@
 
 package com.themodernway.common.api.types;
 
-public class CommonRuntimeException extends RuntimeException
+public class FrameworkException extends RuntimeException
 {
     private static final long serialVersionUID = 8390310509855255473L;
 
-    public CommonRuntimeException()
-    {
-        super();
-    }
-
-    public CommonRuntimeException(final Throwable cause)
-    {
-        super(cause);
-    }
-
-    public CommonRuntimeException(final String message)
+    public FrameworkException(final String message)
     {
         super(message);
     }
 
-    public CommonRuntimeException(final String message, final Throwable cause)
+    public FrameworkException(final Throwable cause)
     {
-        super(message, cause);
+        super(cause);
     }
 
-    protected CommonRuntimeException(final String message, final Throwable cause, final boolean suppress, final boolean trace)
+    public FrameworkException(final String message, final Throwable cause)
     {
-        super(message, cause, suppress, trace);
+        super(message, cause);
     }
 }

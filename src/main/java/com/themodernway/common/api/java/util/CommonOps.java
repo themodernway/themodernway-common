@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -27,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Queue;
+import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.IntFunction;
@@ -145,6 +148,21 @@ public final class CommonOps
     }
 
     @SafeVarargs
+    public static final <T> Set<T> toSet(final T... source)
+    {
+        return toStream(source).collect(Collectors.toSet());
+    }
+
+    public static final <T> Set<T> toSet(final Stream<T> source)
+    {
+        final Set<T> list = source.collect(Collectors.toSet());
+
+        source.close();
+
+        return list;
+    }
+
+    @SafeVarargs
     public static final <T> List<T> toList(final T... source)
     {
         return Arrays.asList(requireNonNull(source));
@@ -182,6 +200,11 @@ public final class CommonOps
     public static final <T> List<T> toList(final IFixedIterable<? extends T> source)
     {
         return arrayList(source);
+    }
+
+    public static final <T> Set<T> emptySet()
+    {
+        return Collections.emptySet();
     }
 
     public static final <T> List<T> emptyList()
@@ -273,6 +296,15 @@ public final class CommonOps
     public static final <T> List<T> toUnmodifiableList(final Enumeration<? extends T> source)
     {
         return Collections.unmodifiableList(toList(source));
+    }
+
+    public static final <T> Set<T> toUnmodifiableSet(final Collection<? extends T> source)
+    {
+        if (source instanceof Set)
+        {
+            return Collections.unmodifiableSet(CAST(source));
+        }
+        return Collections.unmodifiableSet(linkedSet(source));
     }
 
     @SafeVarargs
@@ -478,6 +510,11 @@ public final class CommonOps
             return DoubleStream.of(source[0]);
         }
         return DoubleStream.of(source);
+    }
+
+    public static final <T> Queue<T> lifo(final Deque<T> deque)
+    {
+        return Collections.asLifoQueue(requireNonNull(deque));
     }
 
     public static final boolean all(final Collection<?> arg0, final Collection<?> arg1)
