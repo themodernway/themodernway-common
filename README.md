@@ -57,7 +57,7 @@ SonarQube URL:
 
 https://sonarcloud.io/dashboard?id=com.themodernway%3Athemodernway-common-v2
 
-![alt SonarQube](https://sonarcloud.io/api/project_badges/quality_gate?project=com.themodernway%3Athemodernway-common-v2 "SonarQube") 
+![alt SonarQube](https://sonarcloud.io/api/project_badges/measure?project=com.themodernway%3Athemodernway-common-v2&metric=alert_status "SonarQube") 
 
 License:
 
