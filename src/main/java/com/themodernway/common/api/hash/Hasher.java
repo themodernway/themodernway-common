@@ -37,13 +37,13 @@ public final class Hasher implements IHasher
     @Override
     public String sha512(final String text, final String salt)
     {
-        return sha512(CommonOps.requireNonNull(text), salt, 20000);
+        return sha512(CommonOps.requireNonNull(text), salt, SHA512_ITERATIONS);
     }
 
     @Override
     public String sha512(final String text, final int iter)
     {
-        return sha512(CommonOps.requireNonNull(text), null, 20000);
+        return sha512(CommonOps.requireNonNull(text), null, SHA512_ITERATIONS);
     }
 
     @Override

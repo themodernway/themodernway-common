@@ -16,7 +16,7 @@
 
 package com.themodernway.common.api.types;
 
-public class CommonModule extends AbstractModule<CommonModule>
+public final class CommonModule extends AbstractModule<CommonModule>
 {
     public CommonModule(final String name, final String vers)
     {

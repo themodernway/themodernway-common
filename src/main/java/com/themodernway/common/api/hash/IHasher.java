@@ -18,4 +18,5 @@ package com.themodernway.common.api.hash;
 
 public interface IHasher extends IHash512, IHash512Salt
 {
+    public static final int SHA512_ITERATIONS = 50000;
 }

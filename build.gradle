@@ -16,7 +16,7 @@
 
 buildscript {
     repositories {
-    	mavenCentral()
+        mavenCentral()
     }
     dependencies {
         classpath(group: 'org.ajoberstar', name: 'grgit', version: '1.7.2')
@@ -50,7 +50,7 @@ sourceCompatibility = 1.8
 
 targetCompatibility = 1.8
 
-version = '2.2.2-RELEASE'
+version = '2.2.3-RELEASE'
 
 group = 'com.themodernway'
 
@@ -71,7 +71,9 @@ task doJavaDocs(type: Javadoc) {
     source = sourceSets.main.allJava
     classpath = sourceSets.main.runtimeClasspath + buildscript.configurations.classpath
     destinationDir = project.file("${buildDir}/docs/javadoc")
-	includes = ['com/themodernway/common/**']
+    includes = [
+        'com/themodernway/common/**'
+    ]
     title = "${getProjectCommonName()}"
     (options as StandardJavadocDocletOptions).with {
         links = getJavaDocLinks()
@@ -233,7 +235,7 @@ def String getBuildGITCommitMessage() {
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 sourceSets {
@@ -241,7 +243,7 @@ sourceSets {
 }
 
 dependencies {
-	compileOnly(group: 'com.github.spotbugs', name: 'spotbugs-annotations', version: '3.1.1')
+    compileOnly(group: 'com.github.spotbugs', name: 'spotbugs-annotations', version: '3.1.1')
     testCompile(group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.15', classifier: 'indy')
     testCompile(group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4') {
         exclude(group: 'org.codehaus.groovy', module: 'groovy-all')
@@ -263,15 +265,15 @@ artifacts {
 signing { sign configurations.archives }
 
 def String getRepoUploadArchives() {
-	getBuildModuleVersion().endsWith('SNAPSHOT') ? 'https://oss.sonatype.org/content/repositories/snapshots/' : 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+    getBuildModuleVersion().endsWith('SNAPSHOT') ? 'https://oss.sonatype.org/content/repositories/snapshots/' : 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
 }
 
 def String getUserNameUploadArchives() {
-	project.findProperty('sonatype_username') ?: ''
+    project.findProperty('sonatype_username') ?: ''
 }
 
 def String getPassWordUploadArchives() {
-	project.findProperty('sonatype_password') ?: ''
+    project.findProperty('sonatype_password') ?: ''
 }
 
 uploadArchives {
@@ -316,7 +318,7 @@ def List<String> getJavaDocLinks() {
     def data = project.file('config/javadoc/JAVADOC_LINK_SITES.txt')
     if (data.exists()) {
         data.eachLine { line ->
-            list << line
+        	list << line
         }
     }
     list

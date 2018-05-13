@@ -16,6 +16,14 @@
 
 package com.themodernway.common.api.types;
 
+import java.util.List;
+
+import com.themodernway.common.api.java.util.CommonOps;
+
 public interface IModule extends INamed, IVersioned, IRefreshable, IActivatable, ICloseable
 {
+    default <T> List<T> getListOfType(final Class<T> type)
+    {
+        return CommonOps.emptyList();
+    }
 }

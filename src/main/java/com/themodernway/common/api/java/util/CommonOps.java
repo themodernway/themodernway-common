@@ -207,9 +207,19 @@ public final class CommonOps
         return Collections.emptySet();
     }
 
+    public static final <T> Set<T> singletonSet(final T o)
+    {
+        return Collections.singleton(o);
+    }
+
     public static final <T> List<T> emptyList()
     {
         return Collections.emptyList();
+    }
+
+    public static final <T> List<T> singletonList(final T o)
+    {
+        return Collections.singletonList(o);
     }
 
     public static final <K, V> Map<K, V> emptyMap()
@@ -220,6 +230,11 @@ public final class CommonOps
     public static final <K, V> LinkedHashMap<K, V> linkedMap()
     {
         return new LinkedHashMap<>();
+    }
+
+    public static final <K, V> Map<K, V> singletonMap(final K k, final V v)
+    {
+        return Collections.singletonMap(k, v);
     }
 
     public static final <T> LinkedHashSet<T> linkedSet()

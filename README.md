@@ -3,7 +3,7 @@ The Modern Way Common
 
 ![<TMW>](http://docs.themodernway.com/tmw4.jpg)
 
-The Modern Way Common is a package containing often used interfaces and utility classes that can work both on the server side and with GWT. All classes in the com.themodernway.common.api.* must be GWT compatible, although this project does NOT depend on GWT in any way.
+The Modern Way Common is a package containing often used interfaces and utility classes.
 
 https://github.com/themodernway/themodernway-common
 
@@ -16,13 +16,13 @@ Maven:
 <dependency>
   <groupId>com.themodernway</groupId>
   <artifactId>themodernway-common</artifactId>
-  <version>2.2.2-RELEASE</version>
+  <version>2.2.3-RELEASE</version>
 </dependency>
 ```
 Gradle:
 ```
 dependencies {
-    compile(group: 'com.themodernway', name: 'themodernway-common', version: '2.2.2-RELEASE')
+    compile(group: 'com.themodernway', name: 'themodernway-common', version: '2.2.3-RELEASE')
 }
 ```
 Javadoc URL:
