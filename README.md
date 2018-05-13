@@ -7,7 +7,7 @@ The Modern Way Common is a package containing often used interfaces and utility 
 
 https://github.com/themodernway/themodernway-common
 
-Downloading artifacts
+Downloading artifacts 
 
 RELEASE:
 
