@@ -17,7 +17,6 @@
 package com.themodernway.common.api.hash;
 
 import com.themodernway.common.api.java.util.CommonOps;
-import com.themodernway.common.api.java.util.StringOps;
 
 public final class Hasher implements IHasher
 {
@@ -29,45 +28,55 @@ public final class Hasher implements IHasher
     }
 
     @Override
-    public String sha512(final String text)
+    public String sha512(final CharSequence text)
     {
-        return m_hash.sha512(CommonOps.requireNonNull(text));
+        return m_hash.sha512(text);
     }
 
     @Override
-    public String sha512(final String text, final String salt)
+    public String sha512(final CharSequence text, final String salt)
     {
-        return sha512(CommonOps.requireNonNull(text), salt, SHA512_ITERATIONS);
+        return sha512(text, salt, SHA512_ITERATIONS);
     }
 
     @Override
-    public String sha512(final String text, final int iter)
+    public String sha512(final CharSequence text, final int iter)
     {
-        return sha512(CommonOps.requireNonNull(text), null, SHA512_ITERATIONS);
+        return sha512(text, null, iter);
     }
 
     @Override
-    public String sha512(String text, final String salt, final int iter)
+    public String sha512(final CharSequence text, final String salt, final int iter)
     {
-        CommonOps.requireNonNull(text);
+        String tval = text.toString();
 
-        final String sval = CommonOps.requireNonNullOrElse(salt, StringOps.EMPTY_STRING);
-
+        if ((null == salt) || (salt.isEmpty()))
+        {
+            if (iter < 2)
+            {
+                return sha512(tval);
+            }
+            for (int i = 0; i < iter; i++)
+            {
+                tval = sha512(tval);
+            }
+            return tval;
+        }
         if (iter < 2)
         {
-            return sha512(text + sval);
+            return sha512(tval + salt);
         }
         for (int i = 0; i < iter; i++)
         {
             if ((i % 2) == 0)
             {
-                text = sha512(text + sval);
+                tval = sha512(tval + salt);
             }
             else
             {
-                text = sha512(sval + text);
+                tval = sha512(salt + tval);
             }
         }
-        return text;
+        return tval;
     }
 }

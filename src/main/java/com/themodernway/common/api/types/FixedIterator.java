@@ -20,8 +20,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
-import com.themodernway.common.api.java.util.CommonOps;
-
 public class FixedIterator<T> implements Iterator<T>
 {
     private int                     m_posn;
@@ -60,8 +58,6 @@ public class FixedIterator<T> implements Iterator<T>
     @Override
     public void forEachRemaining(final Consumer<? super T> action)
     {
-        CommonOps.requireNonNull(action);
-
         while (hasNext())
         {
             action.accept(next());

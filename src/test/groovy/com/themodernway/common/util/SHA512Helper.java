@@ -22,37 +22,37 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import com.themodernway.common.api.hash.Hasher;
 import com.themodernway.common.api.hash.IHasher;
-import com.themodernway.common.api.java.util.CommonOps;
 
 public final class SHA512Helper implements IHasher
 {
-    private final Hasher m_hasher = new Hasher(this);
+    private final Hasher m_hasher;
 
     public SHA512Helper()
     {
+        m_hasher = new Hasher(this);
     }
 
     @Override
-    public String sha512(final String text)
+    public String sha512(final CharSequence text)
     {
-        return Hex.encodeHexString(DigestUtils.getSha512Digest().digest(text.getBytes(Charsets.UTF_8)));
+        return Hex.encodeHexString(DigestUtils.getSha512Digest().digest(text.toString().getBytes(Charsets.UTF_8)));
     }
 
     @Override
-    public String sha512(final String text, final String salt)
+    public String sha512(final CharSequence text, final String salt)
     {
-        return m_hasher.sha512(CommonOps.requireNonNull(text), salt);
+        return m_hasher.sha512(text, salt);
     }
 
     @Override
-    public String sha512(final String text, final String salt, final int iter)
+    public String sha512(final CharSequence text, final String salt, final int iter)
     {
-        return m_hasher.sha512(CommonOps.requireNonNull(text), salt, iter);
+        return m_hasher.sha512(text, salt, iter);
     }
 
     @Override
-    public String sha512(final String text, final int iter)
+    public String sha512(final CharSequence text, final int iter)
     {
-        return m_hasher.sha512(CommonOps.requireNonNull(text), iter);
+        return m_hasher.sha512(text, iter);
     }
 }

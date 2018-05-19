@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -142,7 +143,21 @@ public final class CommonOps
 
     public static final <T, A extends List<? super T>> A reverse(final A source)
     {
-        Collections.reverse(requireNonNull(source));
+        Collections.reverse(source);
+
+        return source;
+    }
+
+    public static final <T, A extends List<? super T>> A shuffle(final A source)
+    {
+        Collections.shuffle(source);
+
+        return source;
+    }
+
+    public static final <T, A extends List<? super T>> A shuffle(final A source, final Random random)
+    {
+        Collections.shuffle(source, random);
 
         return source;
     }
@@ -165,7 +180,7 @@ public final class CommonOps
     @SafeVarargs
     public static final <T> List<T> toList(final T... source)
     {
-        return Arrays.asList(requireNonNull(source));
+        return Arrays.asList(source);
     }
 
     public static final <T> List<T> toList(final Stream<T> source)
@@ -207,9 +222,9 @@ public final class CommonOps
         return Collections.emptySet();
     }
 
-    public static final <T> Set<T> singletonSet(final T o)
+    public static final <T> Set<T> singletonSet(final T source)
     {
-        return Collections.singleton(o);
+        return Collections.singleton(source);
     }
 
     public static final <T> List<T> emptyList()
@@ -217,9 +232,9 @@ public final class CommonOps
         return Collections.emptyList();
     }
 
-    public static final <T> List<T> singletonList(final T o)
+    public static final <T> List<T> singletonList(final T source)
     {
-        return Collections.singletonList(o);
+        return Collections.singletonList(source);
     }
 
     public static final <K, V> Map<K, V> emptyMap()
@@ -244,12 +259,12 @@ public final class CommonOps
 
     public static final <T> LinkedHashSet<T> linkedSet(final Collection<? extends T> source)
     {
-        return new LinkedHashSet<>(requireNonNull(source));
+        return new LinkedHashSet<>(source);
     }
 
     public static final <K, V> LinkedHashMap<K, V> linkedMap(final Map<? extends K, ? extends V> source)
     {
-        return new LinkedHashMap<>(requireNonNull(source));
+        return new LinkedHashMap<>(source);
     }
 
     @SuppressWarnings("rawtypes")
@@ -270,7 +285,7 @@ public final class CommonOps
 
     public static final <K, V> Map<K, V> toUnmodifiableMap(final Map<? extends K, ? extends V> source)
     {
-        return Collections.unmodifiableMap(requireNonNull(source));
+        return Collections.unmodifiableMap(source);
     }
 
     public static final <T> List<T> toUnmodifiableList(final Collection<? extends T> source)
@@ -380,7 +395,7 @@ public final class CommonOps
 
     public static final <T> ArrayList<T> arrayList(final Collection<? extends T> source)
     {
-        return new ArrayList<>(requireNonNull(source));
+        return new ArrayList<>(source);
     }
 
     public static final <T> ArrayList<T> arrayList(final ICursor<? extends T> source)
@@ -406,7 +421,7 @@ public final class CommonOps
 
     public static final <T> T[] toArray(final Collection<T> source, final T[] list)
     {
-        return source.toArray(requireNonNull(list));
+        return source.toArray(list);
     }
 
     public static final <T> T[] toArray(final Collection<T> source, final IntFunction<T[]> generator)
@@ -416,7 +431,7 @@ public final class CommonOps
 
     public static final <T> T[] toArray(final Stream<T> source, final IntFunction<T[]> generator)
     {
-        final T[] list = source.toArray(requireNonNull(generator));
+        final T[] list = source.toArray(generator);
 
         source.close();
 
@@ -560,5 +575,10 @@ public final class CommonOps
     public static final double box(final double val, final double min, final double max)
     {
         return Math.min(Math.max(val, min), max);
+    }
+
+    public static final double project(final double value, final double istart, final double istop, final double ostart, final double ostop)
+    {
+        return ostart + ((ostop - ostart) * ((value - istart) / (istop - istart)));
     }
 }

@@ -23,8 +23,6 @@ import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import com.themodernway.common.api.java.util.CommonOps;
-
 public interface IFixedIterable<T> extends Iterable<T>
 {
     public int size();
@@ -52,8 +50,6 @@ public interface IFixedIterable<T> extends Iterable<T>
 
     default <A extends Collection<? super T>> A into(final A target)
     {
-        CommonOps.requireNonNull(target);
-
         forEach(target::add);
 
         return target;

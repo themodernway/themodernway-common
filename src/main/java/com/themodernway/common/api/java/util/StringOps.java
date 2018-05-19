@@ -19,7 +19,6 @@ package com.themodernway.common.api.java.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
@@ -149,7 +148,7 @@ public final class StringOps
 
     public static final List<String> getSupplierUniqueStringArray(final Supplier<String[]> prop)
     {
-        final String[] uniq = CommonOps.requireNonNull(prop).get();
+        final String[] uniq = prop.get();
 
         if ((null != uniq) && (uniq.length > 0))
         {
@@ -541,7 +540,7 @@ public final class StringOps
 
     public static final StringBuilder toEscapedStringWithBuilder(final String string, final StringBuilder builder, final boolean quote)
     {
-        Objects.requireNonNull(builder, "null builder");
+        CommonOps.requireNonNull(builder);
 
         if (null == string)
         {

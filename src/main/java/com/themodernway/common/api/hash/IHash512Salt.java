@@ -18,7 +18,7 @@ package com.themodernway.common.api.hash;
 
 public interface IHash512Salt
 {
-    public String sha512(String text, String salt);
+    public String sha512(CharSequence text, String salt);
 
-    public String sha512(String text, String salt, int iter);
+    public String sha512(CharSequence text, String salt, int iter);
 }
