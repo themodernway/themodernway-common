@@ -101,6 +101,6 @@ public interface ICursor<T> extends Iterator<T>, IFailable, IAutoCloseable
                 }
             });
         }
-        return Stream.empty();
+        return CommonOps.emptyStream();
     }
 }

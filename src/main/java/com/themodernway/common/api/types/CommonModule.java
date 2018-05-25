@@ -16,10 +16,12 @@
 
 package com.themodernway.common.api.types;
 
+import com.themodernway.common.api.java.util.CommonOps;
+
 public final class CommonModule extends AbstractModule<CommonModule>
 {
     public CommonModule(final String name, final String vers)
     {
-        super(name, vers, false, null);
+        super(name, vers, false, CommonOps.NULL());
     }
 }

@@ -34,12 +34,12 @@ public abstract class AbstractModuleBase<R, T extends AbstractModuleBase<R, T>> 
 
     protected AbstractModuleBase(final String name, final String vers)
     {
-        this(name, vers, true, null);
+        this(name, vers, true, CommonOps.NULL());
     }
 
     protected AbstractModuleBase(final String name, final String vers, final boolean active)
     {
-        this(name, vers, active, null);
+        this(name, vers, active, CommonOps.NULL());
     }
 
     protected AbstractModuleBase(final String name, final String vers, final ICallable<R, T> exec)

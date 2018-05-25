@@ -66,6 +66,15 @@ public final class CommonOps
         return ((T) value);
     }
 
+    public static final <T> T SAFE(final Object valu, final Class<T> type)
+    {
+        if ((null != valu) && (type.isInstance(valu)))
+        {
+            return type.cast(valu);
+        }
+        return NULL();
+    }
+
     public static final <T> T NULL()
     {
         return null;
@@ -242,6 +251,11 @@ public final class CommonOps
         return Collections.emptyMap();
     }
 
+    public static final <T> Enumeration<T> emptyEnumeration()
+    {
+        return Collections.emptyEnumeration();
+    }
+
     public static final <K, V> LinkedHashMap<K, V> linkedMap()
     {
         return new LinkedHashMap<>();
@@ -369,7 +383,7 @@ public final class CommonOps
 
     public static final <T> ArrayList<T> arrayListOfSize(final int size)
     {
-        return new ArrayList<>(Math.max(0, size));
+        return new ArrayList<>(positive(size));
     }
 
     public static final <T> ArrayList<T> arrayList()
@@ -577,8 +591,33 @@ public final class CommonOps
         return Math.min(Math.max(val, min), max);
     }
 
+    public static final int positive(final int val)
+    {
+        return Math.max(0, val);
+    }
+
+    public static final long positive(final long val)
+    {
+        return Math.max(0L, val);
+    }
+
+    public static final double positive(final double val)
+    {
+        return Math.max(0d, val);
+    }
+
     public static final double project(final double value, final double istart, final double istop, final double ostart, final double ostop)
     {
         return ostart + ((ostop - ostart) * ((value - istart) / (istop - istart)));
+    }
+
+    public static final long getCurrentClock()
+    {
+        return System.currentTimeMillis();
+    }
+
+    public static final long getCurrentNanos()
+    {
+        return System.nanoTime();
     }
 }

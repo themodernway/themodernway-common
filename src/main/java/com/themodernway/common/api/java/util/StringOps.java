@@ -108,6 +108,36 @@ public final class StringOps
         return builder.toString();
     }
 
+    public static final Predicate<String> isStringInListTest(final String... list)
+    {
+        return look -> CommonOps.toSet(list).contains(look);
+    }
+
+    public static final Predicate<String> isStringInListTest(final List<String> list)
+    {
+        return look -> list.contains(look);
+    }
+
+    public static final Predicate<String> isStringInListTest(final Stream<String> stream)
+    {
+        return look -> stream.anyMatch(valu -> look.equals(valu));
+    }
+
+    public static final Predicate<String> isStringInListContainsTest(final String... list)
+    {
+        return isStringInListContainsTest(CommonOps.toStream(list));
+    }
+
+    public static final Predicate<String> isStringInListContainsTest(final List<String> list)
+    {
+        return isStringInListContainsTest(list.stream());
+    }
+
+    public static final Predicate<String> isStringInListContainsTest(final Stream<String> stream)
+    {
+        return look -> stream.anyMatch(valu -> look.contains(valu) || valu.contains(look));
+    }
+
     public static final void setConsumerUniqueStringArray(final String list, final Consumer<String[]> prop)
     {
         CommonOps.requireNonNull(prop);
@@ -125,7 +155,7 @@ public final class StringOps
                 return;
             }
         }
-        prop.accept(null);
+        prop.accept(CommonOps.NULL());
     }
 
     public static final void setConsumerUniqueStringArray(final Collection<String> list, final Consumer<String[]> prop)
@@ -143,7 +173,7 @@ public final class StringOps
                 return;
             }
         }
-        prop.accept(null);
+        prop.accept(CommonOps.NULL());
     }
 
     public static final List<String> getSupplierUniqueStringArray(final Supplier<String[]> prop)
@@ -332,13 +362,13 @@ public final class StringOps
     {
         if (null == string)
         {
-            return null;
+            return CommonOps.NULL();
         }
         string = string.trim();
 
         if (string.isEmpty())
         {
-            return null;
+            return CommonOps.NULL();
         }
         return string;
     }
@@ -476,18 +506,13 @@ public final class StringOps
     {
         if (null == string)
         {
-            return string;
+            return CommonOps.NULL();
         }
         if (string.length() < 2)
         {
             return string;
         }
         return new StringBuilder(string).reverse().toString();
-    }
-
-    public static final String toHexString(final int i)
-    {
-        return Integer.toHexString(i).toUpperCase();
     }
 
     public static final StringBuilder toUnicodeEscapedWithBuilder(final StringBuilder builder, final char c)
@@ -635,5 +660,80 @@ public final class StringOps
             }
         }
         return string;
+    }
+
+    public static final Boolean asBoolean(final String string)
+    {
+        return Boolean.valueOf(string);
+    }
+
+    public static final Integer asInteger(final String string)
+    {
+        return Integer.valueOf(string);
+    }
+
+    public static final Integer asInteger(final String string, final int radix)
+    {
+        return Integer.valueOf(string, radix);
+    }
+
+    public static final Long asLong(final String string)
+    {
+        return Long.valueOf(string);
+    }
+
+    public static final Long asLong(final String string, final int radix)
+    {
+        return Long.valueOf(string, radix);
+    }
+
+    public static final Double asDouble(final String string)
+    {
+        return Double.valueOf(string);
+    }
+
+    public static final String toString(final boolean value)
+    {
+        return String.valueOf(value);
+    }
+
+    public static final String toString(final int value)
+    {
+        return Integer.toString(value);
+    }
+
+    public static final String toString(final int value, final int radix)
+    {
+        return Integer.toString(value, radix);
+    }
+
+    public static final String toHexString(final int value)
+    {
+        return Integer.toHexString(value).toUpperCase();
+    }
+
+    public static final String toString(final long value)
+    {
+        return Long.toString(value);
+    }
+
+    public static final String toString(final long value, final int radix)
+    {
+        return Long.toString(value, radix);
+    }
+
+    public static final String toHexString(final long value)
+    {
+        return Long.toHexString(value).toUpperCase();
+    }
+
+    public static final String toString(final double value)
+    {
+        return String.valueOf(value);
+    }
+
+    public static final String toString(final CharSequence value)
+    {
+        return value.toString();
     }
 }

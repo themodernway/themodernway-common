@@ -16,16 +16,18 @@
 
 package com.themodernway.common.api.types;
 
+import com.themodernway.common.api.java.util.CommonOps;
+
 public abstract class AbstractModule<T extends AbstractModule<T>> extends AbstractModuleBase<T, T>
 {
     protected AbstractModule(final String name, final String vers)
     {
-        this(name, vers, true, null);
+        this(name, vers, true, CommonOps.NULL());
     }
 
     protected AbstractModule(final String name, final String vers, final boolean active)
     {
-        this(name, vers, active, null);
+        this(name, vers, active, CommonOps.NULL());
     }
 
     protected AbstractModule(final String name, final String vers, final ICallable<T, T> exec)
