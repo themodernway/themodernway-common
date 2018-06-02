@@ -93,13 +93,23 @@ public final class StringOps
         return CommonOps.isNonNull(new StringOps());
     }
 
-    public static final String repeat(final String string, final int times)
+    public static final String repeat(final CharSequence string, final int times)
     {
-        if ((null == string) || (string.isEmpty()) || (times < 2))
+        if (null == string)
         {
-            return string;
+            return CommonOps.NULL();
         }
-        final StringBuilder builder = new StringBuilder(string.length() * times);
+        if (times < 2)
+        {
+            return string.toString();
+        }
+        final int count = string.length();
+
+        if (count < 1)
+        {
+            return string.toString();
+        }
+        final StringBuilder builder = new StringBuilder(count * times);
 
         for (int i = 0; i < times; i++)
         {
@@ -140,8 +150,6 @@ public final class StringOps
 
     public static final void setConsumerUniqueStringArray(final String list, final Consumer<String[]> prop)
     {
-        CommonOps.requireNonNull(prop);
-
         final String toks = toTrimOrNull(list);
 
         if (null != toks)
@@ -160,8 +168,6 @@ public final class StringOps
 
     public static final void setConsumerUniqueStringArray(final Collection<String> list, final Consumer<String[]> prop)
     {
-        CommonOps.requireNonNull(prop);
-
         if ((null != list) && (false == list.isEmpty()))
         {
             final String[] uniq = toUniqueArray(list);
@@ -358,6 +364,11 @@ public final class StringOps
         return CommonOps.toStream(list).map(s -> toEscapedString(s)).collect(Collectors.joining(COMMA_LIST_SEPARATOR, START_ARRAY_STRING, CLOSE_ARRAY_STRING));
     }
 
+    public static final boolean isNotEmpty(final CharSequence string)
+    {
+        return ((null != string) && (string.length() > 0));
+    }
+
     public static final String toTrimOrNull(String string)
     {
         if (null == string)
@@ -395,6 +406,33 @@ public final class StringOps
         return string;
     }
 
+    public static final String requireNonNullOrEmpty(final String string)
+    {
+        if (CommonOps.requireNonNull(string).trim().isEmpty())
+        {
+            throw new IllegalArgumentException("string is empty");
+        }
+        return string;
+    }
+
+    public static final String requireNonNullOrEmpty(final String string, final String reason)
+    {
+        if (CommonOps.requireNonNull(string, reason).trim().isEmpty())
+        {
+            throw new IllegalArgumentException(reason);
+        }
+        return string;
+    }
+
+    public static final String requireNonNullOrEmpty(final String string, final Supplier<String> reason)
+    {
+        if (CommonOps.requireNonNull(string, reason).trim().isEmpty())
+        {
+            throw new IllegalArgumentException(reason.get());
+        }
+        return string;
+    }
+
     public static final String requireTrimOrNull(final String string)
     {
         return CommonOps.requireNonNull(toTrimOrNull(string));
@@ -410,7 +448,7 @@ public final class StringOps
         return CommonOps.requireNonNull(toTrimOrNull(string), reason);
     }
 
-    public static final boolean isDigits(final String string)
+    public static final boolean isDigits(final CharSequence string)
     {
         if (null == string)
         {
@@ -432,7 +470,29 @@ public final class StringOps
         return true;
     }
 
-    public static final boolean isAlpha(final String string)
+    public static final boolean isAnyText(final CharSequence string)
+    {
+        if (null == string)
+        {
+            return false;
+        }
+        final int leng = string.length();
+
+        if (leng < 1)
+        {
+            return false;
+        }
+        for (int i = 0; i < leng; i++)
+        {
+            if (false == Character.isWhitespace(string.charAt(i)))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static final boolean isAlpha(final CharSequence string)
     {
         if (null == string)
         {
@@ -454,7 +514,7 @@ public final class StringOps
         return true;
     }
 
-    public static final boolean isAlphaOrDigits(final String string)
+    public static final boolean isAlphaOrDigits(final CharSequence string)
     {
         if (null == string)
         {
@@ -476,7 +536,7 @@ public final class StringOps
         return true;
     }
 
-    public static final boolean isAlphaOrDigitsStartsAlpha(final String string)
+    public static final boolean isAlphaOrDigitsStartsAlpha(final CharSequence string)
     {
         if (null == string)
         {
@@ -502,7 +562,7 @@ public final class StringOps
         return true;
     }
 
-    public static final String reverse(final String string)
+    public static final String reverse(final CharSequence string)
     {
         if (null == string)
         {
@@ -510,9 +570,9 @@ public final class StringOps
         }
         if (string.length() < 2)
         {
-            return string;
+            return string.toString();
         }
-        return new StringBuilder(string).reverse().toString();
+        return new StringBuilder(string.length()).append(string).reverse().toString();
     }
 
     public static final StringBuilder toUnicodeEscapedWithBuilder(final StringBuilder builder, final char c)
@@ -544,12 +604,12 @@ public final class StringOps
         return (((c <= 'z') && (c >= ' ')) && ((c >= 'a') || ((c >= 'A') && (c <= 'Z')) || (c == ' ') || ((c >= '0') && (c <= '9'))));
     }
 
-    public static final String toEscapedString(final String string)
+    public static final String toEscapedString(final CharSequence string)
     {
         return toEscapedString(string, true);
     }
 
-    public static final String toEscapedString(final String string, final boolean quote)
+    public static final String toEscapedString(final CharSequence string, final boolean quote)
     {
         if (null == string)
         {
@@ -558,15 +618,13 @@ public final class StringOps
         return toEscapedStringWithBuilder(string, new StringBuilder(), quote).toString();
     }
 
-    public static final StringBuilder toEscapedStringWithBuilder(final String string, final StringBuilder builder)
+    public static final StringBuilder toEscapedStringWithBuilder(final CharSequence string, final StringBuilder builder)
     {
         return toEscapedStringWithBuilder(string, builder, true);
     }
 
-    public static final StringBuilder toEscapedStringWithBuilder(final String string, final StringBuilder builder, final boolean quote)
+    public static final StringBuilder toEscapedStringWithBuilder(final CharSequence string, final StringBuilder builder, final boolean quote)
     {
-        CommonOps.requireNonNull(builder);
-
         if (null == string)
         {
             return builder.append(NULL_AS_STRING);
@@ -645,7 +703,7 @@ public final class StringOps
         return builder;
     }
 
-    public static final String failIfNullBytePresent(final String string)
+    public static final String failIfNullBytePresent(final CharSequence string)
     {
         if (null != string)
         {
@@ -658,8 +716,9 @@ public final class StringOps
                     throw new IllegalArgumentException("null byte present in string, there are no known legitimate use cases for such data, but several injection attacks may use it.");
                 }
             }
+            return string.toString();
         }
-        return string;
+        return CommonOps.NULL();
     }
 
     public static final Boolean asBoolean(final String string)
@@ -734,6 +793,6 @@ public final class StringOps
 
     public static final String toString(final CharSequence value)
     {
-        return value.toString();
+        return (null == value) ? CommonOps.NULL() : value.toString();
     }
 }
