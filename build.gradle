@@ -22,8 +22,8 @@ buildscript {
         classpath(group: 'org.ajoberstar', name: 'grgit', version: '1.7.2')
         classpath(group: 'commons-codec', name: 'commons-codec', version: '1.11')
         classpath(group: 'commons-logging', name: 'commons-logging', version: '1.2')
-        classpath(group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.5')
-        classpath(group: 'org.owasp', name: 'dependency-check-gradle', version: '3.2.0')
+        classpath(group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.6')
+        classpath(group: 'org.owasp', name: 'dependency-check-gradle', version: '3.3.0')
         classpath(group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.6.2')
     }
 }
@@ -50,7 +50,7 @@ sourceCompatibility = 1.8
 
 targetCompatibility = 1.8
 
-version = '2.2.7-RELEASE'
+version = '2.2.8-RELEASE'
 
 group = 'com.themodernway'
 
